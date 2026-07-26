@@ -10,14 +10,14 @@ export default function Home() {
   const [tutorialStep, setTutorialStep] = useState(0);
 
   return (
-    <div className="h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-hidden">
+    <div className="min-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-x-hidden">
       
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 min-h-0 relative z-10">
         <div className="flex flex-col items-center flex-1 justify-center space-y-2 md:space-y-6 max-h-full">
           
           <img src="/ops-storia/images/avatar.png" alt="Prof Memmo" className="h-[10vh] sm:h-[15vh] max-h-24 object-contain drop-shadow-md shrink-0 mb-2" />
-          <img src="/ops-storia/images/logo.png" alt="Ops! Logo" className="w-[80%] sm:w-[60%] max-w-lg h-auto max-h-[300px] object-contain drop-shadow-sm shrink-0 mb-4 mix-blend-multiply" />
+          <img src="/ops-storia/images/logo.png" alt="Ops! Logo" className="w-[90%] sm:w-[75%] max-w-2xl h-auto max-h-[40vh] object-contain shrink-0 mb-4 mix-blend-multiply" />
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary-500 tracking-tight text-center shrink-0">
             Sfida la Storia all'Ultima Parola!
