@@ -87,7 +87,7 @@ export const createRoom = async (settings: any, deck: any[]) => {
 };
 
 export const joinRoom = async (code: string, teamId: 1 | 2, pawnId: number, teamName: string) => {
-  const roomRef = ref(db, `rooms/${code.toUpperCase()}`);
+  const roomRef = ref(rtdb, `rooms/${code.toUpperCase()}`);
   const snapshot = await get(roomRef);
   if (!snapshot.exists()) {
     throw new Error("Stanza non trovata");
