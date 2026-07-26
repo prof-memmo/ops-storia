@@ -17,7 +17,7 @@ export default function Home() {
         <div className="flex flex-col items-center flex-1 justify-center space-y-2 md:space-y-6 max-h-full">
           
           <img src="/ops-storia/images/avatar.png" alt="Prof Memmo" className="h-[10vh] sm:h-[15vh] max-h-24 object-contain drop-shadow-md shrink-0 mb-2" />
-          <img src="/ops-storia/images/logo.png" alt="Ops! Logo" className="h-[15vh] sm:h-[25vh] max-h-40 object-contain drop-shadow-sm shrink-0 mb-4" />
+          <img src="/ops-storia/images/logo.png" alt="Ops! Logo" className="w-[80%] sm:w-[60%] max-w-lg h-auto max-h-[300px] object-contain drop-shadow-sm shrink-0 mb-4 mix-blend-multiply" />
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary-500 tracking-tight text-center shrink-0">
             Sfida la Storia all'Ultima Parola!
@@ -131,7 +131,7 @@ export default function Home() {
                  <img src="/ops-storia/images/prof_memmo_full.jpg" alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
               </div>
               
-              <div className="w-full md:w-2/3 p-6 sm:p-8 flex flex-col relative h-[500px]">
+              <div className="w-full md:w-2/3 p-4 sm:p-8 flex flex-col relative min-h-[550px] md:min-h-[500px]">
                 <button 
                   onClick={() => setShowTutorial(false)}
                   className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full z-10"
@@ -145,33 +145,33 @@ export default function Home() {
                   <AnimatePresence mode="wait">
                     {tutorialStep === 0 && (
                       <motion.div key="step0" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-6">
-                          <Info className="w-24 h-24 sm:w-32 sm:h-32 text-primary-500 mb-8" />
-                          <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola!</p>
+                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
+                          <Info className="w-20 h-20 sm:w-28 sm:h-28 text-primary-500 mb-6" />
+                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 1 && (
                       <motion.div key="step1" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-6">
-                          <AlertOctagon className="w-24 h-24 sm:w-32 sm:h-32 text-red-500 mb-8" />
-                          <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
+                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
+                          <AlertOctagon className="w-20 h-20 sm:w-28 sm:h-28 text-red-500 mb-6" />
+                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 2 && (
                       <motion.div key="step2" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-6">
-                          <SkipForward className="w-24 h-24 sm:w-32 sm:h-32 text-amber-500 mb-8" />
-                          <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
+                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
+                          <SkipForward className="w-20 h-20 sm:w-28 sm:h-28 text-amber-500 mb-6" />
+                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 3 && (
                       <motion.div key="step3" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-6">
-                          <Timer className="w-24 h-24 sm:w-32 sm:h-32 text-blue-500 mb-8" />
-                          <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone potrai pescare carte magiche con <strong className="text-purple-600">effetti speciali</strong> (come tempo doppio o scarti infiniti).</p>
+                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
+                          <Timer className="w-20 h-20 sm:w-28 sm:h-28 text-blue-500 mb-6" />
+                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone potrai pescare carte magiche con <strong className="text-purple-600">effetti speciali</strong> (come tempo doppio o scarti infiniti).</p>
                         </div>
                       </motion.div>
                     )}
