@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Users, Timer, Check, X, Home, AlertOctagon, Undo2, LogIn, ArrowLeft, LogOut } from "lucide-react";
 import Link from "next/link";
 import DynamicBoard from "../components/DynamicBoard";
-import HostLogin from "../components/HostLogin";
+import HostLogin from "@/components/HostLogin";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 

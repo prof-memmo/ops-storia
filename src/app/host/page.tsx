@@ -5,7 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Users, Timer, Check, X, Home, AlertOctagon, Undo2, Play, BookOpen, Settings, Layers, Pause, PlayCircle, LogOut } from "lucide-react";
 import Link from "next/link";
 import DynamicBoard from "../components/DynamicBoard";
-import HostLogin from "../components/HostLogin";
+import HostLogin from "@/components/HostLogin";
 import { createRoom, subscribeToRoom, updateRoomStatus, updateRoomState, RoomState } from "@/lib/gameLogic";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
