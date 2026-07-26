@@ -1,0 +1,1731 @@
+[
+    {
+        "id": "Prima_0",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Storia",
+        "parole_taboo": [
+            "passato",
+            "fatti",
+            "tempo",
+            "uomini",
+            "eventi"
+        ]
+    },
+    {
+        "id": "Prima_1",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Storico",
+        "parole_taboo": [
+            "studioso",
+            "passato",
+            "ricerca",
+            "storia",
+            "documenti"
+        ]
+    },
+    {
+        "id": "Prima_2",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Fonte",
+        "parole_taboo": [
+            "storica",
+            "documento",
+            "testimonianza",
+            "passato",
+            "informazione"
+        ]
+    },
+    {
+        "id": "Prima_3",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Fonte",
+        "parole_taboo": [
+            "scritta",
+            "libro",
+            "testo",
+            "documento",
+            "scrittura"
+        ]
+    },
+    {
+        "id": "Prima_4",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Fonte",
+        "parole_taboo": [
+            "orale",
+            "voce",
+            "racconto",
+            "testimonianza",
+            "parlare"
+        ]
+    },
+    {
+        "id": "Prima_5",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Fonte",
+        "parole_taboo": [
+            "materiale",
+            "oggetto",
+            "reperto",
+            "scavare",
+            "museo"
+        ]
+    },
+    {
+        "id": "Prima_6",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Reperto",
+        "parole_taboo": [
+            "oggetto",
+            "antico",
+            "archeologo",
+            "scavo",
+            "ritrovamento"
+        ]
+    },
+    {
+        "id": "Prima_7",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Archeologo",
+        "parole_taboo": [
+            "scavo",
+            "reperto",
+            "ricerca",
+            "antico",
+            "terreno"
+        ]
+    },
+    {
+        "id": "Prima_8",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Archivio",
+        "parole_taboo": [
+            "documenti",
+            "conservare",
+            "carte",
+            "raccolta",
+            "storico"
+        ]
+    },
+    {
+        "id": "Prima_9",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Censimento",
+        "parole_taboo": [
+            "popolazione",
+            "contare",
+            "abitanti",
+            "Stato",
+            "numero"
+        ]
+    },
+    {
+        "id": "Prima_10",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Calendario",
+        "parole_taboo": [
+            "mesi",
+            "giorni",
+            "anno",
+            "data",
+            "tempo"
+        ]
+    },
+    {
+        "id": "Prima_11",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Secolo",
+        "parole_taboo": [
+            "cento",
+            "anni",
+            "tempo",
+            "datazione",
+            "anno"
+        ]
+    },
+    {
+        "id": "Prima_12",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Millennio",
+        "parole_taboo": [
+            "mille",
+            "anni",
+            "tempo",
+            "periodo",
+            "storia"
+        ]
+    },
+    {
+        "id": "Prima_13",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Datazione",
+        "parole_taboo": [
+            "anno",
+            "data",
+            "tempo",
+            "storico",
+            "calcolo"
+        ]
+    },
+    {
+        "id": "Prima_14",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Cronologia",
+        "parole_taboo": [
+            "ordine",
+            "date",
+            "tempo",
+            "successione",
+            "eventi"
+        ]
+    },
+    {
+        "id": "Prima_15",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Roma",
+        "parole_taboo": [
+            "città",
+            "impero",
+            "Italia",
+            "antica",
+            "capitale"
+        ]
+    },
+    {
+        "id": "Prima_16",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Impero",
+        "parole_taboo": [
+            "romano",
+            "Roma",
+            "imperatore",
+            "esercito",
+            "conquista"
+        ]
+    },
+    {
+        "id": "Prima_17",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Caduta",
+        "parole_taboo": [
+            "di",
+            "Roma",
+            "476",
+            "impero",
+            "fine"
+        ]
+    },
+    {
+        "id": "Prima_18",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Imperatore",
+        "parole_taboo": [
+            "governo",
+            "Roma",
+            "potere",
+            "sovrano",
+            "impero"
+        ]
+    },
+    {
+        "id": "Prima_19",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Senato",
+        "parole_taboo": [
+            "Roma",
+            "assemblea",
+            "politica",
+            "nobili",
+            "governo"
+        ]
+    },
+    {
+        "id": "Prima_20",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Legionario",
+        "parole_taboo": [
+            "soldato",
+            "esercito",
+            "Roma",
+            "guerra",
+            "armatura"
+        ]
+    },
+    {
+        "id": "Prima_21",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Politeismo",
+        "parole_taboo": [
+            "molti",
+            "dei",
+            "religione",
+            "divinità",
+            "romano"
+        ]
+    },
+    {
+        "id": "Prima_22",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Giove",
+        "parole_taboo": [
+            "dio",
+            "fulmine",
+            "romano",
+            "Olimpo",
+            "divinità"
+        ]
+    },
+    {
+        "id": "Prima_23",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Marte",
+        "parole_taboo": [
+            "guerra",
+            "dio",
+            "romano",
+            "combattimento",
+            "divinità"
+        ]
+    },
+    {
+        "id": "Prima_24",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Tempio",
+        "parole_taboo": [
+            "religione",
+            "edificio",
+            "preghiera",
+            "culto",
+            "dio"
+        ]
+    },
+    {
+        "id": "Prima_25",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Cristianesimo",
+        "parole_taboo": [
+            "Gesù",
+            "religione",
+            "cristiani",
+            "Chiesa",
+            "Vangelo"
+        ]
+    },
+    {
+        "id": "Prima_26",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Cristiano",
+        "parole_taboo": [
+            "Gesù",
+            "fede",
+            "Chiesa",
+            "religione",
+            "battesimo"
+        ]
+    },
+    {
+        "id": "Prima_27",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Gesù",
+        "parole_taboo": [
+            "Cristo",
+            "Vangelo",
+            "Nazareth",
+            "religione",
+            "discepoli"
+        ]
+    },
+    {
+        "id": "Prima_28",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Vangelo",
+        "parole_taboo": [
+            "Gesù",
+            "libro",
+            "cristiani",
+            "parola",
+            "apostoli"
+        ]
+    },
+    {
+        "id": "Prima_29",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Chiesa",
+        "parole_taboo": [
+            "cristiani",
+            "religione",
+            "papa",
+            "fedeli",
+            "edificio"
+        ]
+    },
+    {
+        "id": "Prima_30",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Papa",
+        "parole_taboo": [
+            "Chiesa",
+            "cattolici",
+            "Roma",
+            "pontefice",
+            "religione"
+        ]
+    },
+    {
+        "id": "Prima_31",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Persecuzione",
+        "parole_taboo": [
+            "cristiani",
+            "punizione",
+            "religione",
+            "vietare",
+            "sofferenza"
+        ]
+    },
+    {
+        "id": "Prima_32",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Editto",
+        "parole_taboo": [
+            "di",
+            "Milano",
+            "Costantino",
+            "libertà",
+            "cristiani"
+        ]
+    },
+    {
+        "id": "Prima_33",
+        "classe": "Prima",
+        "categoria": "Età Medievale",
+        "parola_chiave": "Costantino",
+        "parole_taboo": [
+            "imperatore",
+            "cristianesimo",
+            "Milano",
+            "Roma",
+            "editto"
+        ]
+    },
+    {
+        "id": "Prima_34",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Barbari",
+        "parole_taboo": [
+            "popoli",
+            "invasioni",
+            "Roma",
+            "stranieri",
+            "germanici"
+        ]
+    },
+    {
+        "id": "Prima_35",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Regno",
+        "parole_taboo": [
+            "romano-",
+            "barbarico",
+            "barbari",
+            "Roma",
+            "regno"
+        ]
+    },
+    {
+        "id": "Prima_36",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Ostrogoti",
+        "parole_taboo": [
+            "barbari",
+            "Teodorico",
+            "Italia",
+            "germanici",
+            "regno"
+        ]
+    },
+    {
+        "id": "Prima_37",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Visigoti",
+        "parole_taboo": [
+            "barbari",
+            "Spagna",
+            "germanici",
+            "regno",
+            "invasione"
+        ]
+    },
+    {
+        "id": "Prima_38",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Franchi",
+        "parole_taboo": [
+            "Carlo",
+            "Magno",
+            "germanici",
+            "regno",
+            "Francia"
+        ]
+    },
+    {
+        "id": "Prima_39",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Teodorico",
+        "parole_taboo": [
+            "ostrogoti",
+            "re",
+            "Italia",
+            "barbaro",
+            "Ravenna"
+        ]
+    },
+    {
+        "id": "Prima_40",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Giustiniano",
+        "parole_taboo": [
+            "imperatore",
+            "Bisanzio",
+            "riconquista",
+            "Oriente",
+            "legge"
+        ]
+    },
+    {
+        "id": "Prima_41",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Impero",
+        "parole_taboo": [
+            "bizantino",
+            "Oriente",
+            "Costantinopoli",
+            "impero",
+            "Giustiniano"
+        ]
+    },
+    {
+        "id": "Prima_42",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Costantinopoli",
+        "parole_taboo": [
+            "città",
+            "Bisanzio",
+            "Oriente",
+            "capitale",
+            "impero"
+        ]
+    },
+    {
+        "id": "Prima_43",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Longobardi",
+        "parole_taboo": [
+            "Italia",
+            "barbari",
+            "regno",
+            "Alboino",
+            "invasione"
+        ]
+    },
+    {
+        "id": "Prima_44",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Alboino",
+        "parole_taboo": [
+            "longobardi",
+            "re",
+            "Italia",
+            "invasione",
+            "barbaro"
+        ]
+    },
+    {
+        "id": "Prima_45",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Slavi",
+        "parole_taboo": [
+            "popoli",
+            "Europa",
+            "orientale",
+            "migrazione",
+            "Balcani"
+        ]
+    },
+    {
+        "id": "Prima_46",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Alto",
+        "parole_taboo": [
+            "Medioevo",
+            "medioevo",
+            "periodo",
+            "crisi",
+            "secoli"
+        ]
+    },
+    {
+        "id": "Prima_47",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Feudo",
+        "parole_taboo": [
+            "terra",
+            "signore",
+            "vassallo",
+            "medioevo",
+            "possesso"
+        ]
+    },
+    {
+        "id": "Prima_48",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Signore",
+        "parole_taboo": [
+            "feudale",
+            "feudo",
+            "castello",
+            "terra",
+            "potere"
+        ]
+    },
+    {
+        "id": "Prima_49",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Castello",
+        "parole_taboo": [
+            "fortezza",
+            "mura",
+            "medioevo",
+            "torre",
+            "difesa"
+        ]
+    },
+    {
+        "id": "Prima_50",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Monastero",
+        "parole_taboo": [
+            "monaci",
+            "religione",
+            "preghiera",
+            "convento",
+            "Chiesa"
+        ]
+    },
+    {
+        "id": "Prima_51",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Monaco",
+        "parole_taboo": [
+            "monastero",
+            "preghiera",
+            "religione",
+            "convento",
+            "Chiesa"
+        ]
+    },
+    {
+        "id": "Prima_52",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Monachesimo",
+        "parole_taboo": [
+            "monaci",
+            "monastero",
+            "preghiera",
+            "vita",
+            "religiosa"
+        ]
+    },
+    {
+        "id": "Prima_53",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "San",
+        "parole_taboo": [
+            "Benedetto",
+            "monaci",
+            "monastero",
+            "regola",
+            "Montecassino"
+        ]
+    },
+    {
+        "id": "Prima_54",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Regola",
+        "parole_taboo": [
+            "benedettina",
+            "prega",
+            "lavora",
+            "monaci",
+            "Benedetto"
+        ]
+    },
+    {
+        "id": "Prima_55",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Chiesa",
+        "parole_taboo": [
+            "medievale",
+            "religione",
+            "papa",
+            "fedeli",
+            "medioevo"
+        ]
+    },
+    {
+        "id": "Prima_56",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Islam",
+        "parole_taboo": [
+            "musulmani",
+            "religione",
+            "Corano",
+            "Allah",
+            "Maometto"
+        ]
+    },
+    {
+        "id": "Prima_57",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Maometto",
+        "parole_taboo": [
+            "Islam",
+            "profeta",
+            "musulmani",
+            "Mecca",
+            "religione"
+        ]
+    },
+    {
+        "id": "Prima_58",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Corano",
+        "parole_taboo": [
+            "Islam",
+            "libro",
+            "musulmani",
+            "religione",
+            "Allah"
+        ]
+    },
+    {
+        "id": "Prima_59",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Moschea",
+        "parole_taboo": [
+            "Islam",
+            "preghiera",
+            "musulmani",
+            "edificio",
+            "religione"
+        ]
+    },
+    {
+        "id": "Prima_60",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Allah",
+        "parole_taboo": [
+            "Dio",
+            "Islam",
+            "musulmani",
+            "religione",
+            "Corano"
+        ]
+    },
+    {
+        "id": "Prima_61",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Egira",
+        "parole_taboo": [
+            "Maometto",
+            "Mecca",
+            "Medina",
+            "Islam",
+            "fuga"
+        ]
+    },
+    {
+        "id": "Prima_62",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Califfo",
+        "parole_taboo": [
+            "Islam",
+            "capo",
+            "musulmani",
+            "governo",
+            "successione"
+        ]
+    },
+    {
+        "id": "Prima_63",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Carlo",
+        "parole_taboo": [
+            "Magno",
+            "Franchi",
+            "imperatore",
+            "Aquisgrana",
+            "Sacro"
+        ]
+    },
+    {
+        "id": "Prima_64",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Sacro",
+        "parole_taboo": [
+            "Romano",
+            "Impero",
+            "Carlo",
+            "Magno",
+            "impero"
+        ]
+    },
+    {
+        "id": "Prima_65",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Aquisgrana",
+        "parole_taboo": [
+            "Carlo",
+            "Magno",
+            "capitale",
+            "Franchi",
+            "città"
+        ]
+    },
+    {
+        "id": "Prima_66",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Incoronazione",
+        "parole_taboo": [
+            "papa",
+            "imperatore",
+            "Carlo",
+            "Magno",
+            "corona"
+        ]
+    },
+    {
+        "id": "Prima_67",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Feudalesimo",
+        "parole_taboo": [
+            "feudo",
+            "signore",
+            "vassallo",
+            "terra",
+            "medioevo"
+        ]
+    },
+    {
+        "id": "Prima_68",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Vassallo",
+        "parole_taboo": [
+            "feudale",
+            "signore",
+            "giuramento",
+            "fedeltà",
+            "terra"
+        ]
+    },
+    {
+        "id": "Prima_69",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Investitura",
+        "parole_taboo": [
+            "feudale",
+            "vassallo",
+            "feudo",
+            "cerimonia",
+            "signore"
+        ]
+    },
+    {
+        "id": "Prima_70",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Omaggio",
+        "parole_taboo": [
+            "feudale",
+            "giuramento",
+            "vassallo",
+            "signore",
+            "fedeltà"
+        ]
+    },
+    {
+        "id": "Prima_71",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Beneficio",
+        "parole_taboo": [
+            "terra",
+            "feudo",
+            "concessione",
+            "signore",
+            "possesso"
+        ]
+    },
+    {
+        "id": "Prima_72",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Saraceni",
+        "parole_taboo": [
+            "musulmani",
+            "invasioni",
+            "Mediterraneo",
+            "pirati",
+            "Islam"
+        ]
+    },
+    {
+        "id": "Prima_73",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Ungari",
+        "parole_taboo": [
+            "cavalieri",
+            "invasioni",
+            "Europa",
+            "Magiari",
+            "saccheggi"
+        ]
+    },
+    {
+        "id": "Prima_74",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Normanni",
+        "parole_taboo": [
+            "vichinghi",
+            "Francia",
+            "conquista",
+            "Inghilterra",
+            "guerrieri"
+        ]
+    },
+    {
+        "id": "Prima_75",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Vichinghi",
+        "parole_taboo": [
+            "nordici",
+            "navi",
+            "razzie",
+            "Scandinavia",
+            "guerrieri"
+        ]
+    },
+    {
+        "id": "Prima_76",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Ottone",
+        "parole_taboo": [
+            "I",
+            "imperatore",
+            "Germania",
+            "Sacro",
+            "Romano"
+        ]
+    },
+    {
+        "id": "Prima_77",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Sacro",
+        "parole_taboo": [
+            "Romano",
+            "Impero",
+            "Germanico",
+            "Ottone",
+            "Germania"
+        ]
+    },
+    {
+        "id": "Prima_78",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Riforma",
+        "parole_taboo": [
+            "della",
+            "Chiesa",
+            "clero",
+            "cambiamento",
+            "papa"
+        ]
+    },
+    {
+        "id": "Prima_79",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Simonia",
+        "parole_taboo": [
+            "vendita",
+            "cariche",
+            "Chiesa",
+            "denaro",
+            "religione"
+        ]
+    },
+    {
+        "id": "Prima_80",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Clero",
+        "parole_taboo": [
+            "sacerdoti",
+            "Chiesa",
+            "religione",
+            "preti",
+            "ecclesiastici"
+        ]
+    },
+    {
+        "id": "Prima_81",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Scisma",
+        "parole_taboo": [
+            "d'Oriente",
+            "divisione",
+            "Chiesa",
+            "ortodossi",
+            "cattolici"
+        ]
+    },
+    {
+        "id": "Prima_82",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Chiesa",
+        "parole_taboo": [
+            "ortodossa",
+            "Oriente",
+            "patriarca",
+            "Bisanzio",
+            "cristiani"
+        ]
+    },
+    {
+        "id": "Prima_83",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Patriarca",
+        "parole_taboo": [
+            "Chiesa",
+            "orientale",
+            "ortodossa",
+            "vescovo",
+            "Costantinopoli"
+        ]
+    },
+    {
+        "id": "Prima_84",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Lotta",
+        "parole_taboo": [
+            "per",
+            "le",
+            "investiture",
+            "papa",
+            "imperatore"
+        ]
+    },
+    {
+        "id": "Prima_85",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Gregorio",
+        "parole_taboo": [
+            "VII",
+            "papa",
+            "investiture",
+            "Canossa",
+            "Chiesa"
+        ]
+    },
+    {
+        "id": "Prima_86",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Enrico",
+        "parole_taboo": [
+            "IV",
+            "imperatore",
+            "Canossa",
+            "investiture",
+            "Germania"
+        ]
+    },
+    {
+        "id": "Prima_87",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Canossa",
+        "parole_taboo": [
+            "umiliazione",
+            "Enrico",
+            "IV",
+            "papa",
+            "castello"
+        ]
+    },
+    {
+        "id": "Prima_88",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Primavera",
+        "parole_taboo": [
+            "eterna",
+            "crescita",
+            "sviluppo",
+            "medioevo",
+            "prosperità"
+        ]
+    },
+    {
+        "id": "Prima_89",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Mulino",
+        "parole_taboo": [
+            "acqua",
+            "grano",
+            "energia",
+            "farina",
+            "ruota"
+        ]
+    },
+    {
+        "id": "Prima_90",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Borgo",
+        "parole_taboo": [
+            "villaggio",
+            "città",
+            "mura",
+            "abitanti",
+            "mercato"
+        ]
+    },
+    {
+        "id": "Prima_91",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Mercante",
+        "parole_taboo": [
+            "commercio",
+            "vendere",
+            "comprare",
+            "mercato",
+            "denaro"
+        ]
+    },
+    {
+        "id": "Prima_92",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Fiera",
+        "parole_taboo": [
+            "medievale",
+            "mercato",
+            "commercio",
+            "mercanti",
+            "scambio"
+        ]
+    },
+    {
+        "id": "Prima_93",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Repubblica",
+        "parole_taboo": [
+            "marinara",
+            "mare",
+            "commercio",
+            "porto",
+            "navi"
+        ]
+    },
+    {
+        "id": "Prima_94",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Venezia",
+        "parole_taboo": [
+            "laguna",
+            "canali",
+            "repubblica",
+            "marinara",
+            "commercio"
+        ]
+    },
+    {
+        "id": "Prima_95",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Genova",
+        "parole_taboo": [
+            "porto",
+            "repubblica",
+            "marinara",
+            "mare",
+            "commercio"
+        ]
+    },
+    {
+        "id": "Prima_96",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Pisa",
+        "parole_taboo": [
+            "Toscana",
+            "repubblica",
+            "marinara",
+            "torre",
+            "porto"
+        ]
+    },
+    {
+        "id": "Prima_97",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Amalfi",
+        "parole_taboo": [
+            "Campania",
+            "repubblica",
+            "marinara",
+            "mare",
+            "commercio"
+        ]
+    },
+    {
+        "id": "Prima_98",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Reconquista",
+        "parole_taboo": [
+            "Spagna",
+            "musulmani",
+            "cristiani",
+            "riconquista",
+            "penisola"
+        ]
+    },
+    {
+        "id": "Prima_99",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Crociata",
+        "parole_taboo": [
+            "Terra",
+            "Santa",
+            "cavalieri",
+            "Gerusalemme",
+            "religione"
+        ]
+    },
+    {
+        "id": "Prima_100",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Crociati",
+        "parole_taboo": [
+            "cavalieri",
+            "crociata",
+            "Gerusalemme",
+            "cristiani",
+            "guerra"
+        ]
+    },
+    {
+        "id": "Prima_101",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Gerusalemme",
+        "parole_taboo": [
+            "città",
+            "santa",
+            "crociate",
+            "Israele",
+            "religione"
+        ]
+    },
+    {
+        "id": "Prima_102",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Ordini",
+        "parole_taboo": [
+            "monastico-",
+            "cavallereschi",
+            "templari",
+            "cavalieri",
+            "religione"
+        ]
+    },
+    {
+        "id": "Prima_103",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Templari",
+        "parole_taboo": [
+            "cavalieri",
+            "crociate",
+            "ordine",
+            "religione",
+            "monaci"
+        ]
+    },
+    {
+        "id": "Prima_104",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Comune",
+        "parole_taboo": [
+            "città",
+            "autonomia",
+            "governo",
+            "cittadini",
+            "medioevo"
+        ]
+    },
+    {
+        "id": "Prima_105",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Consoli",
+        "parole_taboo": [
+            "comune",
+            "governo",
+            "città",
+            "amministrazione",
+            "magistrati"
+        ]
+    },
+    {
+        "id": "Prima_106",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Podestà",
+        "parole_taboo": [
+            "comune",
+            "governo",
+            "città",
+            "magistrato",
+            "amministrazione"
+        ]
+    },
+    {
+        "id": "Prima_107",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Arti",
+        "parole_taboo": [
+            "corporazioni",
+            "mestieri",
+            "lavoro",
+            "associazioni",
+            "medioevo"
+        ]
+    },
+    {
+        "id": "Prima_108",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Corporazione",
+        "parole_taboo": [
+            "mestiere",
+            "artigiani",
+            "associazione",
+            "arti",
+            "lavoro"
+        ]
+    },
+    {
+        "id": "Prima_109",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Federico",
+        "parole_taboo": [
+            "Barbarossa",
+            "imperatore",
+            "Lega",
+            "Lombarda",
+            "comuni"
+        ]
+    },
+    {
+        "id": "Prima_110",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Dieta",
+        "parole_taboo": [
+            "di",
+            "Roncaglia",
+            "Barbarossa",
+            "assemblea",
+            "comuni"
+        ]
+    },
+    {
+        "id": "Prima_111",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Lega",
+        "parole_taboo": [
+            "Lombarda",
+            "comuni",
+            "Barbarossa",
+            "alleanza",
+            "Lombardia"
+        ]
+    },
+    {
+        "id": "Prima_112",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Battaglia",
+        "parole_taboo": [
+            "di",
+            "Legnano",
+            "Lega",
+            "Lombarda",
+            "Barbarossa"
+        ]
+    },
+    {
+        "id": "Prima_113",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Eresia",
+        "parole_taboo": [
+            "dottrina",
+            "Chiesa",
+            "religione",
+            "condanna",
+            "fede"
+        ]
+    },
+    {
+        "id": "Prima_114",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Eretico",
+        "parole_taboo": [
+            "Chiesa",
+            "fede",
+            "eresia",
+            "religione",
+            "condanna"
+        ]
+    },
+    {
+        "id": "Prima_115",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Inquisizione",
+        "parole_taboo": [
+            "eresia",
+            "tribunale",
+            "Chiesa",
+            "giudizio",
+            "religione"
+        ]
+    },
+    {
+        "id": "Prima_116",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Peste",
+        "parole_taboo": [
+            "nera",
+            "malattia",
+            "epidemia",
+            "Trecento",
+            "morte"
+        ]
+    },
+    {
+        "id": "Prima_117",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Epidemia",
+        "parole_taboo": [
+            "malattia",
+            "contagio",
+            "diffusione",
+            "peste",
+            "popolazione"
+        ]
+    },
+    {
+        "id": "Prima_118",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Federico",
+        "parole_taboo": [
+            "II",
+            "Svevia",
+            "imperatore",
+            "Sicilia",
+            "falconeria"
+        ]
+    },
+    {
+        "id": "Prima_119",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Regno",
+        "parole_taboo": [
+            "di",
+            "Sicilia",
+            "Federico",
+            "II",
+            "sud"
+        ]
+    },
+    {
+        "id": "Prima_120",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Cattività",
+        "parole_taboo": [
+            "avignonese",
+            "papi",
+            "Avignone",
+            "Francia",
+            "Roma"
+        ]
+    },
+    {
+        "id": "Prima_121",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Avignone",
+        "parole_taboo": [
+            "Francia",
+            "papi",
+            "cattività",
+            "città",
+            "Rodano"
+        ]
+    },
+    {
+        "id": "Prima_122",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Monarchia",
+        "parole_taboo": [
+            "nazionale",
+            "re",
+            "Stato",
+            "potere",
+            "governo"
+        ]
+    },
+    {
+        "id": "Prima_123",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Guerra",
+        "parole_taboo": [
+            "dei",
+            "Cent'anni",
+            "Francia",
+            "Inghilterra",
+            "conflitto"
+        ]
+    },
+    {
+        "id": "Prima_124",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Giovanna",
+        "parole_taboo": [
+            "d'Arco",
+            "Francia",
+            "guerra",
+            "inglesi",
+            "santa"
+        ]
+    },
+    {
+        "id": "Prima_125",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Sentimento",
+        "parole_taboo": [
+            "nazionale",
+            "patria",
+            "identità",
+            "popolo",
+            "nazione"
+        ]
+    },
+    {
+        "id": "Prima_126",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Conquista",
+        "parole_taboo": [
+            "di",
+            "Costantinopoli",
+            "Turchi",
+            "1453",
+            "Bisanzio"
+        ]
+    },
+    {
+        "id": "Prima_127",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Ottomani",
+        "parole_taboo": [
+            "turchi",
+            "impero",
+            "sultano",
+            "Costantinopoli",
+            "Asia"
+        ]
+    },
+    {
+        "id": "Prima_128",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Bolla",
+        "parole_taboo": [
+            "d'oro",
+            "imperatore",
+            "elezione",
+            "Germania",
+            "documento"
+        ]
+    },
+    {
+        "id": "Prima_129",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Stato",
+        "parole_taboo": [
+            "regionale",
+            "signoria",
+            "territorio",
+            "Italia",
+            "governo"
+        ]
+    },
+    {
+        "id": "Prima_130",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Signoria",
+        "parole_taboo": [
+            "signore",
+            "città",
+            "governo",
+            "potere",
+            "famiglia"
+        ]
+    },
+    {
+        "id": "Prima_131",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Impero",
+        "parole_taboo": [
+            "cinese",
+            "Cina",
+            "imperatore",
+            "Asia",
+            "dinastia"
+        ]
+    },
+    {
+        "id": "Prima_132",
+        "classe": "Prima",
+        "categoria": "Età Contemporanea",
+        "parola_chiave": "Impero",
+        "parole_taboo": [
+            "mongolo",
+            "Gengis",
+            "Khan",
+            "Asia",
+            "cavalieri"
+        ]
+    }
+]

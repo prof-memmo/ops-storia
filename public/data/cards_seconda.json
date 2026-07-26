@@ -1,0 +1,1705 @@
+[
+    {
+        "id": "Seconda_0",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Cristoforo",
+        "parole_taboo": [
+            "Colombo",
+            "America",
+            "Genova",
+            "caravelle",
+            "1492"
+        ]
+    },
+    {
+        "id": "Seconda_1",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Caravella",
+        "parole_taboo": [
+            "nave",
+            "Colombo",
+            "oceano",
+            "vela",
+            "viaggio"
+        ]
+    },
+    {
+        "id": "Seconda_2",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Santa",
+        "parole_taboo": [
+            "Maria",
+            "nave",
+            "Colombo",
+            "caravella",
+            "oceano"
+        ]
+    },
+    {
+        "id": "Seconda_3",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Nina",
+        "parole_taboo": [
+            "caravella",
+            "Colombo",
+            "nave",
+            "oceano",
+            "viaggio"
+        ]
+    },
+    {
+        "id": "Seconda_4",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Pinta",
+        "parole_taboo": [
+            "caravella",
+            "Colombo",
+            "nave",
+            "oceano",
+            "viaggio"
+        ]
+    },
+    {
+        "id": "Seconda_5",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "1492",
+        "parole_taboo": [
+            "Colombo",
+            "America",
+            "scoperta",
+            "anno",
+            "viaggio"
+        ]
+    },
+    {
+        "id": "Seconda_6",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Nuovo",
+        "parole_taboo": [
+            "Mondo",
+            "America",
+            "continente",
+            "scoperta",
+            "terre"
+        ]
+    },
+    {
+        "id": "Seconda_7",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Amerigo",
+        "parole_taboo": [
+            "Vespucci",
+            "America",
+            "navigatore",
+            "continente",
+            "Firenze"
+        ]
+    },
+    {
+        "id": "Seconda_8",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Indios",
+        "parole_taboo": [
+            "America",
+            "popolazioni",
+            "nativi",
+            "europei",
+            "tribù"
+        ]
+    },
+    {
+        "id": "Seconda_9",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Aztechi",
+        "parole_taboo": [
+            "Messico",
+            "impero",
+            "Montezuma",
+            "America",
+            "conquistadores"
+        ]
+    },
+    {
+        "id": "Seconda_10",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Maya",
+        "parole_taboo": [
+            "America",
+            "piramidi",
+            "civiltà",
+            "calendario",
+            "Yucatán"
+        ]
+    },
+    {
+        "id": "Seconda_11",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Inca",
+        "parole_taboo": [
+            "Perù",
+            "impero",
+            "Ande",
+            "Cuzco",
+            "America"
+        ]
+    },
+    {
+        "id": "Seconda_12",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Conquistadores",
+        "parole_taboo": [
+            "Spagnoli",
+            "America",
+            "conquista",
+            "soldati",
+            "oro"
+        ]
+    },
+    {
+        "id": "Seconda_13",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Hernán",
+        "parole_taboo": [
+            "Cortés",
+            "Aztechi",
+            "Messico",
+            "conquistatore",
+            "Spagna"
+        ]
+    },
+    {
+        "id": "Seconda_14",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Francisco",
+        "parole_taboo": [
+            "Pizarro",
+            "Inca",
+            "Perù",
+            "conquistatore",
+            "Spagna"
+        ]
+    },
+    {
+        "id": "Seconda_15",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Colonia",
+        "parole_taboo": [
+            "territorio",
+            "madrepatria",
+            "dominio",
+            "America",
+            "possedimento"
+        ]
+    },
+    {
+        "id": "Seconda_16",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Schiavitù",
+        "parole_taboo": [
+            "schiavi",
+            "lavoro",
+            "catene",
+            "Africa",
+            "commercio"
+        ]
+    },
+    {
+        "id": "Seconda_17",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Tratta",
+        "parole_taboo": [
+            "atlantica",
+            "schiavi",
+            "Africa",
+            "America",
+            "oceano"
+        ]
+    },
+    {
+        "id": "Seconda_18",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Piantagione",
+        "parole_taboo": [
+            "coltivazione",
+            "schiavi",
+            "colonia",
+            "tabacco",
+            "zucchero"
+        ]
+    },
+    {
+        "id": "Seconda_19",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Umanesimo",
+        "parole_taboo": [
+            "uomo",
+            "cultura",
+            "studio",
+            "Rinascimento",
+            "classici"
+        ]
+    },
+    {
+        "id": "Seconda_20",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Umanista",
+        "parole_taboo": [
+            "studioso",
+            "classici",
+            "cultura",
+            "Rinascimento",
+            "latino"
+        ]
+    },
+    {
+        "id": "Seconda_21",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Rinascimento",
+        "parole_taboo": [
+            "arte",
+            "cultura",
+            "Firenze",
+            "Quattrocento",
+            "Umanesimo"
+        ]
+    },
+    {
+        "id": "Seconda_22",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Mecenate",
+        "parole_taboo": [
+            "artista",
+            "protezione",
+            "denaro",
+            "cultura",
+            "signore"
+        ]
+    },
+    {
+        "id": "Seconda_23",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Leonardo",
+        "parole_taboo": [
+            "da",
+            "Vinci",
+            "Gioconda",
+            "inventore",
+            "artista"
+        ]
+    },
+    {
+        "id": "Seconda_24",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Michelangelo",
+        "parole_taboo": [
+            "David",
+            "Cappella",
+            "Sistina",
+            "scultore",
+            "artista"
+        ]
+    },
+    {
+        "id": "Seconda_25",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Raffaello",
+        "parole_taboo": [
+            "pittore",
+            "Rinascimento",
+            "Urbino",
+            "artista",
+            "affreschi"
+        ]
+    },
+    {
+        "id": "Seconda_26",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Gioconda",
+        "parole_taboo": [
+            "Leonardo",
+            "quadro",
+            "sorriso",
+            "Louvre",
+            "dipinto"
+        ]
+    },
+    {
+        "id": "Seconda_27",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Prospettiva",
+        "parole_taboo": [
+            "arte",
+            "profondità",
+            "pittura",
+            "Rinascimento",
+            "spazio"
+        ]
+    },
+    {
+        "id": "Seconda_28",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Stampa",
+        "parole_taboo": [
+            "Gutenberg",
+            "libri",
+            "caratteri",
+            "mobili",
+            "tipografia"
+        ]
+    },
+    {
+        "id": "Seconda_29",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Gutenberg",
+        "parole_taboo": [
+            "stampa",
+            "tipografia",
+            "libri",
+            "Germania",
+            "caratteri"
+        ]
+    },
+    {
+        "id": "Seconda_30",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Martin",
+        "parole_taboo": [
+            "Lutero",
+            "Riforma",
+            "Germania",
+            "95",
+            "tesi"
+        ]
+    },
+    {
+        "id": "Seconda_31",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "95",
+        "parole_taboo": [
+            "tesi",
+            "Lutero",
+            "Riforma",
+            "Chiesa",
+            "Wittenberg"
+        ]
+    },
+    {
+        "id": "Seconda_32",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Riforma",
+        "parole_taboo": [
+            "protestante",
+            "Lutero",
+            "Chiesa",
+            "protestanti",
+            "religione"
+        ]
+    },
+    {
+        "id": "Seconda_33",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Protestantesimo",
+        "parole_taboo": [
+            "Lutero",
+            "Riforma",
+            "religione",
+            "Chiesa",
+            "cristiani"
+        ]
+    },
+    {
+        "id": "Seconda_34",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Calvino",
+        "parole_taboo": [
+            "protestante",
+            "Ginevra",
+            "Riforma",
+            "religione",
+            "predestinazione"
+        ]
+    },
+    {
+        "id": "Seconda_35",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Anglicanesimo",
+        "parole_taboo": [
+            "Inghilterra",
+            "Enrico",
+            "VIII",
+            "Chiesa",
+            "protestante"
+        ]
+    },
+    {
+        "id": "Seconda_36",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Enrico",
+        "parole_taboo": [
+            "VIII",
+            "Inghilterra",
+            "Anglicanesimo",
+            "re",
+            "sei"
+        ]
+    },
+    {
+        "id": "Seconda_37",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Controriforma",
+        "parole_taboo": [
+            "Chiesa",
+            "cattolica",
+            "Concilio",
+            "risposta",
+            "Riforma"
+        ]
+    },
+    {
+        "id": "Seconda_38",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Concilio",
+        "parole_taboo": [
+            "di",
+            "Trento",
+            "Controriforma",
+            "Chiesa",
+            "cattolici"
+        ]
+    },
+    {
+        "id": "Seconda_39",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Gesuiti",
+        "parole_taboo": [
+            "Ignazio",
+            "di",
+            "Loyola",
+            "ordine",
+            "Chiesa"
+        ]
+    },
+    {
+        "id": "Seconda_40",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Ignazio",
+        "parole_taboo": [
+            "di",
+            "Loyola",
+            "Gesuiti",
+            "ordine",
+            "Chiesa"
+        ]
+    },
+    {
+        "id": "Seconda_41",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Inquisizione",
+        "parole_taboo": [
+            "romana",
+            "eresia",
+            "Chiesa",
+            "tribunale",
+            "religione"
+        ]
+    },
+    {
+        "id": "Seconda_42",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Cinquecento",
+        "parole_taboo": [
+            "XVI",
+            "secolo",
+            "Rinascimento",
+            "1500",
+            "età"
+        ]
+    },
+    {
+        "id": "Seconda_43",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Carlo",
+        "parole_taboo": [
+            "V",
+            "imperatore",
+            "Asburgo",
+            "Spagna",
+            "Germania"
+        ]
+    },
+    {
+        "id": "Seconda_44",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Asburgo",
+        "parole_taboo": [
+            "Austria",
+            "impero",
+            "Carlo",
+            "V",
+            "dinastia"
+        ]
+    },
+    {
+        "id": "Seconda_45",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Filippo",
+        "parole_taboo": [
+            "II",
+            "Spagna",
+            "re",
+            "Asburgo",
+            "Madrid"
+        ]
+    },
+    {
+        "id": "Seconda_46",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Armada",
+        "parole_taboo": [
+            "Invencible",
+            "Spagna",
+            "Inghilterra",
+            "flotta",
+            "Filippo"
+        ]
+    },
+    {
+        "id": "Seconda_47",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Elisabetta",
+        "parole_taboo": [
+            "I",
+            "Inghilterra",
+            "regina",
+            "Tudor",
+            "Armada"
+        ]
+    },
+    {
+        "id": "Seconda_48",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Potenza",
+        "parole_taboo": [
+            "marittima",
+            "mare",
+            "commercio",
+            "navi",
+            "oceano"
+        ]
+    },
+    {
+        "id": "Seconda_49",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Seicento",
+        "parole_taboo": [
+            "XVII",
+            "secolo",
+            "1600",
+            "crisi",
+            "Europa"
+        ]
+    },
+    {
+        "id": "Seconda_50",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Guerra",
+        "parole_taboo": [
+            "dei",
+            "Trent'anni",
+            "Europa",
+            "religione",
+            "1618"
+        ]
+    },
+    {
+        "id": "Seconda_51",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Pace",
+        "parole_taboo": [
+            "di",
+            "Vestfalia",
+            "Guerra",
+            "dei",
+            "Trent'anni"
+        ]
+    },
+    {
+        "id": "Seconda_52",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Carestia",
+        "parole_taboo": [
+            "fame",
+            "raccolti",
+            "crisi",
+            "cibo",
+            "popolazione"
+        ]
+    },
+    {
+        "id": "Seconda_53",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Olanda",
+        "parole_taboo": [
+            "Paesi",
+            "Bassi",
+            "Amsterdam",
+            "commercio",
+            "repubblica"
+        ]
+    },
+    {
+        "id": "Seconda_54",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Amsterdam",
+        "parole_taboo": [
+            "Olanda",
+            "porto",
+            "commercio",
+            "città",
+            "canali"
+        ]
+    },
+    {
+        "id": "Seconda_55",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Compagnia",
+        "parole_taboo": [
+            "delle",
+            "Indie",
+            "commercio",
+            "oceano",
+            "spezie"
+        ]
+    },
+    {
+        "id": "Seconda_56",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Antico",
+        "parole_taboo": [
+            "Regime",
+            "nobiltà",
+            "clero",
+            "re",
+            "privilegi"
+        ]
+    },
+    {
+        "id": "Seconda_57",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Assolutismo",
+        "parole_taboo": [
+            "re",
+            "potere",
+            "assoluto",
+            "monarchia",
+            "governo"
+        ]
+    },
+    {
+        "id": "Seconda_58",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Luigi",
+        "parole_taboo": [
+            "XIV",
+            "Re",
+            "Sole",
+            "Francia",
+            "Versailles"
+        ]
+    },
+    {
+        "id": "Seconda_59",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Re",
+        "parole_taboo": [
+            "Sole",
+            "Luigi",
+            "XIV",
+            "Francia",
+            "Versailles"
+        ]
+    },
+    {
+        "id": "Seconda_60",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Versailles",
+        "parole_taboo": [
+            "palazzo",
+            "Luigi",
+            "XIV",
+            "Francia",
+            "corte"
+        ]
+    },
+    {
+        "id": "Seconda_61",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Gloriosa",
+        "parole_taboo": [
+            "Rivoluzione",
+            "Inghilterra",
+            "Parlamento",
+            "1688",
+            "re"
+        ]
+    },
+    {
+        "id": "Seconda_62",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Parlamento",
+        "parole_taboo": [
+            "deputati",
+            "legge",
+            "Inghilterra",
+            "assemblea",
+            "politica"
+        ]
+    },
+    {
+        "id": "Seconda_63",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Monarchia",
+        "parole_taboo": [
+            "costituzionale",
+            "re",
+            "costituzione",
+            "Parlamento",
+            "governo"
+        ]
+    },
+    {
+        "id": "Seconda_64",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Rivoluzione",
+        "parole_taboo": [
+            "scientifica",
+            "scienza",
+            "scienziati",
+            "esperimenti",
+            "Seicento"
+        ]
+    },
+    {
+        "id": "Seconda_65",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Galileo",
+        "parole_taboo": [
+            "Galilei",
+            "telescopio",
+            "scienza",
+            "Pisa",
+            "astronomo"
+        ]
+    },
+    {
+        "id": "Seconda_66",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Telescopio",
+        "parole_taboo": [
+            "stelle",
+            "osservare",
+            "Galileo",
+            "strumento",
+            "cielo"
+        ]
+    },
+    {
+        "id": "Seconda_67",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Sistema",
+        "parole_taboo": [
+            "eliocentrico",
+            "Sole",
+            "pianeti",
+            "Copernico",
+            "centro"
+        ]
+    },
+    {
+        "id": "Seconda_68",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Copernico",
+        "parole_taboo": [
+            "astronomo",
+            "Sole",
+            "eliocentrico",
+            "Polonia",
+            "pianeti"
+        ]
+    },
+    {
+        "id": "Seconda_69",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Isaac",
+        "parole_taboo": [
+            "Newton",
+            "gravità",
+            "mela",
+            "scienza",
+            "fisica"
+        ]
+    },
+    {
+        "id": "Seconda_70",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Gravità",
+        "parole_taboo": [
+            "Newton",
+            "forza",
+            "attrazione",
+            "Terra",
+            "fisica"
+        ]
+    },
+    {
+        "id": "Seconda_71",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Rivoluzione",
+        "parole_taboo": [
+            "industriale",
+            "fabbriche",
+            "macchine",
+            "Inghilterra",
+            "industria"
+        ]
+    },
+    {
+        "id": "Seconda_72",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Fabbrica",
+        "parole_taboo": [
+            "operai",
+            "produzione",
+            "macchine",
+            "lavoro",
+            "industria"
+        ]
+    },
+    {
+        "id": "Seconda_73",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Macchina",
+        "parole_taboo": [
+            "a",
+            "vapore",
+            "Watt",
+            "energia",
+            "fabbrica"
+        ]
+    },
+    {
+        "id": "Seconda_74",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "James",
+        "parole_taboo": [
+            "Watt",
+            "vapore",
+            "macchina",
+            "rivoluzione",
+            "industriale"
+        ]
+    },
+    {
+        "id": "Seconda_75",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Operaio",
+        "parole_taboo": [
+            "fabbrica",
+            "lavoro",
+            "industria",
+            "salario",
+            "produzione"
+        ]
+    },
+    {
+        "id": "Seconda_76",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Borghesia",
+        "parole_taboo": [
+            "industriale",
+            "imprenditori",
+            "fabbriche",
+            "ricchezza",
+            "industria"
+        ]
+    },
+    {
+        "id": "Seconda_77",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Urbanizzazione",
+        "parole_taboo": [
+            "città",
+            "campagna",
+            "trasferimento",
+            "popolazione",
+            "crescita"
+        ]
+    },
+    {
+        "id": "Seconda_78",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Illuminismo",
+        "parole_taboo": [
+            "ragione",
+            "filosofi",
+            "Settecento",
+            "cultura",
+            "progresso"
+        ]
+    },
+    {
+        "id": "Seconda_79",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Filosofo",
+        "parole_taboo": [
+            "illuminista",
+            "ragione",
+            "pensatore",
+            "Illuminismo",
+            "idee"
+        ]
+    },
+    {
+        "id": "Seconda_80",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Voltaire",
+        "parole_taboo": [
+            "filosofo",
+            "Illuminismo",
+            "Francia",
+            "tolleranza",
+            "scrittore"
+        ]
+    },
+    {
+        "id": "Seconda_81",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Montesquieu",
+        "parole_taboo": [
+            "poteri",
+            "Illuminismo",
+            "filosofo",
+            "Francia",
+            "separazione"
+        ]
+    },
+    {
+        "id": "Seconda_82",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Separazione",
+        "parole_taboo": [
+            "dei",
+            "poteri",
+            "Montesquieu",
+            "Stato",
+            "legislativo"
+        ]
+    },
+    {
+        "id": "Seconda_83",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Rousseau",
+        "parole_taboo": [
+            "contratto",
+            "sociale",
+            "filosofo",
+            "Illuminismo",
+            "popolo"
+        ]
+    },
+    {
+        "id": "Seconda_84",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Enciclopedia",
+        "parole_taboo": [
+            "Diderot",
+            "sapere",
+            "libri",
+            "Illuminismo",
+            "raccolta"
+        ]
+    },
+    {
+        "id": "Seconda_85",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Diderot",
+        "parole_taboo": [
+            "Enciclopedia",
+            "Illuminismo",
+            "filosofo",
+            "Francia",
+            "sapere"
+        ]
+    },
+    {
+        "id": "Seconda_86",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Stati",
+        "parole_taboo": [
+            "Uniti",
+            "America",
+            "indipendenza",
+            "Washington",
+            "repubblica"
+        ]
+    },
+    {
+        "id": "Seconda_87",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Colonie",
+        "parole_taboo": [
+            "inglesi",
+            "America",
+            "Inghilterra",
+            "Atlantico",
+            "tredici"
+        ]
+    },
+    {
+        "id": "Seconda_88",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Boston",
+        "parole_taboo": [
+            "Tea",
+            "Party",
+            "tè",
+            "protesta",
+            "America"
+        ]
+    },
+    {
+        "id": "Seconda_89",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Dichiarazione",
+        "parole_taboo": [
+            "d'Indipendenza",
+            "1776",
+            "America",
+            "libertà",
+            "documento"
+        ]
+    },
+    {
+        "id": "Seconda_90",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "George",
+        "parole_taboo": [
+            "Washington",
+            "Stati",
+            "Uniti",
+            "presidente",
+            "indipendenza"
+        ]
+    },
+    {
+        "id": "Seconda_91",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Costituzione",
+        "parole_taboo": [
+            "americana",
+            "Stati",
+            "Uniti",
+            "legge",
+            "governo"
+        ]
+    },
+    {
+        "id": "Seconda_92",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Rivoluzione",
+        "parole_taboo": [
+            "francese",
+            "Francia",
+            "Bastiglia",
+            "1789",
+            "popolo"
+        ]
+    },
+    {
+        "id": "Seconda_93",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Bastiglia",
+        "parole_taboo": [
+            "prigione",
+            "Parigi",
+            "rivoluzione",
+            "1789",
+            "assalto"
+        ]
+    },
+    {
+        "id": "Seconda_94",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Stati",
+        "parole_taboo": [
+            "Generali",
+            "Francia",
+            "clero",
+            "nobiltà",
+            "terzo"
+        ]
+    },
+    {
+        "id": "Seconda_95",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Terzo",
+        "parole_taboo": [
+            "Stato",
+            "popolo",
+            "Francia",
+            "rivoluzione",
+            "borghesia"
+        ]
+    },
+    {
+        "id": "Seconda_96",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Assemblea",
+        "parole_taboo": [
+            "Nazionale",
+            "Francia",
+            "rivoluzione",
+            "deputati",
+            "legge"
+        ]
+    },
+    {
+        "id": "Seconda_97",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Diritti",
+        "parole_taboo": [
+            "dell'uomo",
+            "rivoluzione",
+            "libertà",
+            "uguaglianza",
+            "Francia"
+        ]
+    },
+    {
+        "id": "Seconda_98",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Ghigliottina",
+        "parole_taboo": [
+            "esecuzione",
+            "rivoluzione",
+            "Francia",
+            "lama",
+            "condanna"
+        ]
+    },
+    {
+        "id": "Seconda_99",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Robespierre",
+        "parole_taboo": [
+            "Terrore",
+            "rivoluzione",
+            "Francia",
+            "giacobini",
+            "politico"
+        ]
+    },
+    {
+        "id": "Seconda_100",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Terrore",
+        "parole_taboo": [
+            "Robespierre",
+            "rivoluzione",
+            "Francia",
+            "paura",
+            "esecuzioni"
+        ]
+    },
+    {
+        "id": "Seconda_101",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Napoleone",
+        "parole_taboo": [
+            "Bonaparte",
+            "Francia",
+            "imperatore",
+            "generale",
+            "Corsica"
+        ]
+    },
+    {
+        "id": "Seconda_102",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Consolato",
+        "parole_taboo": [
+            "Napoleone",
+            "governo",
+            "Francia",
+            "potere",
+            "Stato"
+        ]
+    },
+    {
+        "id": "Seconda_103",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Codice",
+        "parole_taboo": [
+            "napoleonico",
+            "leggi",
+            "Napoleone",
+            "diritto",
+            "Francia"
+        ]
+    },
+    {
+        "id": "Seconda_104",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Imperatore",
+        "parole_taboo": [
+            "dei",
+            "Francesi",
+            "Napoleone",
+            "Francia",
+            "incoronazione"
+        ]
+    },
+    {
+        "id": "Seconda_105",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Battaglia",
+        "parole_taboo": [
+            "di",
+            "Austerlitz",
+            "Napoleone",
+            "vittoria",
+            "esercito"
+        ]
+    },
+    {
+        "id": "Seconda_106",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Campagna",
+        "parole_taboo": [
+            "di",
+            "Russia",
+            "Napoleone",
+            "neve",
+            "Mosca"
+        ]
+    },
+    {
+        "id": "Seconda_107",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Waterloo",
+        "parole_taboo": [
+            "Napoleone",
+            "Belgio",
+            "sconfitta",
+            "battaglia",
+            "1815"
+        ]
+    },
+    {
+        "id": "Seconda_108",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Restaurazione",
+        "parole_taboo": [
+            "Congresso",
+            "di",
+            "Vienna",
+            "re",
+            "ritorno"
+        ]
+    },
+    {
+        "id": "Seconda_109",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Congresso",
+        "parole_taboo": [
+            "di",
+            "Vienna",
+            "Restaurazione",
+            "Europa",
+            "1815"
+        ]
+    },
+    {
+        "id": "Seconda_110",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Metternich",
+        "parole_taboo": [
+            "Austria",
+            "Restaurazione",
+            "cancelliere",
+            "Vienna",
+            "politico"
+        ]
+    },
+    {
+        "id": "Seconda_111",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Moti",
+        "parole_taboo": [
+            "del",
+            "1820-21",
+            "rivolte",
+            "Restaurazione",
+            "Italia"
+        ]
+    },
+    {
+        "id": "Seconda_112",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Carboneria",
+        "parole_taboo": [
+            "società",
+            "segreta",
+            "patrioti",
+            "Italia",
+            "moti"
+        ]
+    },
+    {
+        "id": "Seconda_113",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Moti",
+        "parole_taboo": [
+            "del",
+            "1830-31",
+            "rivolte",
+            "patrioti",
+            "Restaurazione"
+        ]
+    },
+    {
+        "id": "Seconda_114",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "America",
+        "parole_taboo": [
+            "Latina",
+            "colonie",
+            "Spagna",
+            "indipendenza",
+            "continente"
+        ]
+    },
+    {
+        "id": "Seconda_115",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Simón",
+        "parole_taboo": [
+            "Bolívar",
+            "America",
+            "Latina",
+            "liberatore",
+            "indipendenza"
+        ]
+    },
+    {
+        "id": "Seconda_116",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "José",
+        "parole_taboo": [
+            "de",
+            "San",
+            "Martín",
+            "Argentina",
+            "indipendenza"
+        ]
+    },
+    {
+        "id": "Seconda_117",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Risorgimento",
+        "parole_taboo": [
+            "Italia",
+            "unità",
+            "patrioti",
+            "Ottocento",
+            "indipendenza"
+        ]
+    },
+    {
+        "id": "Seconda_118",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Giuseppe",
+        "parole_taboo": [
+            "Mazzini",
+            "Giovine",
+            "Italia",
+            "patriota",
+            "Risorgimento"
+        ]
+    },
+    {
+        "id": "Seconda_119",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Giovine",
+        "parole_taboo": [
+            "Italia",
+            "Mazzini",
+            "associazione",
+            "patrioti",
+            "Italia"
+        ]
+    },
+    {
+        "id": "Seconda_120",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Camillo",
+        "parole_taboo": [
+            "Benso",
+            "di",
+            "Cavour",
+            "Piemonte",
+            "Risorgimento"
+        ]
+    },
+    {
+        "id": "Seconda_121",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Giuseppe",
+        "parole_taboo": [
+            "Garibaldi",
+            "Mille",
+            "Risorgimento",
+            "eroe",
+            "camicie"
+        ]
+    },
+    {
+        "id": "Seconda_122",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Spedizione",
+        "parole_taboo": [
+            "dei",
+            "Mille",
+            "Garibaldi",
+            "Sicilia",
+            "unità"
+        ]
+    },
+    {
+        "id": "Seconda_123",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Vittorio",
+        "parole_taboo": [
+            "Emanuele",
+            "II",
+            "re",
+            "Italia",
+            "Risorgimento"
+        ]
+    },
+    {
+        "id": "Seconda_124",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Questione",
+        "parole_taboo": [
+            "sociale",
+            "operai",
+            "povertà",
+            "fabbriche",
+            "lavoro"
+        ]
+    },
+    {
+        "id": "Seconda_125",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Sindacato",
+        "parole_taboo": [
+            "lavoratori",
+            "diritti",
+            "operai",
+            "associazione",
+            "lavoro"
+        ]
+    },
+    {
+        "id": "Seconda_126",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Unità",
+        "parole_taboo": [
+            "d'Italia",
+            "1861",
+            "regno",
+            "Risorgimento",
+            "penisola"
+        ]
+    },
+    {
+        "id": "Seconda_127",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Roma",
+        "parole_taboo": [
+            "capitale",
+            "Italia",
+            "1870",
+            "capitale",
+            "città"
+        ]
+    },
+    {
+        "id": "Seconda_128",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Unificazione",
+        "parole_taboo": [
+            "tedesca",
+            "Germania",
+            "Bismarck",
+            "impero",
+            "unità"
+        ]
+    },
+    {
+        "id": "Seconda_129",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Otto",
+        "parole_taboo": [
+            "von",
+            "Bismarck",
+            "Germania",
+            "cancelliere",
+            "Prussia"
+        ]
+    },
+    {
+        "id": "Seconda_130",
+        "classe": "Seconda",
+        "categoria": "Età Moderna",
+        "parola_chiave": "Prussia",
+        "parole_taboo": [
+            "Germania",
+            "Berlino",
+            "regno",
+            "Bismarck",
+            "Stato"
+        ]
+    }
+]
