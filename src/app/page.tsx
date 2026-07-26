@@ -49,6 +49,21 @@ export default function Home() {
       <nav className="mb-4 mx-auto bg-slate-100/90 backdrop-blur-md px-8 py-0 sm:py-1 flex justify-center items-center shadow-lg rounded-full border border-slate-300 z-20 shrink-0">
         <div className="flex space-x-4 sm:space-x-8 items-center text-slate-800">
           <div className="group relative flex flex-col items-center">
+            <Link href="/admin" className="hover:scale-110 hover:-translate-y-2 transition-all">
+              <img src="/ops-storia/icons/7.png" alt="Dashboard Admin" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+            </Link>
+            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Admin</span>
+          </div>
+
+          <div className="group relative flex flex-col items-center">
+            <Link href="/dashboard" className="hover:scale-110 hover:-translate-y-2 transition-all">
+              <img src="/ops-storia/icons/8.png" alt="Dashboard Docente" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+            </Link>
+            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Docente</span>
+          </div>
+
+          <div className="w-px h-8 sm:h-12 bg-slate-300 mx-2"></div>
+          <div className="group relative flex flex-col items-center">
             <button onClick={() => setShowTutorial(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
               <img src="/ops-storia/icons/1.png" alt="Miniguida" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>

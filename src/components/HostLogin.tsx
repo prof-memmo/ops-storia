@@ -66,6 +66,20 @@ export default function HostLogin({ onLoginSuccess }: { onLoginSuccess: () => vo
         gioco: "Ops! Operazione Storia"
       }, { merge: true });
       
+      try {
+        const { collection, addDoc, serverTimestamp } = await import("firebase/firestore");
+        const { hubDb } = await import("@/lib/firebase");
+        await addDoc(collection(hubDb, "hub_posta_inviata"), {
+          destinatarioEmail: tempUser.email,
+          destinatarioNome: formData.nome,
+          gioco: "Ops! Operazione Storia",
+          oggetto: "✅ Benvenuto in Ops! Operazione Storia",
+          timestamp: serverTimestamp()
+        });
+      } catch (e) {
+        console.warn("Errore invio mail hub:", e);
+      }
+      
       onLoginSuccess();
     } catch (err) {
       console.error("Onboarding error:", err);
