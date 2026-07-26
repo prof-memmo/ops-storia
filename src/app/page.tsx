@@ -16,8 +16,8 @@ export default function Home() {
       <main className="flex-1 flex flex-col items-center justify-center p-4 min-h-0 relative z-10">
         <div className="flex flex-col items-center flex-1 justify-center space-y-2 md:space-y-6 max-h-full">
           
-          <img src="/images/avatar.png" alt="Prof Memmo" className="h-[10vh] sm:h-[15vh] max-h-24 object-contain drop-shadow-md shrink-0 mb-2" />
-          <img src="/images/logo.png" alt="Ops! Logo" className="h-[15vh] sm:h-[25vh] max-h-40 object-contain drop-shadow-sm shrink-0 mb-4" />
+          <img src="/ops-storia/images/avatar.png" alt="Prof Memmo" className="h-[10vh] sm:h-[15vh] max-h-24 object-contain drop-shadow-md shrink-0 mb-2" />
+          <img src="/ops-storia/images/logo.png" alt="Ops! Logo" className="h-[15vh] sm:h-[25vh] max-h-40 object-contain drop-shadow-sm shrink-0 mb-4" />
           
           <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-primary-500 tracking-tight text-center shrink-0">
             Sfida la Storia all'Ultima Parola!
@@ -50,14 +50,14 @@ export default function Home() {
         <div className="flex space-x-4 sm:space-x-8 items-center text-slate-800">
           <div className="group relative flex flex-col items-center">
             <button onClick={() => setShowTutorial(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/icons/1.png" alt="Miniguida" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src="/ops-storia/icons/1.png" alt="Miniguida" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Miniguida</span>
           </div>
           
           <div className="group relative flex flex-col items-center">
             <Link href="/regolamento" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/icons/2.png" alt="Regolamento" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src="/ops-storia/icons/2.png" alt="Regolamento" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </Link>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Regolamento</span>
           </div>
@@ -66,21 +66,21 @@ export default function Home() {
 
           <div className="group relative flex flex-col items-center">
             <Link href="/contatti" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/icons/3.png" alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src="/ops-storia/icons/3.png" alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </Link>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Contatti</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
             <Link href="/privacy" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/icons/4.png" alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src="/ops-storia/icons/4.png" alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </Link>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Privacy</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
             <Link href="/termini" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/icons/5.png" alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src="/ops-storia/icons/5.png" alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </Link>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Termini</span>
           </div>
@@ -90,7 +90,7 @@ export default function Home() {
       {/* Footer Patamu */}
       <footer className="w-full text-slate-400 px-4 py-2 flex items-center justify-center shrink-0 z-20">
         <div className="flex max-w-[1200px] w-full items-center justify-center text-left">
-           <img src="/images/patamu_pencil.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
+           <img src="/ops-storia/images/patamu_pencil.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
            <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
@@ -113,7 +113,7 @@ export default function Home() {
               className="bg-white rounded-3xl w-full max-w-5xl max-h-[90vh] flex overflow-hidden shadow-2xl relative"
             >
               <div className="hidden md:flex w-1/3 bg-slate-50 items-end justify-center pt-8 border-r-2 border-slate-100">
-                 <img src="/images/prof_memmo_full.jpg" alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
+                 <img src="/ops-storia/images/prof_memmo_full.jpg" alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
               </div>
               
               <div className="w-full md:w-2/3 p-8 flex flex-col relative h-[500px]">

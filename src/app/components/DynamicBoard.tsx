@@ -31,7 +31,7 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
         if (cell.isEnd) {
           return (
             <div key={cell.index} className="relative w-36 h-36 sm:w-56 sm:h-56 flex items-center justify-center bg-slate-50 rounded-3xl border-8 border-yellow-400 shadow-2xl p-4 shrink-0 mx-4">
-              <img src="/images/logo.png" alt="Traguardo" className="w-full h-full object-contain" />
+              <img src="/ops-storia/images/logo.png" alt="Traguardo" className="w-full h-full object-contain" />
               
               <div className="absolute -top-4 -left-4 bg-yellow-400 text-slate-900 text-sm sm:text-lg font-black w-10 h-10 sm:w-14 sm:h-14 rounded-full flex items-center justify-center shadow-lg border-4 border-white">
                 {cell.index + 1}
