@@ -116,7 +116,7 @@ export default function Home() {
                  <img src="/ops-storia/images/prof_memmo_full.jpg" alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
               </div>
               
-              <div className="w-full md:w-2/3 p-8 flex flex-col relative h-[500px]">
+              <div className="w-full md:w-2/3 p-6 sm:p-8 flex flex-col relative h-[500px]">
                 <button 
                   onClick={() => setShowTutorial(false)}
                   className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full z-10"
@@ -132,7 +132,7 @@ export default function Home() {
                       <motion.div key="step0" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-6">
                           <Info className="w-24 h-24 sm:w-32 sm:h-32 text-primary-500 mb-8" />
-                          <p className="text-2xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola!</p>
+                          <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola!</p>
                         </div>
                       </motion.div>
                     )}
@@ -140,7 +140,7 @@ export default function Home() {
                       <motion.div key="step1" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-6">
                           <AlertOctagon className="w-24 h-24 sm:w-32 sm:h-32 text-red-500 mb-8" />
-                          <p className="text-2xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
+                          <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
                         </div>
                       </motion.div>
                     )}
@@ -148,7 +148,7 @@ export default function Home() {
                       <motion.div key="step2" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-6">
                           <SkipForward className="w-24 h-24 sm:w-32 sm:h-32 text-amber-500 mb-8" />
-                          <p className="text-2xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
+                          <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
                         </div>
                       </motion.div>
                     )}
@@ -156,7 +156,7 @@ export default function Home() {
                       <motion.div key="step3" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-6">
                           <Timer className="w-24 h-24 sm:w-32 sm:h-32 text-blue-500 mb-8" />
-                          <p className="text-2xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone potrai pescare carte magiche con <strong className="text-purple-600">effetti speciali</strong> (come tempo doppio o scarti infiniti).</p>
+                          <p className="text-xl sm:text-2xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone potrai pescare carte magiche con <strong className="text-purple-600">effetti speciali</strong> (come tempo doppio o scarti infiniti).</p>
                         </div>
                       </motion.div>
                     )}
