@@ -46,8 +46,8 @@ export default function Home() {
       </main>
 
       {/* Navigation Dock */}
-      <nav className="mb-4 mx-auto bg-slate-100/90 backdrop-blur-md px-8 py-0 sm:py-1 flex justify-center items-center shadow-lg rounded-full border border-slate-300 z-20 shrink-0">
-        <div className="flex space-x-4 sm:space-x-8 items-center text-slate-800">
+      <nav className="mb-4 mx-auto bg-slate-100/90 backdrop-blur-md px-4 sm:px-8 py-2 sm:py-1 flex justify-start sm:justify-center items-center shadow-lg rounded-[2rem] sm:rounded-full border border-slate-300 z-20 shrink-0 max-w-[95vw] overflow-x-auto">
+        <div className="flex space-x-3 sm:space-x-8 items-center text-slate-800 shrink-0 mx-auto">
           <div className="group relative flex flex-col items-center">
             <Link href="/admin" className="hover:scale-110 hover:-translate-y-2 transition-all">
               <img src="/ops-storia/icons/7.png" alt="Dashboard Admin" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />

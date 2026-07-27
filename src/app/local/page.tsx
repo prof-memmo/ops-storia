@@ -189,7 +189,12 @@ export default function LocalPlay() {
         {authLoading ? (
           <div className="text-slate-400 font-bold animate-pulse">Caricamento...</div>
         ) : !user ? (
-          <HostLogin onLoginSuccess={() => {}} />
+          <HostLogin 
+            onLoginSuccess={() => {}} 
+            title="Accesso"
+            description="Per giocare in questa modalità è necessario accedere."
+            smallButton={true}
+          />
         ) : (
           <AnimatePresence mode="wait">
           

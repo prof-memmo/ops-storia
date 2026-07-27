@@ -9,7 +9,17 @@ import { motion } from "framer-motion";
 
 import { User } from "firebase/auth";
 
-export default function HostLogin({ onLoginSuccess }: { onLoginSuccess: () => void }) {
+export default function HostLogin({ 
+  onLoginSuccess,
+  title = "Accesso Docenti",
+  description = "Per creare una stanza e avviare una partita, è necessario effettuare l'accesso.",
+  smallButton = false
+}: { 
+  onLoginSuccess: () => void,
+  title?: string,
+  description?: string,
+  smallButton?: boolean
+}) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [needsOnboarding, setNeedsOnboarding] = useState(false);
@@ -137,9 +147,9 @@ export default function HostLogin({ onLoginSuccess }: { onLoginSuccess: () => vo
   return (
     <div className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center border border-slate-100 mx-auto mt-12">
       <BookOpen className="w-12 h-12 text-primary-500 mx-auto mb-4" />
-      <h2 className="text-3xl font-black text-slate-900 mb-2">Accesso Docenti</h2>
+      <h2 className="text-3xl font-black text-slate-900 mb-2">{title}</h2>
       <p className="text-slate-500 font-medium mb-8">
-        Per creare una stanza e avviare una partita, è necessario effettuare l'accesso.
+        {description}
       </p>
 
       {error && (
@@ -152,9 +162,9 @@ export default function HostLogin({ onLoginSuccess }: { onLoginSuccess: () => vo
       <button 
         onClick={handleGoogleLogin} 
         disabled={loading}
-        className="w-full bg-primary-500 text-white py-4 rounded-xl font-black text-xl shadow-lg active:scale-95 transition-all flex items-center justify-center disabled:opacity-70"
+        className={`w-full bg-primary-500 text-white rounded-xl font-black shadow-lg active:scale-95 transition-all flex items-center justify-center disabled:opacity-70 ${smallButton ? 'py-3 text-base sm:text-lg max-w-[250px] mx-auto' : 'py-4 text-xl'}`}
       >
-        <LogIn className="w-6 h-6 mr-3" />
+        <LogIn className={`${smallButton ? 'w-5 h-5 mr-2' : 'w-6 h-6 mr-3'}`} />
         {loading ? "Accesso in corso..." : "Accedi con Google"}
       </button>
     </div>
