@@ -24,14 +24,38 @@ export default function Privacy() {
          <div className="bg-white p-8 sm:p-12 rounded-3xl shadow-md border-2 border-slate-100 text-lg text-slate-600 font-medium space-y-6">
            <p>Informativa sul trattamento dei dati personali (Regolamento UE 2016/679 - GDPR).</p>
            
-           <h2 className="text-2xl font-black text-slate-800 mt-8 mb-4">Titolare del Trattamento</h2>
-           <p>Guglielmo Piersanti. Per contattare il titolare, scrivere all'indirizzo email info@profmemmo.it.</p>
-           
-           <h2 className="text-2xl font-black text-slate-800 mt-8 mb-4">Dati Raccolti</h2>
-           <p>Ops! è un gioco principalmente offline/locale o basato su stanze temporanee. Non raccogliamo dati personali persistenti, nomi utente, o indirizzi email se non per esplicita richiesta di contatto tramite email.</p>
-           
-           <h2 className="text-2xl font-black text-slate-800 mt-8 mb-4">Cookies</h2>
-           <p>Utilizziamo esclusivamente cookie tecnici strettamente necessari al funzionamento del sito web e delle sessioni di gioco. Nessun cookie di profilazione viene installato per il tracciamento pubblicitario.</p>
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">1. Titolare del trattamento</h2>
+           <p>Il titolare del trattamento è Guglielmo Piersanti, contattabile all’indirizzo email: <a href="mailto:prof.memmo@gmail.com" className="text-primary-500 hover:underline">prof.memmo@gmail.com</a></p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">2. Finalità dell’app</h2>
+           <p>“Ops!” è un’app didattica, utilizzata a scopo educativo e ludico e senza fini di lucro.</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">3. Dati raccolti</h2>
+           <p>L’app può raccogliere i seguenti dati personali: indirizzo e-mail; informazioni di utilizzo relative ai giochi online (punteggi, attività didattiche ecc.); messaggio inviato tramite modulo di contatto; dati tecnici forniti automaticamente dalla piattaforma (es. tipo di dispositivo, dati di log)</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">4. Finalità del trattamento</h2>
+           <p>I dati vengono trattati esclusivamente per consentire l’accesso all’app e alle sue funzionalità, gestire l’esperienza didattica e le classifiche interne, migliorare il funzionamento del servizio, rispondere alle richieste inviate tramite il modulo di contatto, fornire assistenza o informazioni richieste dall’utente. Non vengono utilizzati per scopi commerciali o pubblicitari.</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">5. Base giuridica</h2>
+           <p>Il trattamento dei dati si basa sull’utilizzo dell’app e sul consenso dell’utente.</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">6. Conservazione dei dati</h2>
+           <p>I dati sono trattati in modo lecito e sicuro. Non vengono venduti né ceduti a terzi. Sono mantenuti solo per il tempo necessario al funzionamento didattico dell’app o su richiesta o in maniera autonoma tramite il profilo utente, salvo obblighi di legge. Vengono utilizzati servizi terzi per l’archiviazione dei dati (Firebase).</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">7. Diritti dell’utente</h2>
+           <p>L'utente può richiedere in qualsiasi momento: accesso ai propri dati, rettifica o cancellazione, limitazione del trattamento, revoca del consenso. Per esercitare questi diritti, è possibile contattare il titolare all’indirizzo email sopra indicato.</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">8. Cookie</h2>
+           <p>Il sito non utilizza cookie di profilazione.</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">9. Utenti minori</h2>
+           <p>L’app è destinata a un uso didattico. Per l'utilizzo da parte di minori, è responsabilità di un adulto assicurare le autorizzazioni necessarie. I genitori o tutori possono richiedere la cancellazione dei dati contattando il titolare.</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">10. Modifiche alla Policy</h2>
+           <p>La presente informativa può essere aggiornata. Gli utenti verranno informati in caso di modifiche rilevanti.</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">11. Riferimenti normativi</h2>
+           <p>Questa informativa è redatta in conformità al GDPR.</p>
          </div>
       </main>
 
