@@ -25,34 +25,44 @@ export default function Termini() {
            <p><strong>Ultimo aggiornamento: 31/04/26</strong></p>
 
            <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">1. Titolare del sito</h2>
-           <p>Il presente sito web è gestito da: Guglielmo Piersanti. Email di contatto: <a href="mailto:prof.memmo@gmail.com" className="text-primary-500 hover:underline">prof.memmo@gmail.com</a></p>
+           <p>Il presente ecosistema di piattaforme didattiche è gestito da <strong>Guglielmo Piersanti</strong>. Email di contatto: <a href="mailto:prof.memmo@gmail.com" className="text-primary-500 hover:underline">prof.memmo@gmail.com</a></p>
 
            <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">2. Accettazione dei termini</h2>
-           <p>L’accesso e l’utilizzo del sito implicano l’accettazione dei presenti Termini e Condizioni. Se non si accettano tali condizioni, si invita a non utilizzare il sito.</p>
+           <p>L&apos;accesso e l&apos;utilizzo dell&apos;ecosistema Prof. Memmo implicano l&apos;accettazione dei presenti Termini. Se non si accettano, si invita a non utilizzare i servizi.</p>
 
            <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">3. Descrizione del servizio</h2>
-           <p>Il sito ha finalità informative ed educative. Gli utenti possono: Consultare i contenuti disponibili e usufruire della piattaforma di gioco. Contattare il gestore tramite modulo di contatto.</p>
+           <p>L&apos;Ecosistema Prof. Memmo è un insieme di piattaforme didattiche e ludiche (Ops! Operazione Storia, FantaLetteratura, La Rotta degli Eroi, La Palestra di Riflessione, La Corte della Commedia e altri) accessibili tramite un unico account Hub. Il servizio ha finalità educative.</p>
 
-           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">4. Utilizzo del sito</h2>
-           <p>L’utente si impegna a utilizzare il sito in modo lecito e corretto, evitando di: Inviare messaggi offensivi, illeciti o spam; Tentare di compromettere la sicurezza del sito; Utilizzare il sito per scopi fraudolenti.</p>
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">4. Utilizzo del servizio</h2>
+           <p>L&apos;utente si impegna a evitare di:</p>
+           <ul className="list-disc pl-6 space-y-1">
+             <li>Inviare messaggi offensivi, illeciti o spam</li>
+             <li>Tentare di compromettere la sicurezza delle piattaforme</li>
+             <li>Utilizzare il servizio per scopi fraudolenti</li>
+             <li>Condividere credenziali di accesso con terzi</li>
+             <li>Eludere i sistemi di pagamento o accedere a funzionalità non incluse nel proprio piano</li>
+           </ul>
 
-           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">5. Modulo di contatto</h2>
-           <p>L’utente è responsabile dei dati e dei contenuti inviati tramite il modulo di contatto. È vietato: Inserire dati falsi o di terzi senza autorizzazione; Inviare contenuti illeciti o non pertinenti.</p>
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">5. Modulo di contatto e posta interna</h2>
+           <p>L&apos;utente è responsabile dei contenuti inviati. È vietato inserire dati falsi o inviare contenuti illeciti o non pertinenti.</p>
 
            <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">6. Proprietà intellettuale</h2>
-           <p>Tutti i contenuti del sito (testi, materiali, ecc.) sono di proprietà del titolare, salvo diversa indicazione. È vietata la copia, distribuzione o utilizzo senza autorizzazione.</p>
+           <p>Tutti i contenuti (testi, materiali didattici, grafica, giochi, meccaniche) sono di proprietà del titolare e protetti da diritto d&apos;autore. Distribuiti con licenza <strong>CC BY-NC-ND 4.0</strong>. Vietata la copia, distribuzione, modifica o utilizzo commerciale senza autorizzazione scritta.</p>
 
-           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">7. Limitazione di responsabilità</h2>
-           <p>Il sito è fornito “così com’è”. Il titolare non garantisce l’assenza di errori o interruzioni, la completezza o accuratezza dei contenuti. Il titolare non è responsabile per: Danni derivanti dall’utilizzo del sito; Problemi tecnici o interruzioni del servizio; Contenuti inviati dagli utenti tramite modulo di contatto.</p>
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">7. Abbonamenti e pagamenti</h2>
+           <p>Alcune funzionalità sono disponibili solo con piani a pagamento (Piano Viandante, Piano Docente, Ecosistema Completo). I prezzi sono indicati nella pagina dedicata. Gli studenti inseriti in una classe da un docente non sono soggetti a costi aggiuntivi.</p>
 
-           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">8. Link esterni</h2>
-           <p>Il sito può contenere link a siti esterni. Il titolare non è responsabile del contenuto o delle politiche di tali siti.</p>
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">8. Limitazione di responsabilità</h2>
+           <p>Il servizio è fornito &quot;così com&apos;è&quot;. Il titolare non garantisce l&apos;assenza di errori o interruzioni e non è responsabile per danni derivanti dall&apos;utilizzo.</p>
 
-           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">9. Modifiche</h2>
-           <p>Il titolare si riserva il diritto di modificare i presenti Termini in qualsiasi momento. Le modifiche saranno pubblicate su questa pagina.</p>
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">9. Link esterni</h2>
+           <p>L&apos;ecosistema può contenere link a siti esterni. Il titolare non è responsabile del loro contenuto.</p>
 
-           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">10. Legge applicabile</h2>
-           <p>I presenti Termini sono regolati dalla normativa italiana e dal GDPR.</p>
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">10. Modifiche ai termini</h2>
+           <p>Il titolare si riserva il diritto di modificare i presenti Termini in qualsiasi momento, con avviso sulla piattaforma.</p>
+
+           <h2 className="text-xl sm:text-2xl font-black text-slate-800 mt-8 mb-4">11. Legge applicabile</h2>
+           <p>Regolati dalla normativa italiana e dal <strong>GDPR (Regolamento UE 2016/679)</strong>. Foro competente: quello del luogo di residenza del titolare.</p>
          </div>
       </main>
 
