@@ -160,19 +160,11 @@ export default function HostLogin({
       )}
 
       <div className="flex flex-col gap-3">
-        <button 
-          onClick={handleGoogleLogin} 
-          disabled={loading}
-          className={`w-full bg-primary-500 text-white rounded-xl font-black shadow-lg active:scale-95 transition-all flex items-center justify-center disabled:opacity-70 ${smallButton ? 'py-3 text-base sm:text-lg max-w-[250px] mx-auto' : 'py-4 text-xl'}`}
-        >
-          <LogIn className={`${smallButton ? 'w-5 h-5 mr-2' : 'w-6 h-6 mr-3'}`} />
-          {loading ? "Accesso in corso..." : "Accedi con Google"}
-        </button>
-
         <a 
           href="https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=ops_storia"
-          className="w-full bg-slate-100 hover:bg-slate-200 text-slate-700 py-3 rounded-xl font-bold text-sm transition-all flex items-center justify-center gap-2"
+          className={`w-full bg-primary-500 hover:bg-primary-600 text-white rounded-xl font-black shadow-lg active:scale-95 transition-all flex items-center justify-center gap-2 ${smallButton ? 'py-3 text-base sm:text-lg max-w-[280px] mx-auto' : 'py-4 text-xl'}`}
         >
+          <LogIn className={`${smallButton ? 'w-5 h-5 mr-1' : 'w-6 h-6 mr-2'}`} />
           Accedi tramite Hub Centrale
         </a>
       </div>

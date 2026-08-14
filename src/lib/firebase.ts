@@ -23,13 +23,13 @@ const configHub = {
 };
 
 // Initialize Firebase
-const app = getApps().length === 0 ? initializeApp(firebaseConfig) : getApps().find(a => a.name === "[DEFAULT]") || initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const googleProvider = new GoogleAuthProvider();
+const app = getApps().find(a => a.name === "[DEFAULT]") || initializeApp(firebaseConfig);
 const rtdb = getDatabase(app);
 const db = getFirestore(app);
 
 const hubApp = getApps().find(a => a.name === "Hub") || initializeApp(configHub, "Hub");
+const auth = getAuth(hubApp);
+const googleProvider = new GoogleAuthProvider();
 const hubDb = getFirestore(hubApp);
 
 export { app, auth, googleProvider, rtdb, db, hubDb };
