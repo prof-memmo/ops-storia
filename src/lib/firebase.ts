@@ -22,15 +22,17 @@ const configHub = {
   appId: "1:839149485689:web:531776ce3cf495a6f23697"
 };
 
-// Initialize Firebase
-const app = getApps().find(a => a.name === "[DEFAULT]") || initializeApp(firebaseConfig);
-const rtdb = getDatabase(app);
-const db = getFirestore(app);
-
-const hubApp = getApps().find(a => a.name === "Hub") || initializeApp(configHub, "Hub");
+// Initialize Hub as [DEFAULT] app for shared SSO session
+const hubApp = getApps().find(a => a.name === "[DEFAULT]") || initializeApp(configHub);
 const auth = getAuth(hubApp);
 const googleProvider = new GoogleAuthProvider();
 const hubDb = getFirestore(hubApp);
+
+// Initialize Ops RTDB as secondary app
+const opsApp = getApps().find(a => a.name === "OpsRTDB") || initializeApp(firebaseConfig, "OpsRTDB");
+const rtdb = getDatabase(opsApp);
+const db = getFirestore(opsApp);
+const app = hubApp;
 
 export { app, auth, googleProvider, rtdb, db, hubDb };
 
