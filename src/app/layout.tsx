@@ -1,11 +1,11 @@
 import type { Metadata } from "next";
-import { Bangers } from "next/font/google";
+import { Julius_Sans_One } from "next/font/google";
 import "./globals.css";
 
-const comicFont = Bangers({ 
+const juliusFont = Julius_Sans_One({ 
   weight: '400',
   subsets: ['latin'],
-  variable: '--font-comic'
+  variable: '--font-julius'
 });
 
 export const metadata: Metadata = {
@@ -20,7 +20,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it">
-      <body className={`${comicFont.variable} antialiased bg-white text-slate-900 tracking-wider font-sans`}>
+      <body className={`${juliusFont.variable} antialiased bg-white text-slate-900 tracking-wider font-sans`}>
         {children}
       </body>
     </html>
