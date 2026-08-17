@@ -126,7 +126,7 @@ export default function TeacherDashboard() {
         </div>
 
         <div className="mt-8 bg-white rounded-2xl shadow-sm border border-slate-100 p-8 text-center">
-          <img src="/ops-storia/images/prof_memmo.png" alt="Prof Memmo" className="w-32 h-32 mx-auto mb-4 opacity-50" />
+          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-avatar.png" alt="Prof Memmo" className="w-32 h-32 mx-auto mb-4 opacity-50" />
           <h2 className="text-2xl font-black text-slate-300 mb-2">Sezione in costruzione</h2>
           <p className="text-slate-400 max-w-md mx-auto">
             Le funzionalità della dashboard docente saranno disponibili a breve.

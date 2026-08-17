@@ -30,7 +30,7 @@ export default function LoginPage() {
         <Link href="/" className="flex items-center text-primary-500 font-bold hover:underline">
           <ArrowLeft className="w-5 h-5 mr-2" /> Torna alla Home
         </Link>
-        <img src="/ops-storia/images/logo.png" alt="Ops Logo" className="h-12 object-contain" />
+        <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops Logo" className="h-12 object-contain" />
       </div>
 
       <div className="w-full max-w-4xl flex flex-col md:flex-row gap-12">

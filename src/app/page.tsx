@@ -16,8 +16,8 @@ export default function Home() {
       <main className="flex-1 flex flex-col items-center justify-center p-4 min-h-0 relative z-10">
         <div className="flex flex-col items-center flex-1 justify-center space-y-2 md:space-y-6 max-h-full">
           
-          <img src="/ops-storia/images/avatar.png" alt="Prof Memmo" className="h-[10vh] sm:h-[15vh] max-h-24 object-contain drop-shadow-md shrink-0 mb-2" />
-          <img src="/ops-storia/images/logo.png" alt="Ops! Logo" className="w-[90%] sm:w-[75%] max-w-2xl h-auto max-h-[40vh] object-contain shrink-0 mb-4" />
+          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-[10vh] sm:h-[15vh] max-h-24 object-contain drop-shadow-md shrink-0 mb-2" />
+          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops! Logo" className="w-[90%] sm:w-[75%] max-w-2xl h-auto max-h-[40vh] object-contain shrink-0 mb-4" />
           
           <p className="text-sm sm:text-base md:text-xl text-slate-700 max-w-2xl font-medium leading-relaxed text-center shrink-0 px-4">
             Sfida i tuoi compagni e gli "Esploratori del Tempo". Mettiti alla prova con la storia, ma attenzione a non dire la parola vietata!
@@ -101,7 +101,7 @@ export default function Home() {
       {/* Footer Patamu */}
       <footer className="w-full text-slate-400 px-4 py-2 flex items-center justify-center shrink-0 z-20">
         <div className="flex max-w-[1200px] w-full items-center justify-center text-left">
-           <img src="/ops-storia/images/patamu_pencil.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
+           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
            <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
@@ -124,7 +124,7 @@ export default function Home() {
               className="bg-white rounded-3xl w-full max-w-5xl max-h-[90vh] flex overflow-hidden shadow-2xl relative"
             >
               <div className="hidden md:flex w-1/3 bg-slate-50 items-end justify-center pt-8 border-r-2 border-slate-100">
-                 <img src="/ops-storia/images/prof_memmo_full.jpg" alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
+                 <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg" alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
               </div>
               
               <div className="w-full md:w-2/3 p-4 sm:p-8 flex flex-col relative min-h-[550px] md:min-h-[500px]">
