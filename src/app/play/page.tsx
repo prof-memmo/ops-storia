@@ -17,6 +17,12 @@ export default function ClientBoard() {
   const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
+      (window as any).HubSubscriptionGuard.hideBlockOverlay();
+    }
+  }, []);
+
+  useEffect(() => {
     if (room && phase === "WAITING" && room.status === "PLAYING") {
       setPhase("PLAYING");
     } else if (room && room.status === "SUMMARY") {

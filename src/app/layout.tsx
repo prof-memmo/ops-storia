@@ -20,6 +20,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="it">
+      <head>
+        <script
+          dangerouslySetInnerHTML={{
+            __html: 'window.HUB_GAME_ID = "ops-storia";'
+          }}
+        />
+        <script src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/hub-subscription-guard.js?v=20260824_ops_guard" async></script>
+      </head>
       <body className={`${juliusFont.variable} antialiased bg-white text-slate-900 tracking-wider font-sans`}>
         {children}
       </body>

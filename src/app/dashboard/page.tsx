@@ -13,11 +13,20 @@ export default function TeacherDashboard() {
   const [user, setUser] = useState<User | null>(null);
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
+  const [isAllowed, setIsAllowed] = useState(true);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
+          const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
+            user: { uid: currentUser.uid, email: currentUser.email },
+            role: "docente",
+            isPublicView: false
+          });
+          setIsAllowed(allowed);
+        }
         try {
           const docRef = doc(db, "users", currentUser.uid);
           const docSnap = await getDoc(docRef);
@@ -48,6 +57,10 @@ export default function TeacherDashboard() {
         <HostLogin onLoginSuccess={() => setLoading(false)} />
       </div>
     );
+  }
+
+  if (!isAllowed) {
+    return null;
   }
 
   return (

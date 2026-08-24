@@ -14,6 +14,7 @@ export default function AdminDashboard() {
   const [userData, setUserData] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [isAllowed, setIsAllowed] = useState(true);
   const [allUsers, setAllUsers] = useState<any[]>([]);
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -21,6 +22,14 @@ export default function AdminDashboard() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
+          const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
+            user: { uid: currentUser.uid, email: currentUser.email },
+            role: "admin",
+            isPublicView: false
+          });
+          setIsAllowed(allowed);
+        }
         try {
           const docRef = doc(db, "users", currentUser.uid);
           const docSnap = await getDoc(docRef);
@@ -77,6 +86,10 @@ export default function AdminDashboard() {
         <HostLogin onLoginSuccess={() => setLoading(false)} />
       </div>
     );
+  }
+
+  if (!isAllowed) {
+    return null;
   }
 
   if (!isAdmin) {

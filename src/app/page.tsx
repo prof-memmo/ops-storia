@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
@@ -8,6 +8,12 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Home() {
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
+
+  useEffect(() => {
+    if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
+      (window as any).HubSubscriptionGuard.hideBlockOverlay();
+    }
+  }, []);
 
   return (
     <div className="min-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-x-hidden">

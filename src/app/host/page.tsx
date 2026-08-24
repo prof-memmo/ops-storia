@@ -42,10 +42,21 @@ export default function HostBoard() {
   const [room, setRoom] = useState<RoomState | null>(null);
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
+  const [isAllowed, setIsAllowed] = useState(true);
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
+      if (currentUser) {
+        if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
+          const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
+            user: { uid: currentUser.uid, email: currentUser.email },
+            role: "docente",
+            isPublicView: false
+          });
+          setIsAllowed(allowed);
+        }
+      }
       setAuthLoading(false);
     });
     return () => unsubscribe();
@@ -157,7 +168,7 @@ export default function HostBoard() {
           <div className="text-slate-400 font-bold animate-pulse">Caricamento...</div>
         ) : !user ? (
           <HostLogin onLoginSuccess={() => {}} />
-        ) : (
+        ) : !isAllowed ? null : (
           <AnimatePresence mode="wait">
           
           {phase === "SETUP_DECK" && (
