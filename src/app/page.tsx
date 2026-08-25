@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay } from "lucide-react";
+import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Home() {
@@ -359,10 +359,13 @@ export default function Home() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-white rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden"
+              className="bg-white rounded-3xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden"
             >
               <div className="p-6 sm:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">🔒 Privacy Policy (GDPR)</h2>
+                <div className="flex items-center space-x-3">
+                  <ShieldCheck className="w-8 h-8 text-primary-500" />
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-800 uppercase tracking-tight">Privacy Policy (GDPR)</h2>
+                </div>
                 <button 
                   onClick={() => setShowPrivacy(false)}
                   className="p-2 bg-white hover:bg-slate-200 text-slate-600 rounded-full transition-colors border border-slate-200"
@@ -372,19 +375,48 @@ export default function Home() {
               </div>
 
               <div className="p-6 sm:p-8 overflow-y-auto space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
-                <p>Informativa sul trattamento dei dati personali ai sensi del Regolamento UE 2016/679 (GDPR).</p>
+                <h3 className="font-black text-slate-800 text-base">1. Titolare del trattamento</h3>
+                <p>Il titolare del trattamento è <strong>Guglielmo Piersanti</strong>, contattabile all'indirizzo email: <a href="mailto:prof.memmo@gmail.com" className="text-primary-500 underline font-medium">prof.memmo@gmail.com</a></p>
 
-                <h3 className="font-black text-slate-800 text-base mt-4">1. Titolare del trattamento</h3>
-                <p>Il titolare del trattamento è Guglielmo Piersanti, contattabile all’indirizzo email: <a href="mailto:prof.memmo@gmail.com" className="text-primary-500 underline font-medium">prof.memmo@gmail.com</a>.</p>
+                <h3 className="font-black text-slate-800 text-base mt-4">2. Finalità dell'ecosistema</h3>
+                <p>L'"Ecosistema Didattico Prof. Memmo" è una piattaforma educativa composta da più giochi e strumenti didattici (FantaLetteratura, La Rotta degli Eroi, La Corte della Commedia, La Palestra di Riflessione, Ops! Operazione Storia e altri), utilizzata a scopo educativo e ludico. La piattaforma può prevedere piani di accesso a pagamento per i docenti.</p>
 
-                <h3 className="font-black text-slate-800 text-base mt-4">2. Finalità della piattaforma</h3>
-                <p>L'Ecosistema Didattico Prof. Memmo è una piattaforma educativa utilizzata a scopo didattico e ludico senza profilazione commerciale.</p>
+                <h3 className="font-black text-slate-800 text-base mt-4">3. Dati raccolti</h3>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Indirizzo e-mail e nome utente (tramite accesso Google o registrazione diretta)</li>
+                  <li>Informazioni di utilizzo dei giochi (punteggi, attività didattiche, progressi)</li>
+                  <li>Messaggi inviati tramite modulo di contatto o posta interna</li>
+                  <li>Dati tecnici forniti automaticamente dalla piattaforma (tipo di dispositivo, dati di log)</li>
+                  <li>Dati di sottoscrizione (piano scelto, data di registrazione)</li>
+                </ul>
 
-                <h3 className="font-black text-slate-800 text-base mt-4">3. Dati raccolti e conservazione</h3>
-                <p>Raccogliamo unicamente i dati necessari al funzionamento del gioco (indirizzo email per autenticazione, nickname o nome utente, punteggi e progressi didattici). I dati non vengono ceduti né venduti a terzi e sono custoditi in sicurezza su infrastruttura Firebase (Google LLC).</p>
+                <h3 className="font-black text-slate-800 text-base mt-4">4. Finalità del trattamento</h3>
+                <ul className="list-disc pl-5 space-y-1">
+                  <li>Consentire l'accesso all'ecosistema e alle sue funzionalità</li>
+                  <li>Gestire l'esperienza didattica, le classi, le classifiche e i tornei interni</li>
+                  <li>Migliorare il funzionamento del servizio</li>
+                  <li>Rispondere alle richieste inviate tramite modulo di contatto o posta interna</li>
+                  <li>Gestire gli abbonamenti e i piani di accesso</li>
+                </ul>
+                <p>Non vengono utilizzati per scopi commerciali o pubblicitari.</p>
 
-                <h3 className="font-black text-slate-800 text-base mt-4">4. Diritti dell'utente e minori</h3>
-                <p>L'utente può richiedere in qualunque momento la cancellazione o modifica dei propri dati personali. Per i minori di 14 anni, l'accesso avviene sotto supervisione didattica di docenti o genitori.</p>
+                <h3 className="font-black text-slate-800 text-base mt-4">5. Base giuridica</h3>
+                <p>Il trattamento si basa sull'utilizzo dell'ecosistema e sul consenso esplicito dell'utente fornito in fase di registrazione.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">6. Conservazione dei dati</h3>
+                <p>I dati sono trattati in modo lecito e sicuro. Non vengono venduti né ceduti a terzi. Sono mantenuti solo per il tempo necessario al funzionamento didattico o su richiesta, salvo obblighi di legge. Vengono utilizzati servizi terzi per l'archiviazione (<strong>Firebase / Google LLC</strong>).</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">7. Servizi di terze parti</h3>
+                <p>L'ecosistema utilizza: Firebase (autenticazione e database, Google LLC), Google Sign-In. Questi servizi possono raccogliere dati secondo le proprie privacy policy.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">8. Diritti dell'utente</h3>
+                <p>L'utente ha diritto di accesso ai propri dati, rettifica o cancellazione, limitazione del trattamento e revoca del consenso inviando un'email a: <a href="mailto:prof.memmo@gmail.com" className="text-primary-500 underline font-medium">prof.memmo@gmail.com</a></p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">9. Cookie e Utenti minori</h3>
+                <p>Il sito non utilizza cookie di profilazione. L'ecosistema è destinato a uso didattico e può essere utilizzato da minori nell'ambito scolastico sotto la supervisione del docente.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">10. Riferimenti normativi</h3>
+                <p>Redatta in conformità al <strong>GDPR (Regolamento UE 2016/679)</strong> e alla normativa italiana in materia di protezione dei dati personali.</p>
               </div>
 
               <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
@@ -413,10 +445,13 @@ export default function Home() {
               initial={{ scale: 0.9, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.9, y: 20 }}
-              className="bg-white rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden"
+              className="bg-white rounded-3xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden"
             >
               <div className="p-6 sm:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50">
-                <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">📜 Termini e Condizioni</h2>
+                <div className="flex items-center space-x-3">
+                  <FileText className="w-8 h-8 text-primary-500" />
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-800 uppercase tracking-tight">Termini e Condizioni</h2>
+                </div>
                 <button 
                   onClick={() => setShowTermini(false)}
                   className="p-2 bg-white hover:bg-slate-200 text-slate-600 rounded-full transition-colors border border-slate-200"
@@ -426,16 +461,23 @@ export default function Home() {
               </div>
 
               <div className="p-6 sm:p-8 overflow-y-auto space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
-                <p><strong>Ultimo aggiornamento: 2026</strong></p>
+                <h3 className="font-black text-slate-800 text-base">1. Titolare del sito e Denominazione Sociale</h3>
+                <p>L'Ecosistema Prof. Memmo è gestito da <strong>Prof. Memmo - Games&Co.</strong> di Guglielmo Piersanti. Email di contatto: <a href="mailto:prof.memmo@gmail.com" className="text-primary-500 underline font-medium">prof.memmo@gmail.com</a></p>
 
-                <h3 className="font-black text-slate-800 text-base mt-4">1. Accettazione dei termini</h3>
-                <p>L’accesso e l’utilizzo del gioco Ops! Operazione Storia implicano l’accettazione integrale dei presenti Termini e Condizioni.</p>
+                <h3 className="font-black text-slate-800 text-base mt-4">2. Accettazione dei Termini</h3>
+                <p>L'accesso e l'utilizzo dell'Ecosistema Prof. Memmo e delle relative piattaforme didattiche implicano l'accettazione integrale dei presenti Termini e Condizioni.</p>
 
-                <h3 className="font-black text-slate-800 text-base mt-4">2. Proprietà Intellettuale e Licenza</h3>
-                <p>Tutti i contenuti didattici, grafici e testuali presenti su questo sito sono di proprietà di Guglielmo Piersanti e sono protetti tramite deposito con marcatura temporale presso Patamù e distribuiti con licenza Creative Commons BY-NC-ND 4.0.</p>
+                <h3 className="font-black text-slate-800 text-base mt-4">3. Descrizione dell'attività: Prof. Memmo</h3>
+                <p>Prof. Memmo è un progetto educativo digitale dedicato alla scuola secondaria di primo grado. Il progetto offre risorse, attività didattiche, giochi educativi e ambienti digitali interattivi destinati principalmente a docenti e studenti.</p>
 
-                <h3 className="font-black text-slate-800 text-base mt-4">3. Utilizzo lecito</h3>
-                <p>È vietato utilizzare la piattaforma per finalità improprie, tentare di manomettere il database di gioco o inserire contenuti ingiuriosi o non pertinenti.</p>
+                <h3 className="font-black text-slate-800 text-base mt-4">4. Piani, prezzi e pagamenti</h3>
+                <p>I servizi per i docenti sono forniti tramite abbonamenti con gestione sicura dei pagamenti tramite Stripe. Gli studenti inseriti in una classe didattica creata da un docente non sono soggetti a costi aggiuntivi.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">5. Proprietà intellettuale e Licenza Didattica</h3>
+                <p>Tutti i contenuti presenti nell'ecosistema (testi, narrazioni, schede didattiche, grafiche, marchi, meccaniche di gioco e software) sono di proprietà esclusiva dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza <strong>Creative Commons Attribuzione - Non commerciale - Non opere derivate 4.0 Internazionale (CC BY-NC-ND 4.0)</strong>.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">6. Legge applicabile e Foro competente</h3>
+                <p>I presenti Termini sono regolati dalla legge italiana e dal <strong>GDPR (Regolamento UE 2016/679)</strong>.</p>
               </div>
 
               <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
