@@ -8,6 +8,10 @@ import { motion, AnimatePresence } from "framer-motion";
 export default function Home() {
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
+  const [showRules, setShowRules] = useState(false);
+  const [showContatti, setShowContatti] = useState(false);
+  const [showPrivacy, setShowPrivacy] = useState(false);
+  const [showTermini, setShowTermini] = useState(false);
 
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
@@ -73,32 +77,32 @@ export default function Home() {
           </div>
           
           <div className="group relative flex flex-col items-center">
-            <Link href="/regolamento" className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => setShowRules(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
               <img src="/ops-storia/icons/2.png" alt="Regolamento" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </Link>
+            </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Regolamento</span>
           </div>
 
           <div className="w-px h-8 sm:h-12 bg-slate-300 mx-2"></div>
 
           <div className="group relative flex flex-col items-center">
-            <Link href="/contatti" className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => setShowContatti(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
               <img src="/ops-storia/icons/3.png" alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </Link>
+            </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Contatti</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
-            <Link href="/privacy" className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => setShowPrivacy(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
               <img src="/ops-storia/icons/4.png" alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </Link>
+            </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Privacy</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
-            <Link href="/termini" className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => setShowTermini(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
               <img src="/ops-storia/icons/5.png" alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </Link>
+            </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Termini</span>
           </div>
         </div>
@@ -203,6 +207,244 @@ export default function Home() {
                     </button>
                   )}
                 </div>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* REGOLAMENTO MODAL */}
+      <AnimatePresence>
+        {showRules && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 sm:p-8"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl w-full max-w-3xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden"
+            >
+              <div className="p-6 sm:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <div className="flex items-center space-x-3">
+                  <BookOpen className="w-8 h-8 text-primary-500" />
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-800 uppercase tracking-tight">Regolamento di Ops!</h2>
+                </div>
+                <button 
+                  onClick={() => setShowRules(false)}
+                  className="p-2 bg-white hover:bg-slate-200 text-slate-600 rounded-full transition-colors border border-slate-200"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-slate-600 text-base sm:text-lg leading-relaxed">
+                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
+                  <div className="bg-primary-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">1</div>
+                  <div>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">Obiettivo del Gioco</h3>
+                    <p>Ops! è un gioco a squadre basato sulla comunicazione. Lo scopo è far indovinare ai compagni una parola storica segreta senza MAI pronunciare nessuna delle <strong>5 parole vietate</strong>.</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
+                  <div className="bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">2</div>
+                  <div>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">Svolgimento del Turno (60s)</h3>
+                    <p>Il Suggeritore ha 60 secondi per far indovinare più parole possibili:</p>
+                    <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
+                      <li><strong>Parola Indovinata:</strong> +1 punto e avanzamento pedina.</li>
+                      <li><strong>Scarto:</strong> Massimo 2 scarti per turno. Ogni scarto regala 1 punto agli avversari.</li>
+                    </ul>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
+                  <div className="bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">3</div>
+                  <div>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">Il Tasto OPS!</h3>
+                    <p>L'avversario controlla lo schermo. Se il suggeritore pronuncia una parola vietata o gesticola, l'avversario preme <strong>OPS!</strong>, bloccando la carta e <strong>rubando il punto</strong>.</p>
+                  </div>
+                </div>
+
+                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
+                  <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">4</div>
+                  <div>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">Carte Magiche e Vittoria</h3>
+                    <p>Lungo il tabellone potrai sbloccare carte con effetti speciali. Vince la prima squadra che raggiunge la casella d'arrivo!</p>
+                  </div>
+                </div>
+              </div>
+
+              <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
+                <button 
+                  onClick={() => setShowRules(false)}
+                  className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-8 py-3 rounded-xl transition-colors shadow-md"
+                >
+                  Ho capito
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* CONTATTI MODAL */}
+      <AnimatePresence>
+        {showContatti && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 sm:p-8"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl w-full max-w-xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden"
+            >
+              <div className="p-6 sm:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">✉️ Contatti e Assistenza</h2>
+                <button 
+                  onClick={() => setShowContatti(false)}
+                  className="p-2 bg-white hover:bg-slate-200 text-slate-600 rounded-full transition-colors border border-slate-200"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-slate-600 text-base leading-relaxed">
+                <p>Hai domande su <strong>Ops! Operazione Storia</strong>, vuoi proporre nuove carte o richiedere informazioni per la tua scuola?</p>
+                
+                <div className="bg-slate-50 p-6 rounded-2xl border border-slate-200 text-center">
+                  <p className="text-xs uppercase tracking-wider font-bold text-slate-400 mb-1">Email Ufficiale Prof. Memmo</p>
+                  <a href="mailto:prof.memmo@gmail.com" className="text-xl sm:text-2xl font-black text-primary-500 hover:underline">
+                    prof.memmo@gmail.com
+                  </a>
+                </div>
+
+                <div className="bg-blue-50 p-5 rounded-2xl border border-blue-100 text-blue-900 text-sm">
+                  <strong className="block mb-1">🏫 Per Insegnanti e Istituti Scolastici</strong>
+                  Puoi richiedere l'abilitazione delle tue classi all'Ecosistema Didattico o assistenza personalizzata per i laboratori in classe.
+                </div>
+              </div>
+
+              <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
+                <button 
+                  onClick={() => setShowContatti(false)}
+                  className="bg-slate-800 hover:bg-slate-900 text-white font-bold px-8 py-3 rounded-xl transition-colors shadow-md"
+                >
+                  Chiudi
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* PRIVACY POLICY MODAL */}
+      <AnimatePresence>
+        {showPrivacy && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 sm:p-8"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden"
+            >
+              <div className="p-6 sm:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">🔒 Privacy Policy (GDPR)</h2>
+                <button 
+                  onClick={() => setShowPrivacy(false)}
+                  className="p-2 bg-white hover:bg-slate-200 text-slate-600 rounded-full transition-colors border border-slate-200"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="p-6 sm:p-8 overflow-y-auto space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+                <p>Informativa sul trattamento dei dati personali ai sensi del Regolamento UE 2016/679 (GDPR).</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">1. Titolare del trattamento</h3>
+                <p>Il titolare del trattamento è Guglielmo Piersanti, contattabile all’indirizzo email: <a href="mailto:prof.memmo@gmail.com" className="text-primary-500 underline font-medium">prof.memmo@gmail.com</a>.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">2. Finalità della piattaforma</h3>
+                <p>L'Ecosistema Didattico Prof. Memmo è una piattaforma educativa utilizzata a scopo didattico e ludico senza profilazione commerciale.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">3. Dati raccolti e conservazione</h3>
+                <p>Raccogliamo unicamente i dati necessari al funzionamento del gioco (indirizzo email per autenticazione, nickname o nome utente, punteggi e progressi didattici). I dati non vengono ceduti né venduti a terzi e sono custoditi in sicurezza su infrastruttura Firebase (Google LLC).</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">4. Diritti dell'utente e minori</h3>
+                <p>L'utente può richiedere in qualunque momento la cancellazione o modifica dei propri dati personali. Per i minori di 14 anni, l'accesso avviene sotto supervisione didattica di docenti o genitori.</p>
+              </div>
+
+              <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
+                <button 
+                  onClick={() => setShowPrivacy(false)}
+                  className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-8 py-3 rounded-xl transition-colors shadow-md"
+                >
+                  Ho capito
+                </button>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* TERMINI E CONDIZIONI MODAL */}
+      <AnimatePresence>
+        {showTermini && (
+          <motion.div 
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 bg-slate-900/60 backdrop-blur-sm z-50 flex items-center justify-center p-4 sm:p-8"
+          >
+            <motion.div 
+              initial={{ scale: 0.9, y: 20 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.9, y: 20 }}
+              className="bg-white rounded-3xl w-full max-w-2xl max-h-[85vh] flex flex-col shadow-2xl relative overflow-hidden"
+            >
+              <div className="p-6 sm:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50">
+                <h2 className="text-2xl font-black text-slate-800 uppercase tracking-tight">📜 Termini e Condizioni</h2>
+                <button 
+                  onClick={() => setShowTermini(false)}
+                  className="p-2 bg-white hover:bg-slate-200 text-slate-600 rounded-full transition-colors border border-slate-200"
+                >
+                  <X className="w-6 h-6" />
+                </button>
+              </div>
+
+              <div className="p-6 sm:p-8 overflow-y-auto space-y-4 text-slate-600 text-sm sm:text-base leading-relaxed">
+                <p><strong>Ultimo aggiornamento: 2026</strong></p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">1. Accettazione dei termini</h3>
+                <p>L’accesso e l’utilizzo del gioco Ops! Operazione Storia implicano l’accettazione integrale dei presenti Termini e Condizioni.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">2. Proprietà Intellettuale e Licenza</h3>
+                <p>Tutti i contenuti didattici, grafici e testuali presenti su questo sito sono di proprietà di Guglielmo Piersanti e sono protetti tramite deposito con marcatura temporale presso Patamù e distribuiti con licenza Creative Commons BY-NC-ND 4.0.</p>
+
+                <h3 className="font-black text-slate-800 text-base mt-4">3. Utilizzo lecito</h3>
+                <p>È vietato utilizzare la piattaforma per finalità improprie, tentare di manomettere il database di gioco o inserire contenuti ingiuriosi o non pertinenti.</p>
+              </div>
+
+              <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
+                <button 
+                  onClick={() => setShowTermini(false)}
+                  className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-8 py-3 rounded-xl transition-colors shadow-md"
+                >
+                  Ho capito
+                </button>
               </div>
             </motion.div>
           </motion.div>
