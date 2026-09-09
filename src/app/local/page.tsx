@@ -40,7 +40,7 @@ const verticalBoardPath = [
   { x: 12, y: 60 }, { x: 12, y: 68 }, { x: 12, y: 76 }, { x: 12, y: 84 }, { x: 34, y: 25 }
 ];
 
-const avatars = Array.from({length: 12}, (_, i) => i + 1);
+const avatars = Array.from({length: 8}, (_, i) => i + 1);
 
 export default function LocalPlay() {
   const [phase, setPhase] = useState<"SETUP" | "TOPICS" | "AVATAR_A" | "AVATAR_B" | "READY" | "PLAYING" | "SUMMARY" | "BOARD">("SETUP");
@@ -102,14 +102,22 @@ export default function LocalPlay() {
 
     const chunkSize = Math.ceil(allCards.length / 6);
     let finalDeck: any[] = [];
+    const activeColors = selectedColors.length > 0 ? selectedColors : colorsDB.map(c => c.id);
     
     allCards.forEach((c: any, index: number) => {
       const chunkIndex = Math.min(5, Math.floor(index / chunkSize));
       const colorObj = colorsDB[chunkIndex];
-      if (selectedColors.includes(colorObj.id)) {
+      if (activeColors.includes(colorObj.id)) {
         finalDeck.push({ ...c, colorTheme: colorObj });
       }
     });
+
+    if (finalDeck.length === 0) {
+      allCards.forEach((c: any, index: number) => {
+        const chunkIndex = Math.min(5, Math.floor(index / chunkSize));
+        finalDeck.push({ ...c, colorTheme: colorsDB[chunkIndex] });
+      });
+    }
 
     setDeck(finalDeck.sort(() => Math.random() - 0.5));
     setPhase("AVATAR_A");
@@ -170,14 +178,22 @@ export default function LocalPlay() {
     setPhase("READY");
   };
 
+  const handleLogout = async () => {
+    if (confirm("Vuoi disconnettere il tuo account e tornare alla Home?")) {
+      await signOut(auth);
+      window.location.href = "/";
+    }
+  };
+
   const card = deck[currentCardIndex % deck.length];
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0">
         <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
-          <Link href="/" className="shrink-0 hover:scale-110 transition-transform">
-            <img src="/ops-storia/icons/6.png" alt="Home" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+          <Link href="/" className="shrink-0 flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-bold text-xs sm:text-sm transition-all" title="Torna alla Home">
+            <Home className="w-4 h-4 text-primary-500" />
+            <span className="hidden sm:inline">Home</span>
           </Link>
           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
         </div>
@@ -186,11 +202,14 @@ export default function LocalPlay() {
            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
         </div>
 
-        <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight flex items-center justify-end">
-          <span className="hidden sm:inline mr-4">TABELLONE</span>
+        <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight flex items-center justify-end gap-3">
+          <button onClick={() => setPhase("SETUP")} className="text-xs sm:text-sm font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full transition-all" title="Cambia Anno / Nuova Partita">
+            Nuova Partita
+          </button>
           {user && (
-            <button onClick={() => signOut(auth)} className="text-slate-400 hover:text-red-500 transition-colors" title="Disconnetti">
-              <LogOut className="w-5 h-5 sm:w-6 sm:h-6" />
+            <button onClick={handleLogout} className="flex items-center gap-1.5 text-slate-400 hover:text-red-500 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-full text-xs font-bold transition-colors" title="Disconnetti Account">
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Disconnetti</span>
             </button>
           )}
         </div>
@@ -223,7 +242,17 @@ export default function LocalPlay() {
 
           {phase === "TOPICS" && (
             <motion.div key="topics" className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center">
-              <h2 className="text-3xl font-black mb-6">Argomenti</h2>
+              <div className="flex justify-between items-center mb-4">
+                <h2 className="text-2xl sm:text-3xl font-black">Argomenti</h2>
+                <button 
+                  type="button"
+                  onClick={() => setSelectedColors(selectedColors.length === colorsDB.length ? [] : colorsDB.map(c => c.id))} 
+                  className="text-xs font-bold text-primary-600 bg-primary-50 px-2.5 py-1 rounded-lg hover:bg-primary-100 transition-colors"
+                >
+                  {selectedColors.length === colorsDB.length ? "Deseleziona tutti" : "Seleziona tutti"}
+                </button>
+              </div>
+              <p className="text-xs text-slate-500 mb-4">Se non selezioni nulla, verranno usati tutti gli argomenti.</p>
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {colorsDB.map(c => (
                   <button key={c.id} onClick={() => setSelectedColors(prev => prev.includes(c.id) ? prev.filter(id => id !== c.id) : [...prev, c.id])} className={`p-4 rounded-xl border-2 font-bold text-sm ${selectedColors.includes(c.id) ? c.borderClass + ' bg-slate-50' : 'border-slate-100 opacity-50'}`}>
@@ -231,7 +260,7 @@ export default function LocalPlay() {
                   </button>
                 ))}
               </div>
-              <button onClick={initGame} className="w-full bg-emerald-500 text-white py-4 rounded-xl font-black">AVANTI</button>
+              <button onClick={initGame} className="w-full bg-emerald-500 text-white py-4 rounded-xl font-black shadow-md hover:bg-emerald-600 transition-all">AVANTI</button>
             </motion.div>
           )}
 
