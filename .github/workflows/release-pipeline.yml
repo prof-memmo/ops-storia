@@ -23,6 +23,11 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
       - name: Checkout Main (Production)
         uses: actions/checkout@v4
         with:
@@ -35,14 +40,26 @@ jobs:
           ref: preview
           path: _preview_src
 
+      - name: Build Main (Production)
+        run: |
+          cd _main_src
+          npm ci
+          npm run build
+
+      - name: Build Preview (Anteprima)
+        run: |
+          cd _preview_src
+          npm ci
+          npm run build
+
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Build Unified Site (Live on root / and Preview on /preview/)
         run: |
           mkdir -p _site/preview
-          rsync -av --exclude='.git' --exclude='.github' --exclude='node_modules' _main_src/ _site/
-          rsync -av --exclude='.git' --exclude='.github' --exclude='node_modules' _preview_src/ _site/preview/
+          rsync -av _main_src/out/ _site/
+          rsync -av _preview_src/out/ _site/preview/
           rm -rf _main_src _preview_src
 
       - name: Upload Artifact
