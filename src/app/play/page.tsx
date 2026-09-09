@@ -97,16 +97,20 @@ export default function ClientBoard() {
     await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: Math.max(0, room[opponentKey].score - 1) });
   };
 
-  const currentCard = room && room.deck.length > 0 ? room.deck[room.state.cardIndex % room.deck.length] : null;
+  const currentCard = room && room.deck && room.deck.length > 0 ? room.deck[room.state.cardIndex % room.deck.length] : null;
   const isActiveTeam = room ? teamId === room.state.currentTurn : false;
+
+  const cardKeyword = currentCard ? (currentCard.word || currentCard.parola_chiave || "Parola") : "";
+  const cardTaboos = currentCard ? (currentCard.taboos || currentCard.parole_taboo || []) : [];
 
   return (
     <div className="h-[100dvh] w-screen bg-slate-50 flex flex-col font-sans overflow-hidden">
       
       <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0 border-b border-slate-100">
-        <div className="flex items-center space-x-2 flex-1">
-          <Link href="/" className="shrink-0 hover:scale-110 transition-transform">
-            <img src="/ops-storia/icons/6.png" alt="Home" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+        <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
+          <Link href="/" className="shrink-0 flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-bold text-xs sm:text-sm transition-all" title="Torna alla Home">
+            <Home className="w-4 h-4 text-primary-500" />
+            <span className="hidden sm:inline">Home</span>
           </Link>
           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0" />
         </div>
@@ -189,14 +193,14 @@ export default function ClientBoard() {
               
               <div className="flex flex-col md:flex-row flex-1 min-h-0">
                   <div className="flex-1 flex flex-col items-center justify-center p-4">
-                    <h1 className={`text-3xl sm:text-5xl md:text-6xl font-black mb-2 text-center leading-tight shrink-0 ${currentCard.colorTheme.textClass}`}>
-                      {currentCard.word}
+                    <h1 className={`text-3xl sm:text-5xl md:text-6xl font-black mb-2 text-center leading-tight shrink-0 ${currentCard.colorTheme?.textClass || 'text-slate-900'}`}>
+                      {cardKeyword}
                     </h1>
                     
                     <div className="bg-slate-100 w-full p-4 rounded-xl border border-slate-200 mt-2 min-h-0 flex-1 overflow-y-auto">
                       <p className="text-center font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">Parole Vietate</p>
                       <ul className="text-center space-y-1 sm:space-y-2">
-                        {currentCard.taboos.map((word: string) => (
+                        {cardTaboos.map((word: string) => (
                           <div key={word} className="bg-slate-50 text-slate-700 font-bold py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg sm:rounded-xl text-center text-base sm:text-xl border border-slate-100">{word}</div>
                         ))}
                       </ul>

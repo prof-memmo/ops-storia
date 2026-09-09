@@ -23,24 +23,44 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout Code
+      - name: Setup Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Checkout Main (Production)
         uses: actions/checkout@v4
+        with:
+          ref: main
+          path: _main_src
+
+      - name: Checkout Preview (Anteprima)
+        uses: actions/checkout@v4
+        with:
+          ref: preview
+          path: _preview_src
+
+      - name: Build Main (Production)
+        run: |
+          cd _main_src
+          npm ci
+          npm run build
+
+      - name: Build Preview (Anteprima)
+        run: |
+          cd _preview_src
+          npm ci
+          npm run build
 
       - name: Setup GitHub Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v5
 
       - name: Build Unified Site (Live on root / and Preview on /preview/)
         run: |
           mkdir -p _site/preview
-          # 1. Clona il branch main per il sito ufficiale live su root /
-          git clone --depth 1 --branch main https://github.com/${{ github.repository }}.git _main_src
-          rsync -av --exclude='_site' --exclude='.git' --exclude='.github' --exclude='node_modules' _main_src/ _site/
-          rm -rf _main_src
-
-          # 2. Clona il branch preview per il canale anteprima su /preview/
-          git clone --depth 1 --branch preview https://github.com/${{ github.repository }}.git _preview_src
-          rsync -av --exclude='_site' --exclude='.git' --exclude='.github' --exclude='node_modules' _preview_src/ _site/preview/
-          rm -rf _preview_src
+          rsync -av _main_src/out/ _site/
+          rsync -av _preview_src/out/ _site/preview/
+          rm -rf _main_src _preview_src
 
       - name: Upload Artifact
         uses: actions/upload-pages-artifact@v3

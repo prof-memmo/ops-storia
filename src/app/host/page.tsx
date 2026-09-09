@@ -99,16 +99,36 @@ export default function HostBoard() {
       return;
     }
 
+    const activeColors = selectedColors.length > 0 ? selectedColors : colorsDB.map(c => c.id);
     const chunkSize = Math.ceil(allCards.length / 6);
     let finalDeck: any[] = [];
     
     allCards.forEach((c: any, index: number) => {
       const chunkIndex = Math.min(5, Math.floor(index / chunkSize));
       const colorObj = colorsDB[chunkIndex];
-      if (selectedColors.includes(colorObj.id)) {
-        finalDeck.push({ word: c.parola_chiave, taboos: c.parole_taboo, colorTheme: colorObj });
+      if (activeColors.includes(colorObj.id)) {
+        finalDeck.push({ 
+          word: c.parola_chiave, 
+          taboos: c.parole_taboo, 
+          parola_chiave: c.parola_chiave, 
+          parole_taboo: c.parole_taboo, 
+          colorTheme: colorObj 
+        });
       }
     });
+
+    if (finalDeck.length === 0) {
+      allCards.forEach((c: any, index: number) => {
+        const chunkIndex = Math.min(5, Math.floor(index / chunkSize));
+        finalDeck.push({ 
+          word: c.parola_chiave, 
+          taboos: c.parole_taboo, 
+          parola_chiave: c.parola_chiave, 
+          parole_taboo: c.parole_taboo, 
+          colorTheme: colorsDB[chunkIndex] 
+        });
+      });
+    }
 
     finalDeck = finalDeck.sort(() => Math.random() - 0.5);
     
@@ -138,13 +158,21 @@ export default function HostBoard() {
     }
   };
 
+  const handleLogout = async () => {
+    if (confirm("Vuoi disconnettere il tuo account e tornare alla Home?")) {
+      await signOut(auth);
+      window.location.href = "/";
+    }
+  };
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       
       <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0">
         <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
-          <Link href="/" className="shrink-0 hover:scale-110 transition-transform">
-            <img src="/ops-storia/icons/6.png" alt="Home" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+          <Link href="/" className="shrink-0 flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-bold text-xs sm:text-sm transition-all" title="Torna alla Home">
+            <Home className="w-4 h-4 text-primary-500" />
+            <span className="hidden sm:inline">Home</span>
           </Link>
           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
         </div>
@@ -153,11 +181,14 @@ export default function HostBoard() {
            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
         </div>
 
-        <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight flex items-center justify-end">
-          <span className="hidden sm:inline mr-4">REGIA</span>
+        <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight flex items-center justify-end gap-3">
+          <button onClick={() => setPhase("SETUP_DECK")} className="text-xs sm:text-sm font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full transition-all" title="Crea Nuova Stanza">
+            Nuova Stanza
+          </button>
           {user && (
-            <button onClick={() => signOut(auth)} className="text-slate-400 hover:text-red-500 transition-colors" title="Disconnetti">
-              <LogOut className="w-5 h-5 sm:w-6 sm:h-6" />
+            <button onClick={handleLogout} className="flex items-center gap-1.5 text-slate-400 hover:text-red-500 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-full text-xs font-bold transition-colors" title="Disconnetti Account">
+              <LogOut className="w-4 h-4" />
+              <span className="hidden sm:inline">Disconnetti</span>
             </button>
           )}
         </div>
