@@ -155,11 +155,11 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Centro: Logo Prof. Memmo con Scritta Nera */}
+        {/* Centro: Avatar 3D Prof. Memmo */}
         <div className="flex items-center justify-center">
           <Link href="/" className="hover:scale-105 transition-transform" title="Home Prof. Memmo">
             <img 
-              src={getAssetPath('/images/prof_memmo.png')} 
+              src={getAssetPath('/images/avatar.png')} 
               alt="Prof. Memmo" 
               className="h-10 sm:h-14 w-auto object-contain" 
             />
