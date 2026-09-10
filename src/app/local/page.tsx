@@ -9,6 +9,16 @@ import HostLogin from "@/components/HostLogin";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 
+import cardsPrima from "@/../public/data/cards_prima.json";
+import cardsSeconda from "@/../public/data/cards_seconda.json";
+import cardsTerza from "@/../public/data/cards_terza.json";
+
+const CARDS_MAP: Record<string, any[]> = {
+  prima: cardsPrima,
+  seconda: cardsSeconda,
+  terza: cardsTerza,
+};
+
 const decksDB = [
   { id: "prima", name: "Età medievale (1° Anno)" },
   { id: "seconda", name: "Età moderna (2° Anno)" },
@@ -94,11 +104,20 @@ export default function LocalPlay() {
   }, [timeLeft, phase]);
 
   const initGame = async () => {
-    let allCards = [];
-    try {
-      const res = await fetch(`/data/cards_${selectedDeck}.json`);
-      allCards = await res.json();
-    } catch(e) { return; }
+    let allCards: any[] = CARDS_MAP[selectedDeck] || [];
+    if (!allCards || allCards.length === 0) {
+      try {
+        const res = await fetch(`data/cards_${selectedDeck}.json`);
+        allCards = await res.json();
+      } catch(e) {
+        try {
+          const res = await fetch(`/data/cards_${selectedDeck}.json`);
+          allCards = await res.json();
+        } catch(e2) {
+          allCards = cardsPrima;
+        }
+      }
+    }
 
     const chunkSize = Math.ceil(allCards.length / 6);
     let finalDeck: any[] = [];
@@ -203,9 +222,6 @@ export default function LocalPlay() {
         </div>
 
         <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight flex items-center justify-end gap-3">
-          <button onClick={() => setPhase("SETUP")} className="text-xs sm:text-sm font-bold bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full transition-all" title="Cambia Anno / Nuova Partita">
-            Nuova Partita
-          </button>
           {user && (
             <button onClick={handleLogout} className="flex items-center gap-1.5 text-slate-400 hover:text-red-500 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-full text-xs font-bold transition-colors" title="Disconnetti Account">
               <LogOut className="w-4 h-4" />

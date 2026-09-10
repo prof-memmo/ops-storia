@@ -10,6 +10,16 @@ import { createRoom, subscribeToRoom, updateRoomStatus, updateRoomState, RoomSta
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 
+import cardsPrima from "@/../public/data/cards_prima.json";
+import cardsSeconda from "@/../public/data/cards_seconda.json";
+import cardsTerza from "@/../public/data/cards_terza.json";
+
+const CARDS_MAP: Record<string, any[]> = {
+  prima: cardsPrima,
+  seconda: cardsSeconda,
+  terza: cardsTerza,
+};
+
 const decksDB = [
   { id: "prima", name: "Età medievale (1° Anno)" },
   { id: "seconda", name: "Età moderna (2° Anno)" },
@@ -63,18 +73,17 @@ export default function HostBoard() {
   }, []);
 
   useEffect(() => {
-    if (roomCode) {
-      const unsubscribe = subscribeToRoom(roomCode, (newRoom) => {
-        setRoom(newRoom);
-      });
-      return () => unsubscribe();
-    }
+    if (!roomCode) return;
+    const unsub = subscribeToRoom(roomCode, (updatedRoom) => {
+      setRoom(updatedRoom);
+    });
+    return () => unsub();
   }, [roomCode]);
 
-  // Host timer sync
   useEffect(() => {
-    if (room && room.status === "PLAYING" && !room.state.isPaused && room.state.timeLeft > 0) {
-      const timer = setTimeout(() => {
+    let timer: NodeJS.Timeout;
+    if (room && room.status === "PLAYING" && room.state.timeLeft > 0) {
+      timer = setTimeout(() => {
         updateRoomState(room.code, { timeLeft: room.state.timeLeft - 1 });
       }, 1000);
       return () => clearTimeout(timer);
@@ -87,16 +96,22 @@ export default function HostBoard() {
     if (selectedColors.length === 0) return alert("Seleziona almeno un colore!");
     
     setIsLoading(true);
-    let allCards: any[] = [];
+    let allCards: any[] = CARDS_MAP[selectedDeck] || [];
     
-    try {
-      const res = await fetch(`/data/cards_${selectedDeck}.json`);
-      const data = await res.json();
-      allCards = data;
-    } catch (e) {
-      console.error("Errore", e);
-      setIsLoading(false);
-      return;
+    if (!allCards || allCards.length === 0) {
+      try {
+        const res = await fetch(`data/cards_${selectedDeck}.json`);
+        const data = await res.json();
+        allCards = data;
+      } catch (e) {
+        try {
+          const res = await fetch(`/data/cards_${selectedDeck}.json`);
+          const data = await res.json();
+          allCards = data;
+        } catch(e2) {
+          allCards = cardsPrima;
+        }
+      }
     }
 
     const activeColors = selectedColors.length > 0 ? selectedColors : colorsDB.map(c => c.id);
