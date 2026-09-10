@@ -1,6 +1,7 @@
 "use client";
 
 import { motion } from "framer-motion";
+import { getAssetPath, getPawnImg } from "@/lib/assets";
 
 type Team = {
   pos: number;
@@ -43,7 +44,7 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
                   <motion.img 
                     key={team.id}
                     layoutId={`pawn-${team.id}`}
-                    src={`/images/pedine_page_${team.pawn}.png`} 
+                    src={getPawnImg(team.pawn)} 
                     className="w-16 h-20 sm:w-24 sm:h-32 object-contain drop-shadow-2xl origin-bottom" 
                     style={{ marginLeft: idx > 0 ? '-30px' : '0', zIndex: 10 + idx }}
                     transition={{ type: "spring", stiffness: 100, damping: 15 }}
@@ -57,7 +58,7 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
         return (
           <div key={cell.index} className="relative w-20 h-20 sm:w-28 sm:h-28 flex items-center justify-center shrink-0">
             {/* Sfondo Casella (Icona) */}
-            <img src={`/images/board_icons/${cell.icon}`} className="w-full h-full object-contain opacity-90 drop-shadow-sm" />
+            <img src={getAssetPath(`/images/board_icons/${cell.icon}`)} className="w-full h-full object-contain opacity-90 drop-shadow-sm" />
             
             {/* Numerazione Percorso */}
             <div className="absolute -top-2 -left-2 bg-slate-800 text-white text-[10px] sm:text-xs font-black w-6 h-6 sm:w-8 sm:h-8 rounded-full flex items-center justify-center shadow-md">
@@ -71,7 +72,7 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
                   <motion.img 
                     key={team.id}
                     layoutId={`pawn-${team.id}`}
-                    src={`/images/pedine_page_${team.pawn}.png`} 
+                    src={getPawnImg(team.pawn)} 
                     className="w-12 h-16 sm:w-16 sm:h-20 object-contain drop-shadow-xl origin-bottom" 
                     style={{ marginLeft: idx > 0 ? '-20px' : '0', zIndex: 10 + idx }}
                     transition={{ type: "spring", stiffness: 100, damping: 15 }}

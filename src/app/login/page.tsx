@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { LogIn, GraduationCap, ShieldCheck, Compass, ArrowLeft } from "lucide-react";
+import { getPawnImg } from "@/lib/assets";
 
 type Role = "studente" | "docente" | "esploratore" | "admin" | null;
 
@@ -97,7 +98,7 @@ export default function LoginPage() {
                             type="button"
                             className="p-2 rounded-xl border-2 border-slate-100 hover:border-primary-300 focus:border-primary-500 focus:bg-primary-50 transition-all aspect-square flex items-center justify-center"
                           >
-                            <img src={`/images/pedine_page_${num}.png`} className="w-full h-full object-contain drop-shadow-md" alt={`Pedina ${num}`} />
+                            <img src={getPawnImg(num)} className="w-full h-full object-contain drop-shadow-md" alt={`Pedina ${num}`} />
                           </button>
                         ))}
                       </div>

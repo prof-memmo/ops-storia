@@ -8,6 +8,7 @@ import DynamicBoard from "../components/DynamicBoard";
 import HostLogin from "@/components/HostLogin";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { getPawnImg } from "@/lib/assets";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -62,6 +63,8 @@ export default function LocalPlay() {
   
   const [teamA, setTeamA] = useState({ score: 0, pawn: 1, pos: 0 });
   const [teamB, setTeamB] = useState({ score: 0, pawn: 4, pos: 0 });
+  const [selectedPawnA, setSelectedPawnA] = useState<number>(1);
+  const [selectedPawnB, setSelectedPawnB] = useState<number>(2);
   const [currentTurn, setCurrentTurn] = useState<1 | 2>(1);
   
   const [timeLeft, setTimeLeft] = useState(60);
@@ -281,27 +284,132 @@ export default function LocalPlay() {
           )}
 
           {phase === "AVATAR_A" && (
-            <motion.div key="avatarA" className="w-full max-w-xl bg-white rounded-3xl shadow-xl p-8 text-center">
-              <h2 className="text-3xl font-black mb-6">Avatar Squadra A</h2>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 mb-8">
-                {avatars.map(a => (
-                  <button key={a} onClick={() => { setTeamA(s => ({...s, pawn: a})); setPhase("AVATAR_B"); }} className="p-2 border-4 border-slate-100 rounded-xl hover:border-primary-500 hover:bg-slate-50 transition-colors bg-white">
-                    <img src={`/images/pedine_page_${a}.png`} className="w-full object-contain h-16 sm:h-20" alt={`Avatar ${a}`} />
-                  </button>
-                ))}
+            <motion.div key="avatarA" className="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center">
+              <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider mb-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
+                Squadra A (Rossa)
               </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Scegli la tua Pedina</h2>
+              <p className="text-xs sm:text-sm text-slate-500 mb-6">Tocca un personaggio per selezionarlo, poi premi conferma.</p>
+              
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
+                {avatars.map(a => {
+                  const isSelected = selectedPawnA === a;
+                  return (
+                    <button 
+                      key={a} 
+                      type="button"
+                      onClick={() => setSelectedPawnA(a)} 
+                      className={`relative p-4 rounded-2xl border-4 transition-all flex flex-col items-center justify-center cursor-pointer ${
+                        isSelected 
+                          ? 'border-red-500 bg-red-50/60 shadow-xl scale-105 ring-4 ring-red-400' 
+                          : 'border-slate-200 bg-white hover:border-red-200 hover:scale-[1.02]'
+                      }`}
+                    >
+                      <img src={getPawnImg(a)} className="w-full h-24 sm:h-32 object-contain filter drop-shadow-md" alt={`Pedina ${a}`} />
+                      {isSelected ? (
+                        <span className="mt-2 text-xs font-black text-white bg-red-500 px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                          Squadra A
+                        </span>
+                      ) : (
+                        <span className="mt-2 text-xs font-bold text-slate-400">
+                          Pedina #{a}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <button 
+                type="button"
+                onClick={() => { 
+                  setTeamA(s => ({...s, pawn: selectedPawnA})); 
+                  if (selectedPawnB === selectedPawnA) {
+                    const nextB = avatars.find(x => x !== selectedPawnA) || 1;
+                    setSelectedPawnB(nextB);
+                  }
+                  setPhase("AVATAR_B"); 
+                }} 
+                className="w-full bg-red-500 hover:bg-red-600 text-white py-4 sm:py-5 rounded-2xl font-black text-lg sm:text-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
+              >
+                CONFERMA SQUADRA A ➔
+              </button>
             </motion.div>
           )}
 
           {phase === "AVATAR_B" && (
-            <motion.div key="avatarB" className="w-full max-w-xl bg-white rounded-3xl shadow-xl p-8 text-center">
-              <h2 className="text-3xl font-black mb-6">Avatar Squadra B</h2>
-              <div className="grid grid-cols-3 sm:grid-cols-4 gap-4 mb-8">
-                {avatars.map(a => (
-                  <button key={a} onClick={() => { setTeamB(s => ({...s, pawn: a})); setPhase("READY"); }} className="p-2 border-4 border-slate-100 rounded-xl hover:border-primary-500 hover:bg-slate-50 transition-colors bg-white">
-                    <img src={`/images/pedine_page_${a}.png`} className="w-full object-contain h-16 sm:h-20" alt={`Avatar ${a}`} />
-                  </button>
-                ))}
+            <motion.div key="avatarB" className="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center">
+              <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider mb-3">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
+                Squadra B (Blu)
+              </div>
+              <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Scegli la tua Pedina</h2>
+              <p className="text-xs sm:text-sm text-slate-500 mb-6">La pedina scelta dalla Squadra A è bloccata.</p>
+
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
+                {avatars.map(a => {
+                  const isTakenByA = a === teamA.pawn;
+                  const isSelected = selectedPawnB === a;
+                  
+                  if (isTakenByA) {
+                    return (
+                      <div 
+                        key={a}
+                        className="relative p-4 rounded-2xl border-2 border-red-300 bg-red-50/40 opacity-50 flex flex-col items-center justify-center cursor-not-allowed"
+                      >
+                        <img src={getPawnImg(a)} className="w-full h-24 sm:h-32 object-contain grayscale-[40%]" alt={`Pedina ${a} occupata`} />
+                        <span className="mt-2 text-[10px] sm:text-xs font-bold text-red-700 bg-red-100 px-2.5 py-0.5 rounded-full">
+                          🔴 Squadra A
+                        </span>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <button 
+                      key={a} 
+                      type="button"
+                      onClick={() => setSelectedPawnB(a)} 
+                      className={`relative p-4 rounded-2xl border-4 transition-all flex flex-col items-center justify-center cursor-pointer ${
+                        isSelected 
+                          ? 'border-blue-500 bg-blue-50/60 shadow-xl scale-105 ring-4 ring-blue-400' 
+                          : 'border-slate-200 bg-white hover:border-blue-200 hover:scale-[1.02]'
+                      }`}
+                    >
+                      <img src={getPawnImg(a)} className="w-full h-24 sm:h-32 object-contain filter drop-shadow-md" alt={`Pedina ${a}`} />
+                      {isSelected ? (
+                        <span className="mt-2 text-xs font-black text-white bg-blue-500 px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
+                          Squadra B
+                        </span>
+                      ) : (
+                        <span className="mt-2 text-xs font-bold text-slate-400">
+                          Pedina #{a}
+                        </span>
+                      )}
+                    </button>
+                  );
+                })}
+              </div>
+
+              <div className="flex flex-col sm:flex-row items-center gap-3">
+                <button 
+                  type="button"
+                  onClick={() => setPhase("AVATAR_A")} 
+                  className="w-full sm:w-auto px-6 py-4 rounded-2xl font-bold border-2 border-slate-200 text-slate-600 hover:bg-slate-100 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                >
+                  <ArrowLeft className="w-5 h-5"/> Indietro
+                </button>
+                <button 
+                  type="button"
+                  onClick={() => { 
+                    setTeamB(s => ({...s, pawn: selectedPawnB})); 
+                    setPhase("READY"); 
+                  }} 
+                  className="flex-1 w-full bg-blue-500 hover:bg-blue-600 text-white py-4 sm:py-5 rounded-2xl font-black text-lg sm:text-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
+                >
+                  CONFERMA SQUADRA B & GIOCA ➔
+                </button>
               </div>
             </motion.div>
           )}
@@ -318,7 +426,7 @@ export default function LocalPlay() {
               
               <div className="flex justify-between w-full mb-2 px-1 sm:px-4 shrink-0">
                 <div className={`text-center p-1 sm:p-2 px-2 sm:px-4 rounded-xl flex items-center justify-center space-x-2 ${currentTurn === 1 ? 'bg-primary-100 border-2 border-primary-500' : 'bg-white opacity-80'}`}>
-                  <img src={`/images/pedine_page_${teamA.pawn}.png`} className="w-8 h-8 sm:w-12 sm:h-12 object-contain hidden sm:block" />
+                  <img src={getPawnImg(teamA.pawn)} className="w-8 h-8 sm:w-12 sm:h-12 object-contain hidden sm:block" />
                   <div>
                     <span className={`text-[9px] sm:text-xs font-bold uppercase tracking-widest ${currentTurn === 1 ? 'text-primary-700' : 'text-slate-900'}`}>Squadra A</span>
                     <div className={`text-2xl sm:text-4xl font-black ${currentTurn === 1 ? 'text-primary-900' : 'text-slate-900'}`}>{teamA.score}</div>
@@ -335,7 +443,7 @@ export default function LocalPlay() {
                     <span className={`text-[9px] sm:text-xs font-bold uppercase tracking-widest ${currentTurn === 2 ? 'text-primary-700' : 'text-slate-900'}`}>Squadra B</span>
                     <div className={`text-2xl sm:text-4xl font-black ${currentTurn === 2 ? 'text-primary-900' : 'text-slate-900'}`}>{teamB.score}</div>
                   </div>
-                  <img src={`/images/pedine_page_${teamB.pawn}.png`} className="w-8 h-8 sm:w-12 sm:h-12 object-contain hidden sm:block" />
+                  <img src={getPawnImg(teamB.pawn)} className="w-8 h-8 sm:w-12 sm:h-12 object-contain hidden sm:block" />
                 </div>
               </div>
 
