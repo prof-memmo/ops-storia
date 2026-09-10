@@ -21,17 +21,24 @@ import {
   ChevronDown 
 } from "lucide-react";
 
-const PLAYLIST = [
-  { name: "Amazing Day", file: "Aylex - Amazing Day (freetouse.com).mp3" },
-  { name: "Break Of Dawn", file: "Avanti - Break Of Dawn (freetouse.com).mp3" },
-  { name: "Fashion Queen", file: "Aylex - Fashion Queen (freetouse.com).mp3" },
-  { name: "So Refreshing", file: "Aylex - So Refreshing (freetouse.com).mp3" },
-  { name: "Summer Sound", file: "Aylex - Summer Sound (freetouse.com).mp3" },
-  { name: "Chances", file: "Burgundy - Chances (freetouse.com).mp3" },
-  { name: "Sweet Talks", file: "Limujii - Sweet Talks (freetouse.com).mp3" },
-  { name: "Exotic", file: "Luke Bergs & Lichu - Exotic (freetouse.com).mp3" },
-  { name: "Mountain", file: "Nebulite - Mountain (freetouse.com).mp3" },
-  { name: "Summer Time", file: "Nebulite - Summer Time (freetouse.com).mp3" },
+interface TrackItem {
+  id: number;
+  name: string;
+  artist: string;
+  file: string;
+}
+
+const PLAYLIST: TrackItem[] = [
+  { id: 1, name: "Amazing Day", artist: "Aylex", file: "track_1.mp3" },
+  { id: 2, name: "Break Of Dawn", artist: "Avanti", file: "track_2.mp3" },
+  { id: 3, name: "Fashion Queen", artist: "Aylex", file: "track_3.mp3" },
+  { id: 4, name: "So Refreshing", artist: "Aylex", file: "track_4.mp3" },
+  { id: 5, name: "Summer Sound", artist: "Aylex", file: "track_5.mp3" },
+  { id: 6, name: "Chances", artist: "Burgundy", file: "track_6.mp3" },
+  { id: 7, name: "Sweet Talks", artist: "Limujii", file: "track_7.mp3" },
+  { id: 8, name: "Exotic", artist: "Luke Bergs", file: "track_8.mp3" },
+  { id: 9, name: "Mountain", artist: "Nebulite", file: "track_9.mp3" },
+  { id: 10, name: "Summer Time", artist: "Nebulite", file: "track_10.mp3" },
 ];
 
 export default function Header() {
@@ -42,10 +49,40 @@ export default function Header() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Seleziona una traccia casuale al caricamento
+  // Inizializza traccia casuale
   useEffect(() => {
-    const randomIndex = Math.floor(Math.random() * PLAYLIST.length);
-    setCurrentTrackIndex(randomIndex);
+    const randomIdx = Math.floor(Math.random() * PLAYLIST.length);
+    setCurrentTrackIndex(randomIdx);
+  }, []);
+
+  // Inizializza e pulisce elemento audio singleton
+  useEffect(() => {
+    const audio = new Audio();
+    audio.preload = "auto";
+    audioRef.current = audio;
+
+    const handleEnded = () => {
+      setCurrentTrackIndex((prev) => {
+        const next = (prev + 1) % PLAYLIST.length;
+        playAudioTrack(next);
+        return next;
+      });
+    };
+
+    const handlePlay = () => setIsPlaying(true);
+    const handlePause = () => setIsPlaying(false);
+
+    audio.addEventListener("ended", handleEnded);
+    audio.addEventListener("play", handlePlay);
+    audio.addEventListener("pause", handlePause);
+
+    return () => {
+      audio.removeEventListener("ended", handleEnded);
+      audio.removeEventListener("play", handlePlay);
+      audio.removeEventListener("pause", handlePause);
+      audio.pause();
+      audio.src = "";
+    };
   }, []);
 
   useEffect(() => {
@@ -67,37 +104,36 @@ export default function Header() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const playTrack = (index: number) => {
-    if (audioRef.current) {
-      audioRef.current.pause();
-    }
+  const playAudioTrack = (index: number) => {
+    if (!audioRef.current) return;
     const track = PLAYLIST[index];
-    const trackUrl = getAssetPath(`/audio/${track.file}`);
-    const audio = new Audio(trackUrl);
-    audio.muted = isMuted;
-    audio.onended = () => {
-      // Prossima traccia casuale a fine brano
-      const nextIdx = (index + 1) % PLAYLIST.length;
-      setCurrentTrackIndex(nextIdx);
-      playTrack(nextIdx);
-    };
-    audio.play().then(() => {
+    const url = getAssetPath(`/audio/${track.file}`);
+    
+    audioRef.current.src = url;
+    audioRef.current.muted = isMuted;
+    audioRef.current.play().then(() => {
       setIsPlaying(true);
-      audioRef.current = audio;
-    }).catch(() => {});
+    }).catch((err) => {
+      console.warn("Audio play error:", err);
+      setIsPlaying(false);
+    });
   };
 
   const toggleMusic = () => {
-    if (!audioRef.current) {
-      playTrack(currentTrackIndex);
+    if (!audioRef.current) return;
+
+    if (isPlaying) {
+      audioRef.current.pause();
+      setIsPlaying(false);
     } else {
-      if (isPlaying) {
-        audioRef.current.pause();
-        setIsPlaying(false);
+      if (!audioRef.current.src || audioRef.current.src === "" || audioRef.current.ended) {
+        playAudioTrack(currentTrackIndex);
       } else {
         audioRef.current.play().then(() => {
           setIsPlaying(true);
-        }).catch(() => {});
+        }).catch(() => {
+          playAudioTrack(currentTrackIndex);
+        });
       }
     }
   };
@@ -105,9 +141,7 @@ export default function Header() {
   const nextTrack = () => {
     const nextIdx = (currentTrackIndex + 1) % PLAYLIST.length;
     setCurrentTrackIndex(nextIdx);
-    if (isPlaying || audioRef.current) {
-      playTrack(nextIdx);
-    }
+    playAudioTrack(nextIdx);
   };
 
   const toggleMute = () => {
@@ -211,10 +245,12 @@ export default function Header() {
                 </div>
                 <div className="flex items-center justify-between bg-white rounded-lg p-2 border border-slate-200/60 shadow-sm">
                   <div className="flex flex-col pr-2 overflow-hidden">
-                    <span className="text-xs font-bold text-slate-800 truncate">
+                    <span className="text-xs font-black text-slate-800 truncate">
                       {PLAYLIST[currentTrackIndex]?.name || "Traccia Storica"}
                     </span>
-                    <span className="text-[9px] text-slate-400 font-medium">Musica rilassante di sottofondo</span>
+                    <span className="text-[10px] text-amber-600 font-bold truncate">
+                      {PLAYLIST[currentTrackIndex]?.artist} • Traccia {PLAYLIST[currentTrackIndex]?.id}/10
+                    </span>
                   </div>
                   <div className="flex items-center gap-1.5 shrink-0">
                     <button 
