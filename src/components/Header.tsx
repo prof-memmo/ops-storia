@@ -11,8 +11,6 @@ import {
   VolumeX, 
   Play, 
   Pause, 
-  SkipForward, 
-  SkipBack, 
   UserCheck, 
   Send, 
   ShieldCheck, 
@@ -50,12 +48,21 @@ export default function Header() {
 
   const toggleMusic = () => {
     if (!audioEl) {
-      const audio = new Audio("https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3");
+      const trackUrl = getAssetPath("/audio/avventura_storica.mp3");
+      const audio = new Audio(trackUrl);
       audio.loop = true;
       audio.play().then(() => {
         setIsPlaying(true);
         setAudioEl(audio);
-      }).catch(() => {});
+      }).catch(() => {
+        // Fallback remote
+        const fallbackAudio = new Audio("https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3");
+        fallbackAudio.loop = true;
+        fallbackAudio.play().then(() => {
+          setIsPlaying(true);
+          setAudioEl(fallbackAudio);
+        }).catch(() => {});
+      });
     } else {
       if (isPlaying) {
         audioEl.pause();
@@ -93,8 +100,8 @@ export default function Header() {
     }
   };
 
-  const userDisplayName = user?.displayName || (user?.email === "prof.memmo@gmail.com" ? "PROF. MEMMO" : (user ? "DOCENTE" : "OSPITE"));
-  const userRole = user?.email === "prof.memmo@gmail.com" ? "AMMINISTRATORE" : (user ? "DOCENTE" : "OSPITE");
+  const userDisplayName = user?.displayName || (user?.email === "prof.memmo@gmail.com" ? "Prof. Memmo" : (user ? "Docente" : "Ospite"));
+  const userRole = user?.email === "prof.memmo@gmail.com" ? "Amministratore" : (user ? "Docente" : "Ospite");
   const avatarUrl = user?.photoURL || "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/avatars/6.png";
 
   return (
@@ -107,7 +114,7 @@ export default function Header() {
             <img 
               src={getAssetPath('/images/logo.png')} 
               alt="Ops! Storia" 
-              className="h-10 sm:h-12 w-auto object-contain drop-shadow-sm" 
+              className="h-10 sm:h-12 w-auto object-contain" 
             />
           </Link>
         </div>
@@ -123,14 +130,14 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Destra: Profilo Utente & Dropdown Menu Standard Ecosistema */}
+        {/* Destra: Profilo Utente & Dropdown Menu Chiaro e Armonioso */}
         <div className="relative" id="header-user-menu">
           <button
             type="button"
             onClick={() => setDropdownOpen(!dropdownOpen)}
-            className="flex items-center gap-2 sm:gap-3 bg-slate-900 text-white pl-2 pr-3 sm:pr-4 py-1.5 rounded-full shadow-md hover:bg-slate-800 transition-all border border-amber-400/40 cursor-pointer"
+            className="flex items-center gap-2 sm:gap-3 bg-white hover:bg-slate-50 text-slate-800 pl-2 pr-3 sm:pr-4 py-1.5 rounded-full shadow-sm hover:shadow transition-all border border-slate-200 cursor-pointer"
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 border-amber-400 bg-slate-800 shrink-0">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 border-amber-400 bg-slate-100 shrink-0 shadow-sm">
               <img 
                 src={avatarUrl} 
                 alt="Avatar" 
@@ -138,40 +145,40 @@ export default function Header() {
               />
             </div>
             <div className="text-left hidden xs:block">
-              <div className="text-[11px] sm:text-xs font-black text-amber-400 tracking-wide uppercase leading-tight truncate max-w-[110px]">
+              <div className="text-[11px] sm:text-xs font-black text-slate-900 tracking-wide leading-tight truncate max-w-[110px]">
                 {userDisplayName}
               </div>
-              <div className="text-[9px] text-slate-300 font-bold uppercase tracking-wider leading-none">
+              <div className="text-[9px] text-amber-600 font-bold uppercase tracking-wider leading-none">
                 {userRole}
               </div>
             </div>
-            <ChevronDown className={`w-3.5 h-3.5 text-amber-400 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
+            <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
-          {/* Menu a Tendina Dropdown */}
+          {/* Menu a Tendina Dropdown - Stile Chiaro e Pulito */}
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-[#070a13] border-1.5 border-[#d4af37] rounded-2xl shadow-2xl p-4 text-white z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white/98 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-2xl p-4 text-slate-800 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               
               {/* Header Utente */}
-              <div className="border-b border-white/10 pb-3 mb-3 text-center">
-                <div className="font-black text-sm text-[#f1c40f] tracking-wide">{userDisplayName}</div>
-                <div className="text-[10px] text-slate-400 font-bold uppercase tracking-widest">{userRole}</div>
+              <div className="border-b border-slate-100 pb-3 mb-3 text-center">
+                <div className="font-black text-sm text-slate-900 tracking-wide">{userDisplayName}</div>
+                <div className="text-[10px] text-amber-600 font-bold uppercase tracking-widest">{userRole}</div>
               </div>
 
               {/* Sottofondo Player Widget */}
-              <div className="bg-[#020408] border border-white/10 rounded-xl p-3 mb-3">
-                <div className="flex items-center justify-between text-[10px] font-bold text-slate-400 mb-1.5">
-                  <span className="flex items-center gap-1.5 text-amber-400">
+              <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 mb-3 shadow-inner">
+                <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 mb-1.5">
+                  <span className="flex items-center gap-1.5 text-amber-600">
                     <Music className="w-3.5 h-3.5" /> SOTTOFONDO
                   </span>
-                  <span className="text-[9px] text-slate-500">OPS! AUDIO</span>
+                  <span className="text-[9px] text-slate-400 font-semibold">OPS! AUDIO</span>
                 </div>
-                <div className="flex items-center justify-between bg-white/5 rounded-lg p-2">
-                  <span className="text-xs font-bold text-slate-200 truncate pr-2">Avventura Medievale</span>
+                <div className="flex items-center justify-between bg-white rounded-lg p-2 border border-slate-200/60 shadow-sm">
+                  <span className="text-xs font-bold text-slate-800 truncate pr-2">Avventura Storica</span>
                   <div className="flex items-center gap-1.5">
                     <button 
                       onClick={toggleMusic}
-                      className="w-7 h-7 rounded-full bg-amber-400 text-slate-900 flex items-center justify-center hover:bg-amber-300 transition-colors"
+                      className="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center hover:bg-amber-600 transition-colors shadow-sm"
                       title={isPlaying ? "Pausa" : "Play"}
                     >
                       {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
@@ -186,34 +193,34 @@ export default function Header() {
                   href="https://prof-memmo.github.io/games/profilo.html" 
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 transition-colors"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100"
                 >
                   <span className="flex items-center gap-2">
-                    <UserCheck className="w-4 h-4 text-amber-400" /> Modifica Profilo
+                    <UserCheck className="w-4 h-4 text-amber-500" /> Modifica Profilo
                   </span>
-                  <span className="text-[10px] text-slate-400">Hub ↗</span>
+                  <span className="text-[10px] text-slate-400 font-semibold">Hub ↗</span>
                 </a>
 
                 <button
                   type="button"
                   onClick={() => openLegalModal('invita')}
-                  className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 transition-colors text-left"
+                  className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100 text-left"
                 >
-                  <Send className="w-4 h-4 text-amber-400" /> Invita un Collega
+                  <Send className="w-4 h-4 text-amber-500" /> Invita un Collega
                 </button>
 
                 <div className="grid grid-cols-2 gap-1.5 pt-1">
                   <button
                     type="button"
                     onClick={() => openLegalModal('privacy')}
-                    className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 transition-colors text-[11px]"
+                    className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 transition-colors border border-slate-100 text-[11px]"
                   >
                     <ShieldCheck className="w-3.5 h-3.5 text-slate-400" /> Privacy
                   </button>
                   <button
                     type="button"
                     onClick={() => openLegalModal('termini')}
-                    className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 transition-colors text-[11px]"
+                    className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 transition-colors border border-slate-100 text-[11px]"
                   >
                     <FileText className="w-3.5 h-3.5 text-slate-400" /> Termini
                   </button>
@@ -222,26 +229,26 @@ export default function Header() {
                 <button
                   type="button"
                   onClick={() => openLegalModal('contatti')}
-                  className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-white/5 hover:bg-white/10 text-slate-200 transition-colors text-left"
+                  className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100 text-left"
                 >
-                  <Mail className="w-4 h-4 text-amber-400" /> Contatti
+                  <Mail className="w-4 h-4 text-amber-500" /> Contatti
                 </button>
 
-                <div className="pt-2 border-t border-white/10 flex items-center justify-between gap-2">
+                <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">
                   <button
                     type="button"
                     onClick={toggleMute}
-                    className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl bg-white/5 hover:bg-white/10 text-slate-300 transition-colors text-[11px]"
+                    className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors text-[11px]"
                   >
-                    {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-400" /> : <Volume2 className="w-3.5 h-3.5 text-slate-400" />}
+                    {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-500" /> : <Volume2 className="w-3.5 h-3.5 text-slate-600" />}
                     <span>{isMuted ? "Attiva" : "Muto"}</span>
                   </button>
                   <button
                     type="button"
                     onClick={handleLogout}
-                    className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl bg-red-500/20 hover:bg-red-500/30 text-red-300 transition-colors text-[11px]"
+                    className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/60 transition-colors text-[11px]"
                   >
-                    <Power className="w-3.5 h-3.5 text-red-400" /> Esci
+                    <Power className="w-3.5 h-3.5 text-red-500" /> Esci
                   </button>
                 </div>
 

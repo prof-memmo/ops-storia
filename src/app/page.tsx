@@ -44,49 +44,58 @@ export default function Home() {
           <img 
             src={getAssetPath('/images/logo.png')} 
             alt="Ops! Storia Logo" 
-            className="w-[85%] sm:w-[65%] max-w-xl h-auto max-h-[35vh] object-contain shrink-0 mb-3 drop-shadow-md" 
+            className="w-[80%] sm:w-[60%] max-w-lg h-auto max-h-[35vh] object-contain shrink-0 mb-3" 
           />
           
           <p className="text-sm sm:text-base md:text-xl text-slate-700 max-w-2xl font-medium leading-relaxed text-center shrink-0 px-4">
             Sfida i tuoi compagni e gli "Esploratori del Tempo". Mettiti alla prova con la storia, ma attenzione a non dire la parola vietata!
           </p>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 max-w-4xl w-full mt-4 shrink-0 px-2">
-            <Link 
-              href="/local" 
-              className="group flex flex-col items-center text-center bg-slate-900 hover:bg-slate-800 text-white p-4 sm:p-5 rounded-2xl transition-all shadow-xl hover:-translate-y-1 border border-slate-700/60"
-            >
-              <div className="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                <MonitorPlay className="w-6 h-6" />
-              </div>
-              <span className="font-black text-base sm:text-lg text-white">1 Schermo (LIM / Party)</span>
-              <span className="text-xs text-slate-400 mt-1 leading-snug">Ideale per la classe alla LIM o serate Party tra amici. Nessun altro device richiesto.</span>
-              <span className="mt-3 text-[11px] font-bold text-amber-300 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/30">Più usata a scuola</span>
-            </Link>
+          {/* Main Action Pill Buttons */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl w-full mt-4 shrink-0 px-2">
+            
+            {/* 1 Schermo */}
+            <div className="flex flex-col items-center text-center">
+              <Link 
+                href="/local" 
+                className="w-full flex items-center justify-center gap-2.5 bg-slate-900 hover:bg-slate-800 text-white py-3.5 px-6 rounded-full font-black text-base shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all"
+              >
+                <MonitorPlay className="w-5 h-5 text-amber-400" />
+                <span>1 Schermo (LIM / Party)</span>
+              </Link>
+              <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
+                Ideale per la classe alla LIM o serate Party tra amici.
+              </p>
+            </div>
 
-            <Link 
-              href="/host" 
-              className="group flex flex-col items-center text-center bg-white hover:bg-slate-50 text-slate-900 p-4 sm:p-5 rounded-2xl transition-all shadow-md hover:-translate-y-1 border-2 border-primary-500"
-            >
-              <div className="w-12 h-12 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                <BookOpen className="w-6 h-6" />
-              </div>
-              <span className="font-black text-base sm:text-lg text-slate-900">Crea Stanza (Host)</span>
-              <span className="text-xs text-slate-600 mt-1 leading-snug">Proietta il tabellone e connetti i telefoni/tablet degli studenti tramite PIN.</span>
-              <span className="mt-3 text-[11px] font-bold text-primary-600 bg-primary-50 px-2.5 py-0.5 rounded-full border border-primary-200">Multi-Dispositivo</span>
-            </Link>
+            {/* Crea Stanza */}
+            <div className="flex flex-col items-center text-center">
+              <Link 
+                href="/host" 
+                className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-primary-600 border-2 border-primary-500 py-3.5 px-6 rounded-full font-black text-base shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
+              >
+                <BookOpen className="w-5 h-5 text-primary-500" />
+                <span>Crea Stanza (Host)</span>
+              </Link>
+              <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
+                Proietta il tabellone e connetti due tablet/device tramite PIN.
+              </p>
+            </div>
 
-            <Link 
-              href="/play" 
-              className="group flex flex-col items-center text-center bg-gradient-to-br from-primary-500 to-rose-600 hover:from-primary-600 hover:to-rose-700 text-white p-4 sm:p-5 rounded-2xl transition-all shadow-lg hover:-translate-y-1"
-            >
-              <div className="w-12 h-12 rounded-xl bg-white/20 text-white flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
-                <Users className="w-6 h-6" />
-              </div>
-              <span className="font-black text-base sm:text-lg text-white">Unisciti con PIN</span>
-              <span className="text-xs text-rose-100 mt-1 leading-snug">Partecipa come studente o giocatore inserendo il PIN della stanza attiva.</span>
-              <span className="mt-3 text-[11px] font-bold text-white bg-white/20 px-2.5 py-0.5 rounded-full">Accesso Studente</span>
-            </Link>
+            {/* Unisciti */}
+            <div className="flex flex-col items-center text-center">
+              <Link 
+                href="/play" 
+                className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-primary-500 to-rose-500 hover:from-primary-600 hover:to-rose-600 text-white py-3.5 px-6 rounded-full font-black text-base shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all"
+              >
+                <Users className="w-5 h-5 text-white" />
+                <span>Unisciti con PIN</span>
+              </Link>
+              <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
+                Partecipa inserendo il PIN della stanza che ti ha dato il docente.
+              </p>
+            </div>
+
           </div>
 
         </div>
