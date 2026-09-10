@@ -61,10 +61,10 @@ export default function LocalPlay() {
   const [deck, setDeck] = useState<any[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   
-  const [teamA, setTeamA] = useState({ score: 0, pawn: 1, pos: 0 });
-  const [teamB, setTeamB] = useState({ score: 0, pawn: 4, pos: 0 });
-  const [selectedPawnA, setSelectedPawnA] = useState<number>(1);
-  const [selectedPawnB, setSelectedPawnB] = useState<number>(2);
+  const [teamA, setTeamA] = useState<{ score: number; pawn: number; pos: number }>({ score: 0, pawn: 1, pos: 0 });
+  const [teamB, setTeamB] = useState<{ score: number; pawn: number; pos: number }>({ score: 0, pawn: 2, pos: 0 });
+  const [selectedPawnA, setSelectedPawnA] = useState<number | null>(null);
+  const [selectedPawnB, setSelectedPawnB] = useState<number | null>(null);
   const [currentTurn, setCurrentTurn] = useState<1 | 2>(1);
   
   const [timeLeft, setTimeLeft] = useState(60);
@@ -77,6 +77,18 @@ export default function LocalPlay() {
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
   const [isAllowed, setIsAllowed] = useState(true);
+
+  const handleSelectPawnA = (pawnId: number) => {
+    setSelectedPawnA(pawnId);
+    setTeamA(s => ({ ...s, pawn: pawnId }));
+    setPhase("AVATAR_B");
+  };
+
+  const handleSelectPawnB = (pawnId: number) => {
+    setSelectedPawnB(pawnId);
+    setTeamB(s => ({ ...s, pawn: pawnId }));
+    setPhase("READY");
+  };
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -290,51 +302,40 @@ export default function LocalPlay() {
                 Squadra A (Rossa)
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Scegli la tua Pedina</h2>
-              <p className="text-xs sm:text-sm text-slate-500 mb-6">Tocca un personaggio per selezionarlo, poi premi conferma.</p>
+              <p className="text-xs sm:text-sm text-slate-500 mb-6">Tocca un personaggio per sceglierlo e passare alla Squadra B.</p>
               
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-6">
                 {avatars.map(a => {
                   const isSelected = selectedPawnA === a;
                   return (
                     <button 
                       key={a} 
                       type="button"
-                      onClick={() => setSelectedPawnA(a)} 
+                      onClick={() => handleSelectPawnA(a)} 
                       className={`relative p-4 rounded-2xl border-4 transition-all flex flex-col items-center justify-center cursor-pointer ${
                         isSelected 
                           ? 'border-red-500 bg-red-50/60 shadow-xl scale-105 ring-4 ring-red-400' 
-                          : 'border-slate-200 bg-white hover:border-red-200 hover:scale-[1.02]'
+                          : 'border-slate-200 bg-white hover:border-red-400 hover:scale-[1.03] hover:shadow-lg'
                       }`}
                     >
                       <img src={getPawnImg(a)} className="w-full h-24 sm:h-32 object-contain filter drop-shadow-md" alt={`Pedina ${a}`} />
-                      {isSelected ? (
-                        <span className="mt-2 text-xs font-black text-white bg-red-500 px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-                          Squadra A
-                        </span>
-                      ) : (
-                        <span className="mt-2 text-xs font-bold text-slate-400">
-                          Pedina #{a}
-                        </span>
-                      )}
+                      <span className="mt-2 text-xs font-bold text-slate-500">
+                        Personaggio #{a}
+                      </span>
                     </button>
                   );
                 })}
               </div>
 
-              <button 
-                type="button"
-                onClick={() => { 
-                  setTeamA(s => ({...s, pawn: selectedPawnA})); 
-                  if (selectedPawnB === selectedPawnA) {
-                    const nextB = avatars.find(x => x !== selectedPawnA) || 1;
-                    setSelectedPawnB(nextB);
-                  }
-                  setPhase("AVATAR_B"); 
-                }} 
-                className="w-full bg-red-500 hover:bg-red-600 text-white py-4 sm:py-5 rounded-2xl font-black text-lg sm:text-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
-              >
-                CONFERMA SQUADRA A ➔
-              </button>
+              <div className="flex justify-center mt-2">
+                <button 
+                  type="button"
+                  onClick={() => setPhase("TOPICS")} 
+                  className="px-6 py-3 rounded-2xl font-bold border-2 border-slate-200 text-slate-600 hover:bg-slate-100 transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
+                >
+                  <ArrowLeft className="w-4 h-4"/> Torna agli Argomenti
+                </button>
+              </div>
             </motion.div>
           )}
 
@@ -345,9 +346,9 @@ export default function LocalPlay() {
                 Squadra B (Blu)
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Scegli la tua Pedina</h2>
-              <p className="text-xs sm:text-sm text-slate-500 mb-6">La pedina scelta dalla Squadra A è bloccata.</p>
+              <p className="text-xs sm:text-sm text-slate-500 mb-6">Tocca un personaggio per sceglierlo e avviare la partita.</p>
 
-              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-8">
+              <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-6">
                 {avatars.map(a => {
                   const isTakenByA = a === teamA.pawn;
                   const isSelected = selectedPawnB === a;
@@ -360,7 +361,7 @@ export default function LocalPlay() {
                       >
                         <img src={getPawnImg(a)} className="w-full h-24 sm:h-32 object-contain grayscale-[40%]" alt={`Pedina ${a} occupata`} />
                         <span className="mt-2 text-[10px] sm:text-xs font-bold text-red-700 bg-red-100 px-2.5 py-0.5 rounded-full">
-                          🔴 Squadra A
+                          🔴 Scelta da Squadra A
                         </span>
                       </div>
                     );
@@ -370,45 +371,29 @@ export default function LocalPlay() {
                     <button 
                       key={a} 
                       type="button"
-                      onClick={() => setSelectedPawnB(a)} 
+                      onClick={() => handleSelectPawnB(a)} 
                       className={`relative p-4 rounded-2xl border-4 transition-all flex flex-col items-center justify-center cursor-pointer ${
                         isSelected 
                           ? 'border-blue-500 bg-blue-50/60 shadow-xl scale-105 ring-4 ring-blue-400' 
-                          : 'border-slate-200 bg-white hover:border-blue-200 hover:scale-[1.02]'
+                          : 'border-slate-200 bg-white hover:border-blue-400 hover:scale-[1.03] hover:shadow-lg'
                       }`}
                     >
                       <img src={getPawnImg(a)} className="w-full h-24 sm:h-32 object-contain filter drop-shadow-md" alt={`Pedina ${a}`} />
-                      {isSelected ? (
-                        <span className="mt-2 text-xs font-black text-white bg-blue-500 px-3 py-0.5 rounded-full uppercase tracking-wider shadow-sm">
-                          Squadra B
-                        </span>
-                      ) : (
-                        <span className="mt-2 text-xs font-bold text-slate-400">
-                          Pedina #{a}
-                        </span>
-                      )}
+                      <span className="mt-2 text-xs font-bold text-slate-500">
+                        Personaggio #{a}
+                      </span>
                     </button>
                   );
                 })}
               </div>
 
-              <div className="flex flex-col sm:flex-row items-center gap-3">
+              <div className="flex justify-center mt-2">
                 <button 
                   type="button"
                   onClick={() => setPhase("AVATAR_A")} 
-                  className="w-full sm:w-auto px-6 py-4 rounded-2xl font-bold border-2 border-slate-200 text-slate-600 hover:bg-slate-100 transition-all flex items-center justify-center gap-2 cursor-pointer"
+                  className="px-6 py-3 rounded-2xl font-bold border-2 border-slate-200 text-slate-600 hover:bg-slate-100 transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
                 >
-                  <ArrowLeft className="w-5 h-5"/> Indietro
-                </button>
-                <button 
-                  type="button"
-                  onClick={() => { 
-                    setTeamB(s => ({...s, pawn: selectedPawnB})); 
-                    setPhase("READY"); 
-                  }} 
-                  className="flex-1 w-full bg-blue-500 hover:bg-blue-600 text-white py-4 sm:py-5 rounded-2xl font-black text-lg sm:text-xl shadow-lg hover:shadow-xl transition-all cursor-pointer"
-                >
-                  CONFERMA SQUADRA B & GIOCA ➔
+                  <ArrowLeft className="w-4 h-4"/> Modifica Pedina Squadra A
                 </button>
               </div>
             </motion.div>
