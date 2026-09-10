@@ -83,6 +83,26 @@ export default function Regolamento() {
               </div>
             </section>
 
+            <section>
+              <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
+                <Flag className="w-6 h-6 text-emerald-500 mr-2" /> 5. Le 2 Modalità di Gioco
+              </h2>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div className="bg-slate-50 p-5 rounded-2xl border-2 border-slate-200">
+                  <h3 className="text-lg font-black text-slate-900 mb-2">🖥️ 1 Schermo (LIM o Party)</h3>
+                  <p className="text-sm text-slate-600 leading-relaxed">
+                    Perfetta per la classe davanti alla <strong>LIM</strong> o per serate <strong>Party</strong> tra amici a casa. Tutta la partita si svolge su un unico schermo condiviso: non serve nessun altro dispositivo né account per i giocatori.
+                  </p>
+                </div>
+                <div className="bg-primary-50/50 p-5 rounded-2xl border-2 border-primary-200">
+                  <h3 className="text-lg font-black text-primary-900 mb-2">📱 Multi-Dispositivo (Host & PIN)</h3>
+                  <p className="text-sm text-slate-700 leading-relaxed">
+                    Il docente proietta il tabellone alla LIM e genera un <strong>PIN Stanza a 4 cifre</strong>. Gli studenti accedono da smartphone o tablet per visualizzare le carte del proprio turno e premere il tasto <strong>OPS!</strong> in tempo reale.
+                  </p>
+                </div>
+              </div>
+            </section>
+
           </div>
         </div>
       </main>

@@ -21,24 +21,17 @@ import {
   ChevronDown 
 } from "lucide-react";
 
-interface TrackItem {
-  id: number;
-  name: string;
-  artist: string;
-  file: string;
-}
-
-const PLAYLIST: TrackItem[] = [
-  { id: 1, name: "Amazing Day", artist: "Aylex", file: "track_1.mp3" },
-  { id: 2, name: "Break Of Dawn", artist: "Avanti", file: "track_2.mp3" },
-  { id: 3, name: "Fashion Queen", artist: "Aylex", file: "track_3.mp3" },
-  { id: 4, name: "So Refreshing", artist: "Aylex", file: "track_4.mp3" },
-  { id: 5, name: "Summer Sound", artist: "Aylex", file: "track_5.mp3" },
-  { id: 6, name: "Chances", artist: "Burgundy", file: "track_6.mp3" },
-  { id: 7, name: "Sweet Talks", artist: "Limujii", file: "track_7.mp3" },
-  { id: 8, name: "Exotic", artist: "Luke Bergs", file: "track_8.mp3" },
-  { id: 9, name: "Mountain", artist: "Nebulite", file: "track_9.mp3" },
-  { id: 10, name: "Summer Time", artist: "Nebulite", file: "track_10.mp3" },
+const PLAYLIST = [
+  { name: "Amazing Day", file: "Aylex - Amazing Day (freetouse.com).mp3" },
+  { name: "Break Of Dawn", file: "Avanti - Break Of Dawn (freetouse.com).mp3" },
+  { name: "Fashion Queen", file: "Aylex - Fashion Queen (freetouse.com).mp3" },
+  { name: "So Refreshing", file: "Aylex - So Refreshing (freetouse.com).mp3" },
+  { name: "Summer Sound", file: "Aylex - Summer Sound (freetouse.com).mp3" },
+  { name: "Chances", file: "Burgundy - Chances (freetouse.com).mp3" },
+  { name: "Sweet Talks", file: "Limujii - Sweet Talks (freetouse.com).mp3" },
+  { name: "Exotic", file: "Luke Bergs & Lichu - Exotic (freetouse.com).mp3" },
+  { name: "Mountain", file: "Nebulite - Mountain (freetouse.com).mp3" },
+  { name: "Summer Time", file: "Nebulite - Summer Time (freetouse.com).mp3" },
 ];
 
 export default function Header() {
@@ -49,40 +42,10 @@ export default function Header() {
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
-  // Inizializza traccia casuale
+  // Seleziona una traccia casuale al caricamento
   useEffect(() => {
-    const randomIdx = Math.floor(Math.random() * PLAYLIST.length);
-    setCurrentTrackIndex(randomIdx);
-  }, []);
-
-  // Inizializza e pulisce elemento audio singleton
-  useEffect(() => {
-    const audio = new Audio();
-    audio.preload = "auto";
-    audioRef.current = audio;
-
-    const handleEnded = () => {
-      setCurrentTrackIndex((prev) => {
-        const next = (prev + 1) % PLAYLIST.length;
-        playAudioTrack(next);
-        return next;
-      });
-    };
-
-    const handlePlay = () => setIsPlaying(true);
-    const handlePause = () => setIsPlaying(false);
-
-    audio.addEventListener("ended", handleEnded);
-    audio.addEventListener("play", handlePlay);
-    audio.addEventListener("pause", handlePause);
-
-    return () => {
-      audio.removeEventListener("ended", handleEnded);
-      audio.removeEventListener("play", handlePlay);
-      audio.removeEventListener("pause", handlePause);
-      audio.pause();
-      audio.src = "";
-    };
+    const randomIndex = Math.floor(Math.random() * PLAYLIST.length);
+    setCurrentTrackIndex(randomIndex);
   }, []);
 
   useEffect(() => {
@@ -104,37 +67,37 @@ export default function Header() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
-  const playAudioTrack = (index: number) => {
-    if (!audioRef.current) return;
+  const playTrack = (index: number) => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
     const track = PLAYLIST[index];
-    const url = getAssetPath(`/audio/${track.file}`);
-    
-    audioRef.current.src = url;
-    audioRef.current.muted = isMuted;
-    audioRef.current.play().then(() => {
+    const trackUrl = getAssetPath(`/audio/${track.file}`);
+    const audio = new Audio(trackUrl);
+    audio.muted = isMuted;
+    audio.onended = () => {
+      // Prossima traccia casuale a fine brano
+      const nextIdx = (index + 1) % PLAYLIST.length;
+      setCurrentTrackIndex(nextIdx);
+      playTrack(nextIdx);
+    };
+    audio.play().then(() => {
       setIsPlaying(true);
-    }).catch((err) => {
-      console.warn("Audio play error:", err);
-      setIsPlaying(false);
-    });
+      audioRef.current = audio;
+    }).catch(() => {});
   };
 
   const toggleMusic = () => {
-    if (!audioRef.current) return;
-
-    if (isPlaying) {
-      audioRef.current.pause();
-      setIsPlaying(false);
+    if (!audioRef.current) {
+      playTrack(currentTrackIndex);
     } else {
-      if (!audioRef.current.src || audioRef.current.src === "" || audioRef.current.ended) {
-        playAudioTrack(currentTrackIndex);
+      if (isPlaying) {
+        audioRef.current.pause();
+        setIsPlaying(false);
       } else {
         audioRef.current.play().then(() => {
           setIsPlaying(true);
-        }).catch((err) => {
-          console.warn("Audio play error, reload track:", err);
-          playAudioTrack(currentTrackIndex);
-        });
+        }).catch(() => {});
       }
     }
   };
@@ -142,7 +105,9 @@ export default function Header() {
   const nextTrack = () => {
     const nextIdx = (currentTrackIndex + 1) % PLAYLIST.length;
     setCurrentTrackIndex(nextIdx);
-    playAudioTrack(nextIdx);
+    if (isPlaying || audioRef.current) {
+      playTrack(nextIdx);
+    }
   };
 
   const toggleMute = () => {
@@ -171,7 +136,6 @@ export default function Header() {
     }
   };
 
-  const currentTrack = PLAYLIST[currentTrackIndex] || PLAYLIST[0];
   const userDisplayName = user?.displayName || (user?.email === "prof.memmo@gmail.com" ? "Prof. Memmo" : (user ? "Docente" : "Ospite"));
   const userRole = user?.email === "prof.memmo@gmail.com" ? "Amministratore" : (user ? "Docente" : "Ospite");
   const avatarUrl = user?.photoURL || "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/avatars/6.png";
@@ -245,31 +209,27 @@ export default function Header() {
                   </span>
                   <span className="text-[9px] text-slate-400 font-semibold">OPS! AUDIO</span>
                 </div>
-                <div className="flex items-center justify-between bg-white rounded-lg p-2.5 border border-slate-200/60 shadow-sm">
+                <div className="flex items-center justify-between bg-white rounded-lg p-2 border border-slate-200/60 shadow-sm">
                   <div className="flex flex-col pr-2 overflow-hidden">
-                    <span className="text-xs font-black text-slate-800 truncate">
-                      {currentTrack.name}
+                    <span className="text-xs font-bold text-slate-800 truncate">
+                      {PLAYLIST[currentTrackIndex]?.name || "Traccia Storica"}
                     </span>
-                    <span className="text-[10px] text-amber-600 font-bold truncate">
-                      {currentTrack.artist} • Traccia {currentTrack.id}/10
-                    </span>
+                    <span className="text-[9px] text-slate-400 font-medium">Musica rilassante di sottofondo</span>
                   </div>
-                  <div className="flex items-center gap-2 shrink-0">
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <button 
-                      type="button"
                       onClick={toggleMusic}
-                      className="w-8 h-8 rounded-full bg-amber-500 hover:bg-amber-600 text-white flex items-center justify-center transition-all shadow-md active:scale-95 cursor-pointer"
+                      className="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center hover:bg-amber-600 transition-colors shadow-sm"
                       title={isPlaying ? "Pausa" : "Play"}
                     >
-                      {isPlaying ? <Pause className="w-4 h-4 fill-current" /> : <Play className="w-4 h-4 fill-current ml-0.5" />}
+                      {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
                     </button>
                     <button 
-                      type="button"
                       onClick={nextTrack}
-                      className="w-8 h-8 rounded-full bg-slate-100 hover:bg-slate-200 text-slate-700 flex items-center justify-center transition-all active:scale-95 cursor-pointer"
+                      className="w-7 h-7 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center hover:bg-slate-200 transition-colors"
                       title="Traccia successiva"
                     >
-                      <SkipForward className="w-4 h-4" />
+                      <SkipForward className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
