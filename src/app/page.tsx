@@ -58,9 +58,9 @@ export default function Home() {
             <div className="flex flex-col items-center text-center">
               <Link 
                 href="/local" 
-                className="w-full flex items-center justify-center gap-2.5 bg-slate-900 hover:bg-slate-800 text-white py-3.5 px-6 rounded-full font-black text-base shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all"
+                className="w-full flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 px-6 rounded-full font-black text-base shadow-lg shadow-emerald-900/10 hover:-translate-y-0.5 active:scale-95 transition-all"
               >
-                <MonitorPlay className="w-5 h-5 text-amber-400" />
+                <MonitorPlay className="w-5 h-5 text-white" />
                 <span>1 Schermo (LIM / Party)</span>
               </Link>
               <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">

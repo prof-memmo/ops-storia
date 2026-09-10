@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import { onAuthStateChanged, User, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
@@ -11,6 +11,7 @@ import {
   VolumeX, 
   Play, 
   Pause, 
+  SkipForward,
   UserCheck, 
   Send, 
   ShieldCheck, 
@@ -20,12 +21,32 @@ import {
   ChevronDown 
 } from "lucide-react";
 
+const PLAYLIST = [
+  { name: "Amazing Day", file: "Aylex - Amazing Day (freetouse.com).mp3" },
+  { name: "Break Of Dawn", file: "Avanti - Break Of Dawn (freetouse.com).mp3" },
+  { name: "Fashion Queen", file: "Aylex - Fashion Queen (freetouse.com).mp3" },
+  { name: "So Refreshing", file: "Aylex - So Refreshing (freetouse.com).mp3" },
+  { name: "Summer Sound", file: "Aylex - Summer Sound (freetouse.com).mp3" },
+  { name: "Chances", file: "Burgundy - Chances (freetouse.com).mp3" },
+  { name: "Sweet Talks", file: "Limujii - Sweet Talks (freetouse.com).mp3" },
+  { name: "Exotic", file: "Luke Bergs & Lichu - Exotic (freetouse.com).mp3" },
+  { name: "Mountain", file: "Nebulite - Mountain (freetouse.com).mp3" },
+  { name: "Summer Time", file: "Nebulite - Summer Time (freetouse.com).mp3" },
+];
+
 export default function Header() {
   const [user, setUser] = useState<User | null>(null);
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
-  const [audioEl, setAudioEl] = useState<HTMLAudioElement | null>(null);
+  const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+
+  // Seleziona una traccia casuale al caricamento
+  useEffect(() => {
+    const randomIndex = Math.floor(Math.random() * PLAYLIST.length);
+    setCurrentTrackIndex(randomIndex);
+  }, []);
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
@@ -46,39 +67,54 @@ export default function Header() {
     return () => document.removeEventListener("click", handleClickOutside);
   }, []);
 
+  const playTrack = (index: number) => {
+    if (audioRef.current) {
+      audioRef.current.pause();
+    }
+    const track = PLAYLIST[index];
+    const trackUrl = getAssetPath(`/audio/${track.file}`);
+    const audio = new Audio(trackUrl);
+    audio.muted = isMuted;
+    audio.onended = () => {
+      // Prossima traccia casuale a fine brano
+      const nextIdx = (index + 1) % PLAYLIST.length;
+      setCurrentTrackIndex(nextIdx);
+      playTrack(nextIdx);
+    };
+    audio.play().then(() => {
+      setIsPlaying(true);
+      audioRef.current = audio;
+    }).catch(() => {});
+  };
+
   const toggleMusic = () => {
-    if (!audioEl) {
-      const trackUrl = getAssetPath("/audio/avventura_storica.mp3");
-      const audio = new Audio(trackUrl);
-      audio.loop = true;
-      audio.play().then(() => {
-        setIsPlaying(true);
-        setAudioEl(audio);
-      }).catch(() => {
-        // Fallback remote
-        const fallbackAudio = new Audio("https://cdn.pixabay.com/download/audio/2022/05/27/audio_1808fbf07a.mp3?filename=lofi-study-112191.mp3");
-        fallbackAudio.loop = true;
-        fallbackAudio.play().then(() => {
-          setIsPlaying(true);
-          setAudioEl(fallbackAudio);
-        }).catch(() => {});
-      });
+    if (!audioRef.current) {
+      playTrack(currentTrackIndex);
     } else {
       if (isPlaying) {
-        audioEl.pause();
+        audioRef.current.pause();
         setIsPlaying(false);
       } else {
-        audioEl.play().then(() => {
+        audioRef.current.play().then(() => {
           setIsPlaying(true);
         }).catch(() => {});
       }
     }
   };
 
+  const nextTrack = () => {
+    const nextIdx = (currentTrackIndex + 1) % PLAYLIST.length;
+    setCurrentTrackIndex(nextIdx);
+    if (isPlaying || audioRef.current) {
+      playTrack(nextIdx);
+    }
+  };
+
   const toggleMute = () => {
-    if (audioEl) {
-      audioEl.muted = !isMuted;
-      setIsMuted(!isMuted);
+    const newMuted = !isMuted;
+    setIsMuted(newMuted);
+    if (audioRef.current) {
+      audioRef.current.muted = newMuted;
     }
   };
 
@@ -119,18 +155,18 @@ export default function Header() {
           </Link>
         </div>
 
-        {/* Centro: Logo Avatar Prof. Memmo */}
+        {/* Centro: Logo Prof. Memmo con Scritta Nera */}
         <div className="flex items-center justify-center">
           <Link href="/" className="hover:scale-105 transition-transform" title="Home Prof. Memmo">
             <img 
-              src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-avatar.png" 
+              src={getAssetPath('/images/prof_memmo.png')} 
               alt="Prof. Memmo" 
-              className="h-10 sm:h-13 w-auto object-contain drop-shadow-sm" 
+              className="h-10 sm:h-14 w-auto object-contain" 
             />
           </Link>
         </div>
 
-        {/* Destra: Profilo Utente & Dropdown Menu Chiaro e Armonioso */}
+        {/* Destra: Profilo Utente & Dropdown Menu Chiaro */}
         <div className="relative" id="header-user-menu">
           <button
             type="button"
@@ -155,7 +191,7 @@ export default function Header() {
             <ChevronDown className={`w-3.5 h-3.5 text-slate-500 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`} />
           </button>
 
-          {/* Menu a Tendina Dropdown - Stile Chiaro e Pulito */}
+          {/* Menu a Tendina Dropdown - Stile Chiaro */}
           {dropdownOpen && (
             <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white/98 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-2xl p-4 text-slate-800 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
               
@@ -165,7 +201,7 @@ export default function Header() {
                 <div className="text-[10px] text-amber-600 font-bold uppercase tracking-widest">{userRole}</div>
               </div>
 
-              {/* Sottofondo Player Widget */}
+              {/* Sottofondo Player Widget con Playlist Casuale */}
               <div className="bg-slate-50 border border-slate-200/80 rounded-xl p-3 mb-3 shadow-inner">
                 <div className="flex items-center justify-between text-[10px] font-bold text-slate-500 mb-1.5">
                   <span className="flex items-center gap-1.5 text-amber-600">
@@ -174,14 +210,26 @@ export default function Header() {
                   <span className="text-[9px] text-slate-400 font-semibold">OPS! AUDIO</span>
                 </div>
                 <div className="flex items-center justify-between bg-white rounded-lg p-2 border border-slate-200/60 shadow-sm">
-                  <span className="text-xs font-bold text-slate-800 truncate pr-2">Avventura Storica</span>
-                  <div className="flex items-center gap-1.5">
+                  <div className="flex flex-col pr-2 overflow-hidden">
+                    <span className="text-xs font-bold text-slate-800 truncate">
+                      {PLAYLIST[currentTrackIndex]?.name || "Traccia Storica"}
+                    </span>
+                    <span className="text-[9px] text-slate-400 font-medium">Musica rilassante di sottofondo</span>
+                  </div>
+                  <div className="flex items-center gap-1.5 shrink-0">
                     <button 
                       onClick={toggleMusic}
                       className="w-7 h-7 rounded-full bg-amber-500 text-white flex items-center justify-center hover:bg-amber-600 transition-colors shadow-sm"
                       title={isPlaying ? "Pausa" : "Play"}
                     >
                       {isPlaying ? <Pause className="w-3.5 h-3.5 fill-current" /> : <Play className="w-3.5 h-3.5 fill-current ml-0.5" />}
+                    </button>
+                    <button 
+                      onClick={nextTrack}
+                      className="w-7 h-7 rounded-full bg-slate-100 text-slate-700 flex items-center justify-center hover:bg-slate-200 transition-colors"
+                      title="Traccia successiva"
+                    >
+                      <SkipForward className="w-3.5 h-3.5" />
                     </button>
                   </div>
                 </div>
