@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { onAuthStateChanged, User, signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { auth, hubDb } from "@/lib/firebase";
 import Link from "next/link";
 import { LogOut, LayoutDashboard, Users, Clock, Settings } from "lucide-react";
 import HostLogin from "@/components/HostLogin";
@@ -28,10 +28,26 @@ export default function TeacherDashboard() {
           setIsAllowed(allowed);
         }
         try {
-          const docRef = doc(db, "users", currentUser.uid);
-          const docSnap = await getDoc(docRef);
-          if (docSnap.exists()) {
-            setUserData(docSnap.data());
+          let uData = null;
+          try {
+            const docRef = doc(hubDb, "hub_users", currentUser.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              uData = docSnap.data();
+            } else {
+              const fallbackRef = doc(hubDb, "users", currentUser.uid);
+              const fallbackSnap = await getDoc(fallbackRef);
+              if (fallbackSnap.exists()) {
+                uData = fallbackSnap.data();
+              }
+            }
+          } catch (err) {
+            console.warn("Hub users lookup warning:", err);
+          }
+          if (uData) {
+            setUserData(uData);
+          } else {
+            setUserData({ nome: currentUser.displayName || "Docente", scuola: "Docente" });
           }
         } catch (e) {
           console.error("Error fetching user data", e);

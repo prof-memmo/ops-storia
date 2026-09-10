@@ -13,6 +13,16 @@ export default function Home() {
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTermini, setShowTermini] = useState(false);
 
+  const openLegal = (type: 'privacy' | 'termini' | 'contatti') => {
+    if (typeof window !== "undefined" && (window as any).openSharedModal) {
+      (window as any).openSharedModal(type);
+    } else {
+      if (type === 'privacy') setShowPrivacy(true);
+      else if (type === 'termini') setShowTermini(true);
+      else if (type === 'contatti') setShowContatti(true);
+    }
+  };
+
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
       (window as any).HubSubscriptionGuard.hideBlockOverlay();
@@ -86,21 +96,21 @@ export default function Home() {
           <div className="w-px h-8 sm:h-12 bg-slate-300 mx-2"></div>
 
           <div className="group relative flex flex-col items-center">
-            <button onClick={() => setShowContatti(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => openLegal('contatti')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
               <img src="/ops-storia/icons/3.png" alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Contatti</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
-            <button onClick={() => setShowPrivacy(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => openLegal('privacy')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
               <img src="/ops-storia/icons/4.png" alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Privacy</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
-            <button onClick={() => setShowTermini(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => openLegal('termini')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
               <img src="/ops-storia/icons/5.png" alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Termini</span>

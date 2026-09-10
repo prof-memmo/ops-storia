@@ -4,7 +4,7 @@ import { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { onAuthStateChanged, User, signOut } from "firebase/auth";
 import { doc, getDoc, collection, getDocs, query, orderBy } from "firebase/firestore";
-import { auth, db } from "@/lib/firebase";
+import { auth, hubDb } from "@/lib/firebase";
 import Link from "next/link";
 import { LogOut, ShieldCheck, Users, Gamepad2, Activity, Search } from "lucide-react";
 import HostLogin from "@/components/HostLogin";
@@ -22,6 +22,7 @@ export default function AdminDashboard() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        const isSuperAdmin = currentUser.email?.toLowerCase() === "prof.memmo@gmail.com";
         if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
           const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
             user: { uid: currentUser.uid, email: currentUser.email },
@@ -30,13 +31,39 @@ export default function AdminDashboard() {
           });
           setIsAllowed(allowed);
         }
+
         try {
-          const docRef = doc(db, "users", currentUser.uid);
-          const docSnap = await getDoc(docRef);
+          let uData: any = null;
+          let hasAdminRole = isSuperAdmin;
           
-          // Check if admin (prof.memmo@gmail.com or ruolo === 'admin')
-          if (docSnap.exists() && (currentUser.email === "prof.memmo@gmail.com" || docSnap.data().ruolo === "admin")) {
-            setUserData(docSnap.data());
+          if (isSuperAdmin) {
+            uData = { nome: "Prof. Memmo", email: currentUser.email, ruolo: "admin" };
+          }
+          
+          try {
+            const docRef = doc(hubDb, "hub_users", currentUser.uid);
+            const docSnap = await getDoc(docRef);
+            if (docSnap.exists()) {
+              uData = { ...docSnap.data(), ...(uData || {}) };
+              if (docSnap.data().ruolo === "admin" || docSnap.data().role === "admin") {
+                hasAdminRole = true;
+              }
+            } else {
+              const fallbackRef = doc(hubDb, "users", currentUser.uid);
+              const fallbackSnap = await getDoc(fallbackRef);
+              if (fallbackSnap.exists()) {
+                uData = { ...fallbackSnap.data(), ...(uData || {}) };
+                if (fallbackSnap.data().ruolo === "admin" || fallbackSnap.data().role === "admin") {
+                  hasAdminRole = true;
+                }
+              }
+            }
+          } catch (err) {
+            console.warn("Hub users lookup warning:", err);
+          }
+
+          if (isSuperAdmin || hasAdminRole) {
+            setUserData(uData || { nome: currentUser.displayName || "Admin", email: currentUser.email, ruolo: "admin" });
             setIsAdmin(true);
             loadUsers();
           } else {
@@ -44,6 +71,10 @@ export default function AdminDashboard() {
           }
         } catch (e) {
           console.error("Error fetching user data", e);
+          if (isSuperAdmin) {
+            setIsAdmin(true);
+            loadUsers();
+          }
         }
       }
       setLoading(false);
@@ -54,16 +85,33 @@ export default function AdminDashboard() {
 
   const loadUsers = async () => {
     try {
-      const q = query(collection(db, "users"));
-      const querySnapshot = await getDocs(q);
-      const usersList: any[] = [];
-      querySnapshot.forEach((doc) => {
-        usersList.push({ id: doc.id, ...doc.data() });
-      });
+      let usersList: any[] = [];
+      try {
+        const q = query(collection(hubDb, "hub_users"));
+        const querySnapshot = await getDocs(q);
+        querySnapshot.forEach((doc) => {
+          usersList.push({ id: doc.id, ...doc.data() });
+        });
+      } catch (e) {
+        console.warn("Failed querying hub_users, trying users", e);
+      }
+
+      if (usersList.length === 0) {
+        try {
+          const q2 = query(collection(hubDb, "users"));
+          const querySnapshot2 = await getDocs(q2);
+          querySnapshot2.forEach((doc) => {
+            usersList.push({ id: doc.id, ...doc.data() });
+          });
+        } catch (e2) {
+          console.warn("Failed querying users", e2);
+        }
+      }
+
       // Sort by creation date descending client-side
       usersList.sort((a, b) => {
-        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : 0;
-        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : 0;
+        const dateA = a.createdAt ? new Date(a.createdAt).getTime() : (a.dataRegistrazione ? new Date(a.dataRegistrazione).getTime() : 0);
+        const dateB = b.createdAt ? new Date(b.createdAt).getTime() : (b.dataRegistrazione ? new Date(b.dataRegistrazione).getTime() : 0);
         return dateB - dateA;
       });
       setAllUsers(usersList);
