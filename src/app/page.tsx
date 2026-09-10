@@ -51,16 +51,16 @@ export default function Home() {
             Sfida i tuoi compagni e gli "Esploratori del Tempo". Mettiti alla prova con la storia, ma attenzione a non dire la parola vietata!
           </p>
 
-          {/* Main Action Pill Buttons */}
+          {/* Main Action Pill Buttons - 3 Colori del Logo OPS su Sfondo Bianco */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl w-full mt-4 shrink-0 px-2">
             
-            {/* 1 Schermo */}
+            {/* O - Azzurro: 1 Schermo */}
             <div className="flex flex-col items-center text-center">
               <Link 
                 href="/local" 
-                className="w-full flex items-center justify-center gap-2.5 bg-emerald-600 hover:bg-emerald-500 text-white py-3.5 px-6 rounded-full font-black text-base shadow-lg shadow-emerald-900/10 hover:-translate-y-0.5 active:scale-95 transition-all"
+                className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-sky-50/70 text-sky-600 border-2 border-sky-400 py-3.5 px-6 rounded-full font-black text-base shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
               >
-                <MonitorPlay className="w-5 h-5 text-white" />
+                <MonitorPlay className="w-5 h-5 text-sky-500" />
                 <span>1 Schermo (LIM / Party)</span>
               </Link>
               <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
@@ -68,13 +68,13 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Crea Stanza */}
+            {/* P - Rosa: Crea Stanza */}
             <div className="flex flex-col items-center text-center">
               <Link 
                 href="/host" 
-                className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-slate-50 text-primary-600 border-2 border-primary-500 py-3.5 px-6 rounded-full font-black text-base shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
+                className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-pink-50/70 text-pink-600 border-2 border-pink-400 py-3.5 px-6 rounded-full font-black text-base shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
               >
-                <BookOpen className="w-5 h-5 text-primary-500" />
+                <BookOpen className="w-5 h-5 text-pink-500" />
                 <span>Crea Stanza (Host)</span>
               </Link>
               <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
@@ -82,13 +82,13 @@ export default function Home() {
               </p>
             </div>
 
-            {/* Unisciti */}
+            {/* S - Giallo/Ambra: Unisciti con PIN */}
             <div className="flex flex-col items-center text-center">
               <Link 
                 href="/play" 
-                className="w-full flex items-center justify-center gap-2.5 bg-gradient-to-r from-primary-500 to-rose-500 hover:from-primary-600 hover:to-rose-600 text-white py-3.5 px-6 rounded-full font-black text-base shadow-lg hover:-translate-y-0.5 active:scale-95 transition-all"
+                className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-amber-50/70 text-amber-600 border-2 border-amber-400 py-3.5 px-6 rounded-full font-black text-base shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
               >
-                <Users className="w-5 h-5 text-white" />
+                <Users className="w-5 h-5 text-amber-500" />
                 <span>Unisciti con PIN</span>
               </Link>
               <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
