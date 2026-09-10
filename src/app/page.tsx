@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Header from "@/components/Header";
+import { getAssetPath } from "@/lib/assets";
 
 export default function Home() {
   const [showTutorial, setShowTutorial] = useState(false);
@@ -32,12 +34,18 @@ export default function Home() {
   return (
     <div className="min-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-x-hidden">
       
+      {/* Header Standard Ecosistema con Menu Profilo */}
+      <Header />
+
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 min-h-0 relative z-10">
         <div className="flex flex-col items-center flex-1 justify-center space-y-2 md:space-y-6 max-h-full">
           
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-[10vh] sm:h-[15vh] max-h-24 object-contain drop-shadow-md shrink-0 mb-2" />
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops! Logo" className="w-[90%] sm:w-[75%] max-w-2xl h-auto max-h-[40vh] object-contain shrink-0 mb-4" />
+          <img 
+            src={getAssetPath('/images/logo.png')} 
+            alt="Ops! Storia Logo" 
+            className="w-[85%] sm:w-[65%] max-w-xl h-auto max-h-[35vh] object-contain shrink-0 mb-3 drop-shadow-md" 
+          />
           
           <p className="text-sm sm:text-base md:text-xl text-slate-700 max-w-2xl font-medium leading-relaxed text-center shrink-0 px-4">
             Sfida i tuoi compagni e gli "Esploratori del Tempo". Mettiti alla prova con la storia, ma attenzione a non dire la parola vietata!
