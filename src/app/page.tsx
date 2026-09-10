@@ -42,7 +42,7 @@ export default function Home() {
         <div className="flex flex-col items-center flex-1 justify-center space-y-2 md:space-y-6 max-h-full">
           
           <img 
-            src={getAssetPath('/images/logo.png')} 
+            src={getAssetPath('/images/logo.png?v=2')} 
             alt="Ops! Storia Logo" 
             className="w-[80%] sm:w-[60%] max-w-lg h-auto max-h-[35vh] object-contain shrink-0 mb-3" 
           />

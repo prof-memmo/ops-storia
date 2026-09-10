@@ -148,7 +148,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link href="/" className="hover:opacity-90 transition-opacity flex items-center gap-2">
             <img 
-              src={getAssetPath('/images/logo.png')} 
+              src={getAssetPath('/images/logo.png?v=2')} 
               alt="Ops! Storia" 
               className="h-10 sm:h-12 w-auto object-contain" 
             />
@@ -159,7 +159,7 @@ export default function Header() {
         <div className="flex items-center justify-center">
           <Link href="/" className="hover:scale-105 transition-transform" title="Home Prof. Memmo">
             <img 
-              src={getAssetPath('/images/avatar.png')} 
+              src={getAssetPath('/images/avatar.png?v=2')} 
               alt="Prof. Memmo" 
               className="h-10 sm:h-14 w-auto object-contain" 
             />
