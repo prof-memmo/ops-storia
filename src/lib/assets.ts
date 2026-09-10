@@ -1,6 +1,8 @@
 export const getAssetPath = (path: string): string => {
   const isProd = process.env.NODE_ENV === 'production';
-  const base = isProd ? '/ops-storia' : '';
+  const base = process.env.NEXT_PUBLIC_BASE_PATH !== undefined
+    ? process.env.NEXT_PUBLIC_BASE_PATH
+    : (isProd ? '/ops-storia' : '');
   const cleanPath = path.startsWith('/') ? path : `/${path}`;
   return `${base}${cleanPath}`;
 };
