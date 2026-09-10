@@ -89,15 +89,15 @@ export default function Regolamento() {
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-slate-50 p-5 rounded-2xl border-2 border-slate-200">
-                  <h3 className="text-lg font-black text-slate-900 mb-2">🖥️ 1 Schermo (LIM o Party)</h3>
+                  <h3 className="text-lg font-black text-slate-900 mb-2">📱 1 Dispositivo (Passa e Gioca • Party)</h3>
                   <p className="text-sm text-slate-600 leading-relaxed">
-                    Perfetta per la classe davanti alla <strong>LIM</strong> o per serate <strong>Party</strong> tra amici a casa. Tutta la partita si svolge su un unico schermo condiviso: non serve nessun altro dispositivo né account per i giocatori.
+                    Perfetta per sfide veloci con un unico <strong>tablet, PC o device</strong> condiviso. Il suggeritore tiene il dispositivo per sé durante il suo turno per non mostrare le parole taboo alla squadra, poi lo passa alla squadra avversaria al termine dei 60 secondi.
                   </p>
                 </div>
                 <div className="bg-primary-50/50 p-5 rounded-2xl border-2 border-primary-200">
-                  <h3 className="text-lg font-black text-primary-900 mb-2">📱 Multi-Dispositivo (Host & PIN)</h3>
+                  <h3 className="text-lg font-black text-primary-900 mb-2">🖥️ Multi-Device (LIM + Tablet/Device)</h3>
                   <p className="text-sm text-slate-700 leading-relaxed">
-                    Il docente proietta il tabellone alla LIM e genera un <strong>PIN Stanza a 4 cifre</strong>. Gli studenti accedono da smartphone o tablet per visualizzare le carte del proprio turno e premere il tasto <strong>OPS!</strong> in tempo reale.
+                    La modalità regina per la classe! Il docente proietta il tabellone alla LIM e genera un <strong>PIN Stanza a 4 cifre</strong>. Gli studenti accedono dai propri tablet o device per visualizzare le carte del proprio turno e premere il tasto <strong>OPS!</strong> in tempo reale, senza spoiler per la classe.
                   </p>
                 </div>
               </div>

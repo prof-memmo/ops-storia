@@ -303,7 +303,7 @@ export default function TeacherDashboard() {
                 className="flex-1 sm:flex-initial inline-flex items-center justify-center gap-2.5 px-5 py-3 rounded-xl bg-gradient-to-r from-amber-500 to-rose-600 hover:from-amber-400 hover:to-rose-500 text-white font-bold text-sm shadow-lg shadow-rose-900/30 hover:scale-[1.02] active:scale-[0.98] transition-all"
               >
                 <Tv className="w-4 h-4" />
-                <span>Avvia Partita LIM (Locale)</span>
+                <span>Avvia Partita Locale (1 Device)</span>
               </Link>
               <Link
                 href="/host"

@@ -54,17 +54,17 @@ export default function Home() {
           {/* Main Action Pill Buttons - 3 Colori del Logo OPS su Sfondo Bianco */}
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl w-full mt-4 shrink-0 px-2">
             
-            {/* O - Azzurro: 1 Schermo */}
+            {/* O - Azzurro: 1 Dispositivo */}
             <div className="flex flex-col items-center text-center">
               <Link 
                 href="/local" 
                 className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-sky-50/70 text-sky-600 border-2 border-sky-400 py-3.5 px-6 rounded-full font-black text-base shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
               >
                 <MonitorPlay className="w-5 h-5 text-sky-500" />
-                <span>1 Schermo (LIM / Party)</span>
+                <span>1 Dispositivo (Passa e Gioca)</span>
               </Link>
               <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
-                Ideale per la classe alla LIM o serate Party tra amici.
+                Un solo tablet, PC o device: passalo di mano in mano a ogni turno.
               </p>
             </div>
 
@@ -75,10 +75,10 @@ export default function Home() {
                 className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-pink-50/70 text-pink-600 border-2 border-pink-400 py-3.5 px-6 rounded-full font-black text-base shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
               >
                 <BookOpen className="w-5 h-5 text-pink-500" />
-                <span>Crea Stanza (Host)</span>
+                <span>Crea Stanza (LIM + Device)</span>
               </Link>
               <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
-                Proietta il tabellone e connetti due tablet/device tramite PIN.
+                Proietta il tabellone alla LIM e connetti i tablet/device con PIN.
               </p>
             </div>
 
@@ -92,7 +92,7 @@ export default function Home() {
                 <span>Unisciti con PIN</span>
               </Link>
               <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
-                Partecipa inserendo il PIN della stanza che ti ha dato il docente.
+                Partecipa inserendo il PIN per usare il tuo tablet/device come controller.
               </p>
             </div>
 
@@ -236,7 +236,7 @@ export default function Home() {
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
                           <MonitorPlay className="w-20 h-20 sm:w-24 sm:h-24 text-emerald-500 mb-4" />
                           <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
-                            <strong>Due modalità:</strong> Gioca con <strong className="text-slate-900">1 Schermo</strong> (LIM in classe o Party a casa) oppure in <strong className="text-primary-600">Multi-Device</strong> (Host alla LIM e studenti con PIN).
+                            <strong>Due modalità:</strong> Gioca con <strong className="text-slate-900">1 Dispositivo</strong> (Passa e Gioca) oppure in <strong className="text-primary-600">Multi-Device</strong> (Tabellone alla LIM e carte segrete sui tablet/device con PIN).
                           </p>
                         </div>
                       </motion.div>
@@ -343,8 +343,8 @@ export default function Home() {
                   <div>
                     <h3 className="font-black text-slate-900 text-lg mb-1">Le 2 Modalità di Gioco</h3>
                     <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
-                      <li><strong>1 Schermo (LIM in Classe / Party a Casa):</strong> Ideale per giocare tutti insieme davanti a un unico schermo. Nessun account o device richiesto per gli studenti.</li>
-                      <li><strong>Multi-Dispositivo (Host & PIN Stanza):</strong> Il docente proietta il tabellone e gli studenti interagiscono dai loro smartphone/tablet inserendo il PIN della stanza.</li>
+                      <li><strong>1 Dispositivo (Passa e Gioca • Party):</strong> Ideale per giocare con un unico tablet, PC o device. I giocatori si passano il dispositivo a ogni turno per non svelare le parole taboo.</li>
+                      <li><strong>Multi-Device (LIM + Tablet/Device con PIN):</strong> Il docente proietta il tabellone alla LIM e gli studenti interagiscono dai loro tablet o device inserendo il PIN della stanza a 4 cifre.</li>
                     </ul>
                   </div>
                 </div>
