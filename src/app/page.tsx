@@ -51,18 +51,41 @@ export default function Home() {
             Sfida i tuoi compagni e gli "Esploratori del Tempo". Mettiti alla prova con la storia, ma attenzione a non dire la parola vietata!
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center w-full mt-4 shrink-0">
-            <Link href="/play" className="flex items-center justify-center bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all shadow-lg hover:-translate-y-1">
-              <Users className="w-5 h-5 sm:w-6 sm:h-6 mr-3" />
-              Unisciti
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-3.5 max-w-4xl w-full mt-4 shrink-0 px-2">
+            <Link 
+              href="/local" 
+              className="group flex flex-col items-center text-center bg-slate-900 hover:bg-slate-800 text-white p-4 sm:p-5 rounded-2xl transition-all shadow-xl hover:-translate-y-1 border border-slate-700/60"
+            >
+              <div className="w-12 h-12 rounded-xl bg-amber-500/20 text-amber-400 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <MonitorPlay className="w-6 h-6" />
+              </div>
+              <span className="font-black text-base sm:text-lg text-white">1 Schermo (LIM / Party)</span>
+              <span className="text-xs text-slate-400 mt-1 leading-snug">Ideale per la classe alla LIM o serate Party tra amici. Nessun altro device richiesto.</span>
+              <span className="mt-3 text-[11px] font-bold text-amber-300 bg-amber-500/10 px-2.5 py-0.5 rounded-full border border-amber-500/30">Più usata a scuola</span>
             </Link>
-            <Link href="/host" className="flex items-center justify-center bg-white hover:bg-slate-50 text-primary-500 border-2 border-primary-500 px-6 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all shadow-sm hover:-translate-y-1">
-              <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 mr-3" />
-              Crea Stanza
+
+            <Link 
+              href="/host" 
+              className="group flex flex-col items-center text-center bg-white hover:bg-slate-50 text-slate-900 p-4 sm:p-5 rounded-2xl transition-all shadow-md hover:-translate-y-1 border-2 border-primary-500"
+            >
+              <div className="w-12 h-12 rounded-xl bg-primary-50 text-primary-600 flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <BookOpen className="w-6 h-6" />
+              </div>
+              <span className="font-black text-base sm:text-lg text-slate-900">Crea Stanza (Host)</span>
+              <span className="text-xs text-slate-600 mt-1 leading-snug">Proietta il tabellone e connetti i telefoni/tablet degli studenti tramite PIN.</span>
+              <span className="mt-3 text-[11px] font-bold text-primary-600 bg-primary-50 px-2.5 py-0.5 rounded-full border border-primary-200">Multi-Dispositivo</span>
             </Link>
-            <Link href="/local" className="flex items-center justify-center bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all shadow-lg hover:-translate-y-1">
-              <MonitorPlay className="w-5 h-5 sm:w-6 sm:h-6 mr-3" />
-              Gioco con 1 Device
+
+            <Link 
+              href="/play" 
+              className="group flex flex-col items-center text-center bg-gradient-to-br from-primary-500 to-rose-600 hover:from-primary-600 hover:to-rose-700 text-white p-4 sm:p-5 rounded-2xl transition-all shadow-lg hover:-translate-y-1"
+            >
+              <div className="w-12 h-12 rounded-xl bg-white/20 text-white flex items-center justify-center mb-3 group-hover:scale-110 transition-transform">
+                <Users className="w-6 h-6" />
+              </div>
+              <span className="font-black text-base sm:text-lg text-white">Unisciti con PIN</span>
+              <span className="text-xs text-rose-100 mt-1 leading-snug">Partecipa come studente o giocatore inserendo il PIN della stanza attiva.</span>
+              <span className="mt-3 text-[11px] font-bold text-white bg-white/20 px-2.5 py-0.5 rounded-full">Accesso Studente</span>
             </Link>
           </div>
 
@@ -163,65 +186,75 @@ export default function Home() {
                   <X className="w-6 h-6" />
                 </button>
                 
-                <h2 className="text-4xl font-black text-primary-500 mb-8 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">Come si gioca?</h2>
+                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">Come si gioca?</h2>
                 
                 <div className="flex-1 relative overflow-hidden">
                   <AnimatePresence mode="wait">
                     {tutorialStep === 0 && (
                       <motion.div key="step0" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <Info className="w-20 h-20 sm:w-28 sm:h-28 text-primary-500 mb-6" />
-                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola!</p>
+                          <Info className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" />
+                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola indovinata!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 1 && (
                       <motion.div key="step1" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <AlertOctagon className="w-20 h-20 sm:w-28 sm:h-28 text-red-500 mb-6" />
-                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
+                          <AlertOctagon className="w-20 h-20 sm:w-24 sm:h-24 text-red-500 mb-4" />
+                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 2 && (
                       <motion.div key="step2" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <SkipForward className="w-20 h-20 sm:w-28 sm:h-28 text-amber-500 mb-6" />
-                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
+                          <SkipForward className="w-20 h-20 sm:w-24 sm:h-24 text-amber-500 mb-4" />
+                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 3 && (
                       <motion.div key="step3" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <Timer className="w-20 h-20 sm:w-28 sm:h-28 text-blue-500 mb-6" />
-                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone potrai pescare carte magiche con <strong className="text-purple-600">effetti speciali</strong> (come tempo doppio o scarti infiniti).</p>
+                          <Timer className="w-20 h-20 sm:w-24 sm:h-24 text-blue-500 mb-4" />
+                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone a 24 caselle sbloccherai <strong className="text-purple-600">effetti speciali</strong> (Tempo Doppio 120s, Pesca Illimitata o Imprevisti).</p>
+                        </div>
+                      </motion.div>
+                    )}
+                    {tutorialStep === 4 && (
+                      <motion.div key="step4" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
+                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
+                          <MonitorPlay className="w-20 h-20 sm:w-24 sm:h-24 text-emerald-500 mb-4" />
+                          <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
+                            <strong>Due modalità:</strong> Gioca con <strong className="text-slate-900">1 Schermo</strong> (LIM in classe o Party a casa) oppure in <strong className="text-primary-600">Multi-Device</strong> (Host alla LIM e studenti con PIN).
+                          </p>
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
 
-                <div className="mt-8 flex justify-between items-center shrink-0">
+                <div className="mt-6 flex justify-between items-center shrink-0">
                   <div className="flex space-x-2">
-                    {[0, 1, 2, 3].map(step => (
+                    {[0, 1, 2, 3, 4].map(step => (
                       <div key={step} className={`w-3 h-3 rounded-full transition-colors ${tutorialStep === step ? 'bg-primary-500' : 'bg-slate-200'}`} />
                     ))}
                   </div>
                   
-                  {tutorialStep < 3 ? (
+                  {tutorialStep < 4 ? (
                     <button 
                       onClick={() => setTutorialStep(s => s + 1)}
-                      className="bg-primary-500 text-white px-8 py-3 rounded-xl font-black text-lg hover:bg-primary-600 transition-colors shadow-md"
+                      className="bg-primary-500 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-primary-600 transition-colors shadow-md"
                     >
                       AVANTI
                     </button>
                   ) : (
                     <button 
                       onClick={() => { setShowTutorial(false); setTutorialStep(0); }}
-                      className="bg-slate-900 text-white px-8 py-3 rounded-xl font-black text-lg hover:bg-slate-800 transition-colors shadow-md"
+                      className="bg-slate-900 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-slate-800 transition-colors shadow-md"
                     >
-                      GIOCA!
+                      HO CAPITO!
                     </button>
                   )}
                 </div>
@@ -292,7 +325,18 @@ export default function Home() {
                   <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">4</div>
                   <div>
                     <h3 className="font-black text-slate-800 text-lg mb-1">Carte Magiche e Vittoria</h3>
-                    <p>Lungo il tabellone potrai sbloccare carte con effetti speciali. Vince la prima squadra che raggiunge la casella d'arrivo!</p>
+                    <p>Lungo il tabellone potrai sbloccare carte con effetti speciali (Tempo Doppio, Pesca Illimitata, Imprevisto). Vince la prima squadra che raggiunge la casella 24!</p>
+                  </div>
+                </div>
+
+                <div className="bg-amber-500/10 p-5 rounded-2xl border border-amber-500/30 flex items-start space-x-4">
+                  <div className="bg-amber-500 text-slate-950 w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">5</div>
+                  <div>
+                    <h3 className="font-black text-slate-900 text-lg mb-1">Le 2 Modalità di Gioco</h3>
+                    <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
+                      <li><strong>1 Schermo (LIM in Classe / Party a Casa):</strong> Ideale per giocare tutti insieme davanti a un unico schermo. Nessun account o device richiesto per gli studenti.</li>
+                      <li><strong>Multi-Dispositivo (Host & PIN Stanza):</strong> Il docente proietta il tabellone e gli studenti interagiscono dai loro smartphone/tablet inserendo il PIN della stanza.</li>
+                    </ul>
                   </div>
                 </div>
               </div>
