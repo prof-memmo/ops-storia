@@ -182,7 +182,7 @@ export default function Header() {
         <div className="flex items-center gap-3">
           <Link href="/" className="hover:opacity-90 transition-opacity flex items-center gap-2">
             <img 
-              src={getAssetPath('/images/logo.png?v=3')} 
+              src={getAssetPath('/images/logo.png?v=15')} 
               alt="Ops! Storia" 
               className="h-10 sm:h-12 w-auto object-contain" 
             />
