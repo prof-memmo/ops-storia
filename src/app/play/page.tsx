@@ -5,7 +5,6 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Users, Check, X, Home, AlertOctagon, Undo2, Pause, LogIn } from "lucide-react";
 import Link from "next/link";
 import { joinRoom, subscribeToRoom, updateRoomState, updateTeamStats, RoomState } from "@/lib/gameLogic";
-import { getPawnImg } from "@/lib/assets";
 
 export default function ClientBoard() {
   const [phase, setPhase] = useState<"JOIN" | "WAITING" | "PLAYING" | "SUMMARY">("JOIN");
@@ -156,7 +155,7 @@ export default function ClientBoard() {
                   <div className="flex flex-wrap justify-center gap-3">
                     {[1, 2, 3, 4, 5, 6, 7, 8].map(p => (
                       <button key={p} onClick={() => setPawn(p)} className={`w-16 h-16 p-1 rounded-xl border-2 transition-all ${pawn === p ? 'border-primary-500 bg-primary-50 shadow-md scale-110' : 'border-transparent opacity-60'}`}>
-                        <img src={getPawnImg(p)} className="w-full h-full object-contain" />
+                        <img src={`/images/pedine_page_${p}.png`} className="w-full h-full object-contain" />
                       </button>
                     ))}
                   </div>

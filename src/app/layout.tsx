@@ -26,8 +26,7 @@ export default function RootLayout({
             __html: 'window.HUB_GAME_ID = "ops-storia";'
           }}
         />
-        <script src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/hub-subscription-guard.js?v=20260910_ops_guard" async></script>
-        <script src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/legal-modal.js?v=20260910_ops_legal" async></script>
+        <script src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/hub-subscription-guard.js?v=20260824_ops_guard" async></script>
       </head>
       <body className={`${juliusFont.variable} antialiased bg-white text-slate-900 tracking-wider font-sans`}>
         {children}

@@ -3,7 +3,7 @@
 import { useState } from "react";
 import { signInWithPopup, GoogleAuthProvider } from "firebase/auth";
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { auth, googleProvider, hubDb } from "@/lib/firebase";
+import { auth, googleProvider, db } from "@/lib/firebase";
 import { BookOpen, LogIn, AlertCircle } from "lucide-react";
 import { motion } from "framer-motion";
 
@@ -39,21 +39,10 @@ export default function HostLogin({
       const user = result.user;
 
       // Check if user exists in Firestore, if not create them
-      let exists = false;
-      try {
-        const userRef = doc(hubDb, "hub_users", user.uid);
-        const docSnap = await getDoc(userRef);
-        exists = docSnap.exists();
-        if (!exists) {
-          const fallbackRef = doc(hubDb, "users", user.uid);
-          const fallbackSnap = await getDoc(fallbackRef);
-          exists = fallbackSnap.exists();
-        }
-      } catch (e) {
-        console.warn("User existence check warning:", e);
-      }
+      const userRef = doc(db, "users", user.uid);
+      const docSnap = await getDoc(userRef);
 
-      if (!exists) {
+      if (!docSnap.exists()) {
         setTempUser(user);
         setNeedsOnboarding(true);
         setFormData(prev => ({ ...prev, nome: user.displayName || "" }));
@@ -75,7 +64,7 @@ export default function HostLogin({
     
     setLoading(true);
     try {
-      const userRef = doc(hubDb, "hub_users", tempUser.uid);
+      const userRef = doc(db, "users", tempUser.uid);
       await setDoc(userRef, {
         nome: formData.nome,
         cognome: formData.cognome,
