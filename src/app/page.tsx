@@ -4,6 +4,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
+import Header from "@/components/Header";
+import { getAssetPath } from "@/lib/assets";
 
 export default function Home() {
   const [showTutorial, setShowTutorial] = useState(false);
@@ -12,6 +14,16 @@ export default function Home() {
   const [showContatti, setShowContatti] = useState(false);
   const [showPrivacy, setShowPrivacy] = useState(false);
   const [showTermini, setShowTermini] = useState(false);
+
+  const openLegal = (type: 'privacy' | 'termini' | 'contatti') => {
+    if (typeof window !== "undefined" && (window as any).openSharedModal) {
+      (window as any).openSharedModal(type);
+    } else {
+      if (type === 'privacy') setShowPrivacy(true);
+      else if (type === 'termini') setShowTermini(true);
+      else if (type === 'contatti') setShowContatti(true);
+    }
+  };
 
   useEffect(() => {
     if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
@@ -22,30 +34,68 @@ export default function Home() {
   return (
     <div className="min-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-x-hidden">
       
+      {/* Header Standard Ecosistema con Menu Profilo */}
+      <Header />
+
       {/* Main Content Area */}
       <main className="flex-1 flex flex-col items-center justify-center p-4 min-h-0 relative z-10">
         <div className="flex flex-col items-center flex-1 justify-center space-y-2 md:space-y-6 max-h-full">
           
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-[10vh] sm:h-[15vh] max-h-24 object-contain drop-shadow-md shrink-0 mb-2" />
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops! Logo" className="w-[90%] sm:w-[75%] max-w-2xl h-auto max-h-[40vh] object-contain shrink-0 mb-4" />
+          <img 
+            src={getAssetPath('/images/logo.png?v=2')} 
+            alt="Ops! Storia Logo" 
+            className="w-[80%] sm:w-[60%] max-w-lg h-auto max-h-[35vh] object-contain shrink-0 mb-3" 
+          />
           
           <p className="text-sm sm:text-base md:text-xl text-slate-700 max-w-2xl font-medium leading-relaxed text-center shrink-0 px-4">
             Sfida i tuoi compagni e gli "Esploratori del Tempo". Mettiti alla prova con la storia, ma attenzione a non dire la parola vietata!
           </p>
 
-          <div className="flex flex-col sm:flex-row gap-3 justify-center w-full mt-4 shrink-0">
-            <Link href="/play" className="flex items-center justify-center bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all shadow-lg hover:-translate-y-1">
-              <Users className="w-5 h-5 sm:w-6 sm:h-6 mr-3" />
-              Unisciti
-            </Link>
-            <Link href="/host" className="flex items-center justify-center bg-white hover:bg-slate-50 text-primary-500 border-2 border-primary-500 px-6 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all shadow-sm hover:-translate-y-1">
-              <BookOpen className="w-5 h-5 sm:w-6 sm:h-6 mr-3" />
-              Crea Stanza
-            </Link>
-            <Link href="/local" className="flex items-center justify-center bg-slate-800 hover:bg-slate-900 text-white px-6 py-3 sm:py-4 rounded-full font-bold text-base sm:text-lg transition-all shadow-lg hover:-translate-y-1">
-              <MonitorPlay className="w-5 h-5 sm:w-6 sm:h-6 mr-3" />
-              Gioco con 1 Device
-            </Link>
+          {/* Main Action Pill Buttons - 3 Colori del Logo OPS su Sfondo Bianco */}
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-4xl w-full mt-4 shrink-0 px-2">
+            
+            {/* O - Azzurro: 1 Dispositivo */}
+            <div className="flex flex-col items-center text-center">
+              <Link 
+                href="/local" 
+                className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-sky-50/70 text-sky-600 border-2 border-sky-400 py-3.5 px-6 rounded-full font-black text-base shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
+              >
+                <MonitorPlay className="w-5 h-5 text-sky-500" />
+                <span>1 Dispositivo (Passa e Gioca)</span>
+              </Link>
+              <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
+                Un solo tablet, PC o device: passalo di mano in mano a ogni turno.
+              </p>
+            </div>
+
+            {/* P - Rosa: Crea Stanza */}
+            <div className="flex flex-col items-center text-center">
+              <Link 
+                href="/host" 
+                className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-pink-50/70 text-pink-600 border-2 border-pink-400 py-3.5 px-6 rounded-full font-black text-base shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
+              >
+                <BookOpen className="w-5 h-5 text-pink-500" />
+                <span>Crea Stanza (LIM + Device)</span>
+              </Link>
+              <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
+                Proietta il tabellone alla LIM e connetti i tablet/device con PIN.
+              </p>
+            </div>
+
+            {/* S - Giallo/Ambra: Unisciti con PIN */}
+            <div className="flex flex-col items-center text-center">
+              <Link 
+                href="/play" 
+                className="w-full flex items-center justify-center gap-2.5 bg-white hover:bg-amber-50/70 text-amber-600 border-2 border-amber-400 py-3.5 px-6 rounded-full font-black text-base shadow-sm hover:shadow-md hover:-translate-y-0.5 active:scale-95 transition-all"
+              >
+                <Users className="w-5 h-5 text-amber-500" />
+                <span>Unisciti con PIN</span>
+              </Link>
+              <p className="text-xs text-slate-500 font-medium mt-2 px-2 leading-relaxed">
+                Partecipa inserendo il PIN per usare il tuo tablet/device come controller.
+              </p>
+            </div>
+
           </div>
 
         </div>
@@ -86,21 +136,21 @@ export default function Home() {
           <div className="w-px h-8 sm:h-12 bg-slate-300 mx-2"></div>
 
           <div className="group relative flex flex-col items-center">
-            <button onClick={() => setShowContatti(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => openLegal('contatti')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
               <img src="/ops-storia/icons/3.png" alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Contatti</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
-            <button onClick={() => setShowPrivacy(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => openLegal('privacy')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
               <img src="/ops-storia/icons/4.png" alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Privacy</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
-            <button onClick={() => setShowTermini(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
+            <button onClick={() => openLegal('termini')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
               <img src="/ops-storia/icons/5.png" alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Termini</span>
@@ -145,65 +195,75 @@ export default function Home() {
                   <X className="w-6 h-6" />
                 </button>
                 
-                <h2 className="text-4xl font-black text-primary-500 mb-8 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">Come si gioca?</h2>
+                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">Come si gioca?</h2>
                 
                 <div className="flex-1 relative overflow-hidden">
                   <AnimatePresence mode="wait">
                     {tutorialStep === 0 && (
                       <motion.div key="step0" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <Info className="w-20 h-20 sm:w-28 sm:h-28 text-primary-500 mb-6" />
-                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola!</p>
+                          <Info className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" />
+                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola indovinata!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 1 && (
                       <motion.div key="step1" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <AlertOctagon className="w-20 h-20 sm:w-28 sm:h-28 text-red-500 mb-6" />
-                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
+                          <AlertOctagon className="w-20 h-20 sm:w-24 sm:h-24 text-red-500 mb-4" />
+                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 2 && (
                       <motion.div key="step2" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <SkipForward className="w-20 h-20 sm:w-28 sm:h-28 text-amber-500 mb-6" />
-                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
+                          <SkipForward className="w-20 h-20 sm:w-24 sm:h-24 text-amber-500 mb-4" />
+                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
                         </div>
                       </motion.div>
                     )}
                     {tutorialStep === 3 && (
                       <motion.div key="step3" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
                         <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <Timer className="w-20 h-20 sm:w-28 sm:h-28 text-blue-500 mb-6" />
-                          <p className="text-lg sm:text-xl md:text-2xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone potrai pescare carte magiche con <strong className="text-purple-600">effetti speciali</strong> (come tempo doppio o scarti infiniti).</p>
+                          <Timer className="w-20 h-20 sm:w-24 sm:h-24 text-blue-500 mb-4" />
+                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone a 24 caselle sbloccherai <strong className="text-purple-600">effetti speciali</strong> (Tempo Doppio 120s, Pesca Illimitata o Imprevisti).</p>
+                        </div>
+                      </motion.div>
+                    )}
+                    {tutorialStep === 4 && (
+                      <motion.div key="step4" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
+                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
+                          <MonitorPlay className="w-20 h-20 sm:w-24 sm:h-24 text-emerald-500 mb-4" />
+                          <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
+                            <strong>Due modalità:</strong> Gioca con <strong className="text-slate-900">1 Dispositivo</strong> (Passa e Gioca) oppure in <strong className="text-primary-600">Multi-Device</strong> (Tabellone alla LIM e carte segrete sui tablet/device con PIN).
+                          </p>
                         </div>
                       </motion.div>
                     )}
                   </AnimatePresence>
                 </div>
 
-                <div className="mt-8 flex justify-between items-center shrink-0">
+                <div className="mt-6 flex justify-between items-center shrink-0">
                   <div className="flex space-x-2">
-                    {[0, 1, 2, 3].map(step => (
+                    {[0, 1, 2, 3, 4].map(step => (
                       <div key={step} className={`w-3 h-3 rounded-full transition-colors ${tutorialStep === step ? 'bg-primary-500' : 'bg-slate-200'}`} />
                     ))}
                   </div>
                   
-                  {tutorialStep < 3 ? (
+                  {tutorialStep < 4 ? (
                     <button 
                       onClick={() => setTutorialStep(s => s + 1)}
-                      className="bg-primary-500 text-white px-8 py-3 rounded-xl font-black text-lg hover:bg-primary-600 transition-colors shadow-md"
+                      className="bg-primary-500 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-primary-600 transition-colors shadow-md"
                     >
                       AVANTI
                     </button>
                   ) : (
                     <button 
                       onClick={() => { setShowTutorial(false); setTutorialStep(0); }}
-                      className="bg-slate-900 text-white px-8 py-3 rounded-xl font-black text-lg hover:bg-slate-800 transition-colors shadow-md"
+                      className="bg-slate-900 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-slate-800 transition-colors shadow-md"
                     >
-                      GIOCA!
+                      HO CAPITO!
                     </button>
                   )}
                 </div>
@@ -274,7 +334,18 @@ export default function Home() {
                   <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">4</div>
                   <div>
                     <h3 className="font-black text-slate-800 text-lg mb-1">Carte Magiche e Vittoria</h3>
-                    <p>Lungo il tabellone potrai sbloccare carte con effetti speciali. Vince la prima squadra che raggiunge la casella d'arrivo!</p>
+                    <p>Lungo il tabellone potrai sbloccare carte con effetti speciali (Tempo Doppio, Pesca Illimitata, Imprevisto). Vince la prima squadra che raggiunge la casella 24!</p>
+                  </div>
+                </div>
+
+                <div className="bg-amber-500/10 p-5 rounded-2xl border border-amber-500/30 flex items-start space-x-4">
+                  <div className="bg-amber-500 text-slate-950 w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">5</div>
+                  <div>
+                    <h3 className="font-black text-slate-900 text-lg mb-1">Le 2 Modalità di Gioco</h3>
+                    <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
+                      <li><strong>1 Dispositivo (Passa e Gioca • Party):</strong> Ideale per giocare con un unico tablet, PC o device. I giocatori si passano il dispositivo a ogni turno per non svelare le parole taboo.</li>
+                      <li><strong>Multi-Device (LIM + Tablet/Device con PIN):</strong> Il docente proietta il tabellone alla LIM e gli studenti interagiscono dai loro tablet o device inserendo il PIN della stanza a 4 cifre.</li>
+                    </ul>
                   </div>
                 </div>
               </div>
