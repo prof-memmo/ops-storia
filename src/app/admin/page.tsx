@@ -20,7 +20,8 @@ import {
   Sparkles,
   ArrowLeft,
   X,
-  Check
+  Check,
+  RefreshCw
 } from "lucide-react";
 import HostLogin from "@/components/HostLogin";
 import Header from "@/components/Header";
@@ -93,12 +94,21 @@ export default function AdminDashboard() {
       setLoading(false);
     });
 
-    // Carica eventuali modifiche salvate in localStorage
+    // Carica eventuali modifiche salvate in localStorage (con auto-migrazione di Terza Media)
     const saved = localStorage.getItem("ops_storia_custom_cards");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setCardsMap(parsed);
+        // Se Terza in localStorage ha il vecchio formato con parole spezzate (es. "Belle"), aggiorna automaticamente Terza con il file aggiornato
+        if (!parsed.Terza || !Array.isArray(parsed.Terza) || parsed.Terza.length === 0 || parsed.Terza[0]?.parola_chiave === "Belle") {
+          parsed.Terza = cardsTerza as CardItem[];
+          localStorage.setItem("ops_storia_custom_cards", JSON.stringify(parsed));
+        }
+        setCardsMap({
+          Prima: parsed.Prima || (cardsPrima as CardItem[]),
+          Seconda: parsed.Seconda || (cardsSeconda as CardItem[]),
+          Terza: parsed.Terza || (cardsTerza as CardItem[])
+        });
       } catch (err) {}
     }
 
@@ -111,7 +121,7 @@ export default function AdminDashboard() {
   };
 
   const handleSaveCard = (card: CardItem) => {
-    const currentList = [...cardsMap[card.classe]];
+    const currentList = [...(cardsMap[card.classe] || [])];
     const idx = currentList.findIndex(c => c.id === card.id);
     if (idx >= 0) {
       currentList[idx] = card;
@@ -126,9 +136,30 @@ export default function AdminDashboard() {
 
   const handleDeleteCard = (cardId: string, classe: "Prima" | "Seconda" | "Terza") => {
     if (confirm("Sei sicuro di voler eliminare questa carta?")) {
-      const currentList = cardsMap[classe].filter(c => c.id !== cardId);
+      const currentList = (cardsMap[classe] || []).filter(c => c.id !== cardId);
       const newMap = { ...cardsMap, [classe]: currentList };
       saveToStorage(newMap);
+    }
+  };
+
+  const handleResetCurrentDeck = () => {
+    const fileSource = activeTab === "Prima" ? cardsPrima : activeTab === "Seconda" ? cardsSeconda : cardsTerza;
+    if (confirm(`Vuoi ricaricare il mazzo ${activeTab} Media direttamente dal file sorgente aggiornato?`)) {
+      const newMap = { ...cardsMap, [activeTab]: fileSource as CardItem[] };
+      saveToStorage(newMap);
+      alert(`✅ Mazzo ${activeTab} Media ricaricato con successo dal file!`);
+    }
+  };
+
+  const handleResetAllDecks = () => {
+    if (confirm("Vuoi ripristinare TUTTI e 3 i mazzi (Prima, Seconda e Terza) direttamente dai file sorgente?")) {
+      const freshMap = {
+        Prima: cardsPrima as CardItem[],
+        Seconda: cardsSeconda as CardItem[],
+        Terza: cardsTerza as CardItem[]
+      };
+      saveToStorage(freshMap);
+      alert("✅ Tutti i mazzi sono stati ripristinati dai file sorgente!");
     }
   };
 
@@ -291,8 +322,18 @@ export default function AdminDashboard() {
             })}
           </div>
 
-          <div className="text-xs font-bold text-slate-500">
-            Database complessivo: <span className="text-slate-900 font-black">{totalCardsCount}</span> carte
+          <div className="flex items-center gap-3">
+            <button
+              onClick={handleResetCurrentDeck}
+              className="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-bold px-3 py-1.5 rounded-xl text-xs transition-colors cursor-pointer shadow-sm"
+              title={`Ricarica mazzo ${activeTab} dal file sorgente JSON`}
+            >
+              <RefreshCw className="w-3.5 h-3.5" />
+              <span>Ricarica {activeTab} da File</span>
+            </button>
+            <div className="text-xs font-bold text-slate-500">
+              Database: <span className="text-slate-900 font-black">{totalCardsCount}</span> carte
+            </div>
           </div>
         </div>
 
