@@ -2,7 +2,7 @@ import { ref, set, get, onValue, update, child, push } from "firebase/database";
 import { rtdb } from "./firebase";
 
 export type RoomState = {
-  status: "LOBBY" | "PLAYING" | "SUMMARY" | "BOARD";
+  status: "LOBBY" | "PLAYING" | "SUMMARY" | "BOARD" | "LEADERBOARD";
   code: string;
   deck: any[];
   settings: {
@@ -21,6 +21,7 @@ export type RoomState = {
     cardsGuessed: number;
     cardsPassed: number;
     opsPenalties: number;
+    lastSpecialNotice?: string;
   };
   teamA: {
     connected: boolean;
@@ -28,6 +29,10 @@ export type RoomState = {
     score: number;
     pawn: number;
     position: number;
+    pendingBonus?: {
+      unlimitedPass: boolean;
+      doubleTime: boolean;
+    };
   };
   teamB: {
     connected: boolean;
@@ -35,6 +40,10 @@ export type RoomState = {
     score: number;
     pawn: number;
     position: number;
+    pendingBonus?: {
+      unlimitedPass: boolean;
+      doubleTime: boolean;
+    };
   };
   hostConnected: boolean;
 };
@@ -70,14 +79,22 @@ export const createRoom = async (settings: any, deck: any[]) => {
       name: "Squadra A",
       score: 0,
       pawn: 1,
-      position: 0
+      position: 1,
+      pendingBonus: {
+        unlimitedPass: false,
+        doubleTime: false
+      }
     },
     teamB: {
       connected: false,
       name: "Squadra B",
       score: 0,
       pawn: 4,
-      position: 0
+      position: 1,
+      pendingBonus: {
+        unlimitedPass: false,
+        doubleTime: false
+      }
     },
     hostConnected: true
   };

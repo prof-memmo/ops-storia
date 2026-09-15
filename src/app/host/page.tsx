@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Timer, Check, X, Home, AlertOctagon, Undo2, Play, BookOpen, Settings, Layers, Pause, PlayCircle, LogOut } from "lucide-react";
+import { Users, Timer, Check, X, Home, AlertOctagon, Undo2, Play, BookOpen, Settings, Layers, Pause, PlayCircle, LogOut, Trophy, Sparkles, Award } from "lucide-react";
 import Link from "next/link";
 import DynamicBoard from "../components/DynamicBoard";
 import HostLogin from "@/components/HostLogin";
-import { createRoom, subscribeToRoom, updateRoomStatus, updateRoomState, RoomState } from "@/lib/gameLogic";
+import { createRoom, subscribeToRoom, updateRoomStatus, updateRoomState, updateTeamStats, RoomState } from "@/lib/gameLogic";
 import { auth } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { getPawnImg } from "@/lib/assets";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -33,14 +34,6 @@ const colorsDB = [
   { id: "giallo", name: "La rinascita dell'Anno Mille", colorClass: "bg-yellow-500", textClass: "text-yellow-500", borderClass: "border-yellow-500" },
   { id: "blu", name: "Le Crociate e i Comuni", colorClass: "bg-blue-500", textClass: "text-blue-500", borderClass: "border-blue-500" },
   { id: "viola", name: "La crisi del Trecento e la Peste Nera", colorClass: "bg-purple-500", textClass: "text-purple-500", borderClass: "border-purple-500" }
-];
-
-const boardPath = [
-  { x: 13, y: 15 }, { x: 13, y: 30 }, { x: 23, y: 30 }, { x: 32, y: 30 }, { x: 32, y: 15 },
-  { x: 42, y: 15 }, { x: 52, y: 15 }, { x: 52, y: 30 }, { x: 52, y: 55 }, { x: 42, y: 55 },
-  { x: 32, y: 55 }, { x: 23, y: 55 }, { x: 13, y: 55 }, { x: 13, y: 70 }, { x: 13, y: 85 },
-  { x: 23, y: 85 }, { x: 32, y: 85 }, { x: 42, y: 85 }, { x: 52, y: 85 }, { x: 62, y: 85 },
-  { x: 72, y: 85 }, { x: 82, y: 85 }, { x: 82, y: 70 }, { x: 82, y: 55 }, { x: 80, y: 25 }
 ];
 
 export default function HostBoard() {
@@ -82,7 +75,7 @@ export default function HostBoard() {
 
   useEffect(() => {
     let timer: NodeJS.Timeout;
-    if (room && room.status === "PLAYING" && room.state.timeLeft > 0) {
+    if (room && room.status === "PLAYING" && room.state.timeLeft > 0 && !room.state.isPaused) {
       timer = setTimeout(() => {
         updateRoomState(room.code, { timeLeft: room.state.timeLeft - 1 });
       }, 1000);
@@ -164,13 +157,89 @@ export default function HostBoard() {
   };
 
   const startGame = () => {
-    if (room) {
-      updateRoomState(room.code, { 
-        timeLeft: room.state.doubleTime && room.state.currentTurn === 1 ? 120 : 60,
-        doubleTime: false
-      });
-      updateRoomStatus(room.code, "PLAYING");
+    if (!room) return;
+    const activeTeamKey = room.state.currentTurn === 1 ? 'teamA' : 'teamB';
+    const pendingBonus = room[activeTeamKey].pendingBonus || { unlimitedPass: false, doubleTime: false };
+    
+    updateRoomState(room.code, { 
+      timeLeft: pendingBonus.doubleTime ? 120 : 60,
+      doubleTime: pendingBonus.doubleTime,
+      unlimitedPass: pendingBonus.unlimitedPass
+    });
+
+    // Clear active team's consumed bonuses
+    updateTeamStats(room.code, room.state.currentTurn, {
+      pendingBonus: { unlimitedPass: false, doubleTime: false }
+    });
+
+    updateRoomStatus(room.code, "PLAYING");
+  };
+
+  const showBoardAfterSummary = async () => {
+    if (!room) return;
+    const activeTeamKey = room.state.currentTurn === 1 ? 'teamA' : 'teamB';
+    const currentPos = room[activeTeamKey].position || 1;
+    const netMovement = room.state.cardsGuessed - room.state.opsPenalties - room.state.cardsPassed;
+    
+    let newPos = Math.min(24, Math.max(1, currentPos + netMovement));
+    let notice = "";
+    
+    let teamBonus = {
+      unlimitedPass: false,
+      doubleTime: false,
+      ...(room[activeTeamKey].pendingBonus || {})
+    };
+
+    if (newPos === 6) {
+      teamBonus.unlimitedPass = true;
+      notice = `🎣 Casella 6 (Pesca Illimitata): ${room[activeTeamKey].name} potrà scartare senza limiti nel suo prossimo turno!`;
+    } else if (newPos === 12) {
+      notice = `📍 Casella 12: Checkpoint intermedio raggiunto!`;
+    } else if (newPos === 18) {
+      newPos = Math.min(24, newPos + 1);
+      notice = `♟️ Casella 18 (Mossa del Cavallo): Salto bonus immediato alla casella ${newPos}!`;
+    } else if (newPos === 21) {
+      teamBonus.doubleTime = true;
+      notice = `✖️2 Casella 21 (Tempo Doppio): ${room[activeTeamKey].name} avrà 120 secondi nel suo prossimo turno!`;
+    } else if (newPos === 24) {
+      notice = `🏆 Casella 24: ${room[activeTeamKey].name} ha raggiunto il traguardo finale!`;
     }
+
+    await updateTeamStats(room.code, room.state.currentTurn, {
+      position: newPos,
+      pendingBonus: teamBonus
+    });
+
+    await updateRoomState(room.code, {
+      lastSpecialNotice: notice
+    });
+
+    await updateRoomStatus(room.code, "BOARD");
+  };
+
+  const handleNextTurn = async () => {
+    if (!room) return;
+    const nextTurn: 1 | 2 = room.state.currentTurn === 1 ? 2 : 1;
+    const nextTeamKey = nextTurn === 1 ? 'teamA' : 'teamB';
+    const nextBonus = room[nextTeamKey].pendingBonus || { unlimitedPass: false, doubleTime: false };
+
+    await updateRoomState(room.code, {
+      currentTurn: nextTurn,
+      cardsGuessed: 0,
+      cardsPassed: 0,
+      opsPenalties: 0,
+      timeLeft: nextBonus.doubleTime ? 120 : 60,
+      doubleTime: nextBonus.doubleTime,
+      unlimitedPass: nextBonus.unlimitedPass,
+      lastSpecialNotice: ""
+    });
+
+    // Clear next team's consumed bonus
+    await updateTeamStats(room.code, nextTurn, {
+      pendingBonus: { unlimitedPass: false, doubleTime: false }
+    });
+
+    await updateRoomStatus(room.code, "PLAYING");
   };
 
   const handleLogout = async () => {
@@ -178,6 +247,17 @@ export default function HostBoard() {
       await signOut(auth);
       window.location.href = "/";
     }
+  };
+
+  const getRankedTeams = () => {
+    if (!room) return [];
+    const tA = { ...room.teamA, id: 'A', isTeamA: true };
+    const tB = { ...room.teamB, id: 'B', isTeamA: false };
+    const teams = [tA, tB];
+    return teams.sort((a, b) => {
+      if (b.position !== a.position) return b.position - a.position;
+      return b.score - a.score;
+    });
   };
 
   return (
@@ -283,67 +363,78 @@ export default function HostBoard() {
                 </button>
               )}
 
-              {room.status !== "LOBBY" && (
+              {room.status !== "LOBBY" && room.status !== "LEADERBOARD" && (
                 <div className="w-full flex-1 flex flex-col items-center justify-center">
                   
-                  <div className="flex justify-between w-full max-w-4xl px-8 mb-8">
+                  <div className="flex justify-between w-full max-w-4xl px-8 mb-4 items-center">
                     <div className="text-center">
                       <span className="text-sm font-bold text-slate-500">{room.teamA.name}</span>
-                      <div className="text-6xl font-black text-slate-900">{room.teamA.score}</div>
+                      <div className="text-5xl font-black text-slate-900">{room.teamA.score} <span className="text-sm text-slate-400 font-normal">pts</span></div>
+                      <div className="text-xs font-bold text-primary-600">Casella: {room.teamA.position || 1}</div>
                     </div>
                     
                     <div className="flex flex-col items-center">
-                       <span className="text-sm font-bold text-slate-400 mb-2">TEMPO</span>
-                       <div className={`text-8xl font-black ${room.state.timeLeft <= 10 ? 'text-red-500' : 'text-slate-800'}`}>
-                         {room.state.timeLeft}
+                       <span className="text-sm font-bold text-slate-400 mb-1">TEMPO</span>
+                       <div className={`text-6xl font-black ${room.state.timeLeft <= 10 ? 'text-red-500' : 'text-slate-800'}`}>
+                         {room.state.timeLeft}s
                        </div>
+                       {(room.state.unlimitedPass || room.state.doubleTime) && (
+                         <div className="flex gap-2 mt-2">
+                           {room.state.unlimitedPass && <span className="bg-blue-100 text-blue-700 text-xs font-bold px-2 py-0.5 rounded-full">🎣 Scarti Infiniti</span>}
+                           {room.state.doubleTime && <span className="bg-purple-100 text-purple-700 text-xs font-bold px-2 py-0.5 rounded-full">✖️2 Tempo Doppio</span>}
+                         </div>
+                       )}
                     </div>
 
                     <div className="text-center">
                       <span className="text-sm font-bold text-slate-500">{room.teamB.name}</span>
-                      <div className="text-6xl font-black text-slate-900">{room.teamB.score}</div>
+                      <div className="text-5xl font-black text-slate-900">{room.teamB.score} <span className="text-sm text-slate-400 font-normal">pts</span></div>
+                      <div className="text-xs font-bold text-primary-600">Casella: {room.teamB.position || 1}</div>
                     </div>
                   </div>
 
                   {room.status === "BOARD" && (
-                    <div className="w-full max-w-5xl h-full flex items-center justify-center">
+                    <div className="w-full max-w-5xl flex flex-col items-center">
                       <DynamicBoard 
-                        teamA={{ pos: room.teamA.position, pawn: room.teamA.pawn, id: "A" }} 
-                        teamB={{ pos: room.teamB.position, pawn: room.teamB.pawn, id: "B" }} 
+                        teamA={{ pos: room.teamA.position || 1, pawn: room.teamA.pawn, id: "A" }} 
+                        teamB={{ pos: room.teamB.position || 1, pawn: room.teamB.pawn, id: "B" }} 
                       />
+
+                      {room.state.lastSpecialNotice && (
+                        <div className="mt-4 bg-amber-50 border-2 border-amber-300 text-amber-900 font-bold px-6 py-3 rounded-2xl shadow-sm text-center animate-bounce">
+                          {room.state.lastSpecialNotice}
+                        </div>
+                      )}
+
+                      <div className="flex flex-wrap gap-4 mt-6 justify-center">
+                        <button 
+                          onClick={handleNextTurn} 
+                          className="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 rounded-xl font-black text-lg shadow-lg active:scale-95 transition-all flex items-center gap-2"
+                        >
+                          <Play className="w-5 h-5 fill-current" />
+                          Prossimo Turno ({room.state.currentTurn === 1 ? room.teamB.name : room.teamA.name})
+                        </button>
+                        <button 
+                          onClick={() => updateRoomStatus(room.code, "LEADERBOARD")} 
+                          className="bg-slate-800 hover:bg-slate-900 text-white px-6 py-4 rounded-xl font-bold text-base shadow-md active:scale-95 transition-all flex items-center gap-2"
+                        >
+                          <Trophy className="w-5 h-5 text-amber-400" />
+                          Classifica
+                        </button>
+                      </div>
                     </div>
                   )}
 
                   {room.status === "SUMMARY" && (
-                     <div className="text-center py-12">
+                     <div className="text-center py-12 bg-white rounded-3xl shadow-sm border border-slate-100 p-8 max-w-2xl">
                        <h3 className="text-4xl font-black text-primary-500 mb-4">Fine Turno!</h3>
-                       <p className="text-xl font-medium text-slate-600 mb-8">Punti indovinati: <span className="text-emerald-500 font-bold">+{room.state.cardsGuessed}</span> | Errori OPS: <span className="text-red-500 font-bold">-{room.state.opsPenalties}</span> | Scarti: <span className="text-amber-500 font-bold">-{room.state.cardsPassed}</span></p>
-                       <button onClick={() => updateRoomStatus(room.code, "BOARD")} className="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold shadow-lg">Mostra Tabellone</button>
+                       <p className="text-xl font-medium text-slate-600 mb-8">
+                         Punti indovinati: <span className="text-emerald-500 font-bold">+{room.state.cardsGuessed}</span> | Errori OPS: <span className="text-red-500 font-bold">-{room.state.opsPenalties}</span> | Scarti: <span className="text-amber-500 font-bold">-{room.state.cardsPassed}</span>
+                       </p>
+                       <button onClick={showBoardAfterSummary} className="bg-slate-900 hover:bg-slate-800 text-white px-8 py-4 rounded-xl font-bold shadow-lg text-lg transition-all">
+                         Mostra Tabellone & Muovi Pedine
+                       </button>
                      </div>
-                  )}
-
-                  {room.status === "BOARD" && (
-                     <button onClick={() => {
-                        const activeTeamKey = room.state.currentTurn === 1 ? 'teamA' : 'teamB';
-                        const inactiveTeamKey = room.state.currentTurn === 1 ? 'teamB' : 'teamA';
-                        
-                        let newPos = Math.min(24, Math.max(0, room[activeTeamKey].position + room.state.cardsGuessed - room.state.opsPenalties - room.state.cardsPassed));
-                        let unlPass = false; let dblTime = false;
-                        
-                        if (newPos === 5) unlPass = true;
-                        if (newPos === 11) newPos = Math.max(0, newPos - 2);
-                        if (newPos === 20) dblTime = true;
-
-                        updateRoomState(room.code, {
-                           currentTurn: room.state.currentTurn === 1 ? 2 : 1,
-                           cardsGuessed: 0, cardsPassed: 0, opsPenalties: 0,
-                           unlimitedPass: unlPass, doubleTime: dblTime
-                        });
-                        
-                        updateRoomStatus(room.code, "PLAYING");
-                     }} className="mt-8 bg-primary-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg">
-                       Prossimo Turno
-                     </button>
                   )}
 
                   <div className="absolute top-8 right-8">
@@ -352,6 +443,82 @@ export default function HostBoard() {
                      </button>
                   </div>
 
+                </div>
+              )}
+
+              {/* LEADERBOARD VIEW */}
+              {room.status === "LEADERBOARD" && (
+                <div className="w-full flex flex-col items-center justify-center py-6 max-w-3xl">
+                  <div className="inline-flex items-center gap-2 bg-amber-100 border border-amber-300 text-amber-800 px-4 py-1.5 rounded-full font-black text-sm uppercase tracking-wider mb-4 shadow-sm">
+                    <Trophy className="w-4 h-4 text-amber-600" /> Classifica Partita
+                  </div>
+
+                  <h2 className="text-4xl sm:text-5xl font-black text-slate-900 mb-2 text-center tracking-tight">
+                    {room.teamA.position >= 24 || room.teamB.position >= 24 ? "🏆 Vittoria Finale!" : "📊 Classifica Squadre"}
+                  </h2>
+                  <p className="text-slate-500 font-medium mb-8 text-center">
+                    {room.teamA.position >= 24 || room.teamB.position >= 24 ? "Una squadra ha raggiunto il traguardo finale della Storia!" : "Riepilogo delle posizioni sul tabellone e punteggi."}
+                  </p>
+
+                  {/* Podium / Teams Grid */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 w-full mb-8">
+                    {getRankedTeams().map((team, idx) => {
+                      const isFirst = idx === 0;
+                      return (
+                        <div 
+                          key={team.id} 
+                          className={`relative rounded-3xl p-6 flex flex-col items-center border-4 shadow-xl transition-all ${
+                            isFirst 
+                              ? 'bg-gradient-to-b from-amber-50 to-white border-amber-400 shadow-amber-200/50' 
+                              : 'bg-white border-slate-200 shadow-slate-200/50'
+                          }`}
+                        >
+                          <div className="absolute -top-4 bg-slate-900 text-white font-black text-xs px-3 py-1 rounded-full uppercase tracking-wider flex items-center gap-1 shadow-md">
+                            {isFirst ? <span className="text-amber-300">🥇 1° Posto</span> : <span>🥈 2° Posto</span>}
+                          </div>
+
+                          <div className="w-20 h-20 rounded-full border-4 border-white shadow-xl overflow-hidden bg-slate-100 flex items-center justify-center my-3">
+                            <img src={getPawnImg(team.pawn || 1)} alt={team.name} className="w-full h-full object-cover" />
+                          </div>
+
+                          <h3 className="text-2xl font-black text-slate-900 mb-1">{team.name}</h3>
+
+                          <div className="flex items-center gap-2 mb-4">
+                            <span className="text-xs font-bold px-3 py-1 bg-primary-50 text-primary-700 rounded-full border border-primary-200">
+                              Casella {team.position || 1} / 24
+                            </span>
+                          </div>
+
+                          <div className="w-full bg-slate-50 rounded-2xl p-4 border border-slate-100 space-y-2">
+                            <div className="flex justify-between items-center text-sm font-bold text-slate-600">
+                              <span>Punti Totali:</span>
+                              <span className="text-lg font-black text-slate-900">{team.score}</span>
+                            </div>
+                            <div className="flex justify-between items-center text-sm font-bold text-slate-600">
+                              <span>Avanzamento:</span>
+                              <span className="text-primary-600 font-black">{Math.round(((team.position || 1) / 24) * 100)}%</span>
+                            </div>
+                          </div>
+                        </div>
+                      );
+                    })}
+                  </div>
+
+                  {/* Actions */}
+                  <div className="flex flex-wrap gap-4 justify-center">
+                    <button
+                      onClick={() => updateRoomStatus(room.code, "BOARD")}
+                      className="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 rounded-2xl font-black text-lg shadow-lg active:scale-95 transition-all flex items-center gap-2"
+                    >
+                      <Play className="w-5 h-5 fill-current" /> Torna al Tabellone
+                    </button>
+                    <button
+                      onClick={() => setPhase("SETUP_DECK")}
+                      className="bg-slate-200 hover:bg-slate-300 text-slate-800 px-6 py-4 rounded-2xl font-bold text-base shadow-sm active:scale-95 transition-all"
+                    >
+                      Nuova Partita
+                    </button>
+                  </div>
                 </div>
               )}
 

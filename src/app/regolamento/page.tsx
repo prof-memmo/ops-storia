@@ -65,20 +65,28 @@ export default function Regolamento() {
                 <CheckCircle className="w-6 h-6 text-purple-500 mr-2" /> 4. Il Tabellone e Caselle Speciali
               </h2>
               <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                Al termine dei 60 secondi, le pedine avanzano o retrocedono sul tabellone. Il percorso a serpentina contiene delle caselle speciali colorate che si attivano al turno successivo:
+                Al termine dei 60 secondi, le pedine avanzano sul tabellone a 24 caselle. Lungo il tracciato sono presenti caselle speciali che garantiscono vantaggi esclusivi alla squadra che vi atterra:
               </p>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                 <div className="bg-green-50 p-4 rounded-xl border border-green-200">
-                  <h4 className="font-bold text-green-700 text-xl mb-1">Pesca Illimitata</h4>
-                  <p className="text-green-600">Nel turno successivo la squadra può scartare infinite carte senza penalità o limiti.</p>
+                  <h4 className="font-bold text-green-700 text-xl mb-1">Casella 6: 🎣 Pesca Illimitata</h4>
+                  <p className="text-green-600">Nel turno successivo la squadra può scartare infinite carte senza il limite standard di 2 scarti.</p>
+                </div>
+                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
+                  <h4 className="font-bold text-blue-700 text-xl mb-1">Casella 12: 📍 Checkpoint Intermedio</h4>
+                  <p className="text-blue-600">Traguardo a metà percorso: sancisce l'ingresso nella seconda metà del tabellone storico.</p>
+                </div>
+                <div className="bg-purple-50 p-4 rounded-xl border border-purple-200">
+                  <h4 className="font-bold text-purple-700 text-xl mb-1">Casella 18: ♟️ Mossa del Cavallo</h4>
+                  <p className="text-purple-600">Scacco al tabellone! La pedina compie un balzo immediato alla casella 19.</p>
                 </div>
                 <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
-                  <h4 className="font-bold text-yellow-700 text-xl mb-1">Tempo Doppio</h4>
-                  <p className="text-yellow-600">Nel turno successivo la squadra avrà ben 120 secondi a disposizione.</p>
+                  <h4 className="font-bold text-yellow-700 text-xl mb-1">Casella 21: ✖️2 Tempo Doppio (120s)</h4>
+                  <p className="text-yellow-600">Volata finale! Nel turno successivo la squadra avrà ben 120 secondi di tempo a disposizione.</p>
                 </div>
-                <div className="bg-red-50 p-4 rounded-xl border border-red-200 md:col-span-2">
-                  <h4 className="font-bold text-red-700 text-xl mb-1">Torna Indietro</h4>
-                  <p className="text-red-600">Sfortuna! Se cadi qui la tua pedina retrocede immediatamente di 2 caselle.</p>
+                <div className="bg-amber-50 p-4 rounded-xl border border-amber-300 md:col-span-2 text-center">
+                  <h4 className="font-bold text-amber-800 text-xl mb-1">Casella 24: 🏆 Traguardo Finale</h4>
+                  <p className="text-amber-700">La prima squadra che raggiunge o supera la casella 24 trionfa nella sfida storica!</p>
                 </div>
               </div>
             </section>

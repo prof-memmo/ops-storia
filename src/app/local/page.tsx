@@ -2,7 +2,10 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Timer, Check, X, Home, AlertOctagon, Undo2, LogIn, ArrowLeft, LogOut } from "lucide-react";
+import { 
+  Users, Timer, Check, X, Home, AlertOctagon, Undo2, LogIn, ArrowLeft, LogOut, 
+  Trophy, Pause, Play, FolderOpen, Save, Trash2, Clock, Sparkles, Award
+} from "lucide-react";
 import Link from "next/link";
 import DynamicBoard from "../components/DynamicBoard";
 import HostLogin from "@/components/HostLogin";
@@ -53,16 +56,53 @@ const verticalBoardPath = [
 
 const avatars = Array.from({length: 8}, (_, i) => i + 1);
 
+interface TeamData {
+  name: string;
+  score: number;
+  pawn: number;
+  pos: number;
+  pendingBonus: {
+    unlimitedPass: boolean;
+    doubleTime: boolean;
+  };
+}
+
+interface SavedGame {
+  id: string;
+  name: string;
+  date: string;
+  timestamp: number;
+  selectedDeck: string;
+  selectedColors: string[];
+  currentTurn: 1 | 2;
+  teamA: TeamData;
+  teamB: TeamData;
+  currentCardIndex: number;
+}
+
 export default function LocalPlay() {
-  const [phase, setPhase] = useState<"SETUP" | "TOPICS" | "AVATAR_A" | "AVATAR_B" | "READY" | "PLAYING" | "SUMMARY" | "BOARD">("SETUP");
+  const [phase, setPhase] = useState<"SETUP" | "TOPICS" | "AVATAR_A" | "AVATAR_B" | "READY" | "PLAYING" | "SUMMARY" | "BOARD" | "LEADERBOARD">("SETUP");
   const [selectedDeck, setSelectedDeck] = useState("prima");
   const [selectedColors, setSelectedColors] = useState<string[]>([]);
   
   const [deck, setDeck] = useState<any[]>([]);
   const [currentCardIndex, setCurrentCardIndex] = useState(0);
   
-  const [teamA, setTeamA] = useState<{ score: number; pawn: number; pos: number }>({ score: 0, pawn: 1, pos: 0 });
-  const [teamB, setTeamB] = useState<{ score: number; pawn: number; pos: number }>({ score: 0, pawn: 2, pos: 0 });
+  const [teamA, setTeamA] = useState<TeamData>({ 
+    name: "Squadra A", 
+    score: 0, 
+    pawn: 1, 
+    pos: 1, 
+    pendingBonus: { unlimitedPass: false, doubleTime: false } 
+  });
+  const [teamB, setTeamB] = useState<TeamData>({ 
+    name: "Squadra B", 
+    score: 0, 
+    pawn: 2, 
+    pos: 1, 
+    pendingBonus: { unlimitedPass: false, doubleTime: false } 
+  });
+
   const [selectedPawnA, setSelectedPawnA] = useState<number | null>(null);
   const [selectedPawnB, setSelectedPawnB] = useState<number | null>(null);
   const [currentTurn, setCurrentTurn] = useState<1 | 2>(1);
@@ -71,8 +111,14 @@ export default function LocalPlay() {
   
   const [turnStats, setTurnStats] = useState({ guessed: 0, passed: 0, ops: 0 });
   const [showUndoOps, setShowUndoOps] = useState(false);
-  const [doubleTime, setDoubleTime] = useState(false);
-  const [unlimitedPass, setUnlimitedPass] = useState(false);
+  const [activeDoubleTime, setActiveDoubleTime] = useState(false);
+  const [activeUnlimitedPass, setActiveUnlimitedPass] = useState(false);
+  const [lastSpecialNotice, setLastSpecialNotice] = useState<string>("");
+
+  const [isFinalLeaderboard, setIsFinalLeaderboard] = useState(false);
+  const [showSavedGamesModal, setShowSavedGamesModal] = useState(false);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [saveSessionName, setSaveSessionName] = useState("");
 
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -158,8 +204,20 @@ export default function LocalPlay() {
   };
 
   const startGame = () => {
-    setTimeLeft(doubleTime ? 120 : 60);
-    setDoubleTime(false);
+    const activeTeam = currentTurn === 1 ? teamA : teamB;
+    const setActiveTeam = currentTurn === 1 ? setTeamA : setTeamB;
+
+    const hasDoubleTime = activeTeam.pendingBonus?.doubleTime || false;
+    const hasUnlimitedPass = activeTeam.pendingBonus?.unlimitedPass || false;
+
+    setActiveTeam(s => ({
+      ...s,
+      pendingBonus: { unlimitedPass: false, doubleTime: false }
+    }));
+
+    setTimeLeft(hasDoubleTime ? 120 : 60);
+    setActiveDoubleTime(hasDoubleTime);
+    setActiveUnlimitedPass(hasUnlimitedPass);
     setTurnStats({ guessed: 0, passed: 0, ops: 0 });
     setPhase("PLAYING");
   };
@@ -172,7 +230,7 @@ export default function LocalPlay() {
       setCurrentCardIndex(i => i + 1);
     } 
     else if (action === "SCARTA") {
-      if (turnStats.passed >= 2 && !unlimitedPass) return alert("Massimo 2 scarti!");
+      if (turnStats.passed >= 2 && !activeUnlimitedPass) return alert("Massimo 2 scarti!");
       setTurnStats(s => ({...s, passed: s.passed + 1}));
       if (currentTurn === 1) setTeamB(s => ({...s, score: s.score + 1}));
       else setTeamA(s => ({...s, score: s.score + 1}));
@@ -195,21 +253,120 @@ export default function LocalPlay() {
   };
 
   const nextTurn = () => {
-    let unlPass = false; let dblTime = false;
-    const updateTeam = currentTurn === 1 ? setTeamA : setTeamB;
-    const currentTeam = currentTurn === 1 ? teamA : teamB;
-    
-    let newPos = Math.min(24, Math.max(0, currentTeam.pos + turnStats.guessed - turnStats.ops - turnStats.passed));
-    
-    if (newPos === 5) unlPass = true;
-    if (newPos === 11) newPos = Math.max(0, newPos - 2);
-    if (newPos === 20) dblTime = true;
+    const activeTeam = currentTurn === 1 ? teamA : teamB;
+    const setActiveTeam = currentTurn === 1 ? setTeamA : setTeamB;
 
-    updateTeam(s => ({...s, pos: newPos}));
-    setUnlimitedPass(unlPass);
-    setDoubleTime(dblTime);
+    const oldPos = activeTeam.pos || 1;
+    const netGain = turnStats.guessed - turnStats.ops - turnStats.passed;
+    let newPos = Math.min(24, Math.max(1, oldPos + netGain));
+
+    let notice = "";
+
+    if (newPos === 6) {
+      setActiveTeam(s => ({
+        ...s,
+        pos: newPos,
+        pendingBonus: { ...s.pendingBonus, unlimitedPass: true }
+      }));
+      notice = "🎣 Canna da Pesca! Scarti illimitati nel tuo prossimo turno!";
+    } else if (newPos === 18) {
+      newPos = Math.min(24, newPos + 1);
+      setActiveTeam(s => ({ ...s, pos: newPos }));
+      notice = "♟️ Mossa del Cavallo! Balzo immediato alla casella 19!";
+    } else if (newPos === 21) {
+      setActiveTeam(s => ({
+        ...s,
+        pos: newPos,
+        pendingBonus: { ...s.pendingBonus, doubleTime: true }
+      }));
+      notice = "✖️2 Tempo Doppio! 120 secondi a disposizione nel tuo prossimo turno!";
+    } else if (newPos >= 24) {
+      newPos = 24;
+      setActiveTeam(s => ({ ...s, pos: newPos }));
+      setIsFinalLeaderboard(true);
+      setPhase("LEADERBOARD");
+      return;
+    } else {
+      setActiveTeam(s => ({ ...s, pos: newPos }));
+    }
+
+    setLastSpecialNotice(notice);
     setCurrentTurn(currentTurn === 1 ? 2 : 1);
     setPhase("READY");
+  };
+
+  const getSavedGames = (): SavedGame[] => {
+    try {
+      const raw = localStorage.getItem("ops_storia_saved_games");
+      return raw ? JSON.parse(raw) : [];
+    } catch(e) {
+      return [];
+    }
+  };
+
+  const handleSaveGame = () => {
+    const saved = getSavedGames();
+    const now = new Date();
+    const dateFormatted = now.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    const cleanName = saveSessionName.trim() || `Sessione del ${dateFormatted}`;
+
+    const newSave: SavedGame = {
+      id: `save_${Date.now()}`,
+      name: cleanName,
+      date: dateFormatted,
+      timestamp: Date.now(),
+      selectedDeck,
+      selectedColors,
+      currentTurn,
+      teamA,
+      teamB,
+      currentCardIndex
+    };
+
+    saved.unshift(newSave);
+    localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved.slice(0, 15)));
+    setShowSaveDialog(false);
+    alert("Partita salvata con successo! Potrai riprenderla in qualsiasi momento.");
+    setPhase("SETUP");
+  };
+
+  const handleLoadGame = (saveItem: SavedGame) => {
+    setSelectedDeck(saveItem.selectedDeck || "prima");
+    setSelectedColors(saveItem.selectedColors || []);
+    setCurrentTurn(saveItem.currentTurn || 1);
+    setTeamA({
+      ...saveItem.teamA,
+      pendingBonus: saveItem.teamA.pendingBonus || { unlimitedPass: false, doubleTime: false }
+    });
+    setTeamB({
+      ...saveItem.teamB,
+      pendingBonus: saveItem.teamB.pendingBonus || { unlimitedPass: false, doubleTime: false }
+    });
+    setCurrentCardIndex(saveItem.currentCardIndex || 0);
+
+    let allCards = CARDS_MAP[saveItem.selectedDeck || "prima"] || cardsPrima;
+    const chunkSize = Math.ceil(allCards.length / 6);
+    let finalDeck: any[] = [];
+    const activeColors = (saveItem.selectedColors && saveItem.selectedColors.length > 0) ? saveItem.selectedColors : colorsDB.map(c => c.id);
+    
+    allCards.forEach((c: any, index: number) => {
+      const chunkIndex = Math.min(5, Math.floor(index / chunkSize));
+      const colorObj = colorsDB[chunkIndex];
+      if (activeColors.includes(colorObj.id)) {
+        finalDeck.push({ ...c, colorTheme: colorObj });
+      }
+    });
+    setDeck(finalDeck.length > 0 ? finalDeck : allCards);
+
+    setShowSavedGamesModal(false);
+    setPhase("BOARD");
+  };
+
+  const handleDeleteSavedGame = (saveId: string) => {
+    let saved = getSavedGames();
+    saved = saved.filter(s => s.id !== saveId);
+    localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved));
+    setSaveSessionName(s => s + " ");
   };
 
   const handleLogout = async () => {
@@ -219,7 +376,7 @@ export default function LocalPlay() {
     }
   };
 
-  const card = deck[currentCardIndex % deck.length];
+  const card = deck[currentCardIndex % (deck.length || 1)];
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -260,21 +417,27 @@ export default function LocalPlay() {
           <AnimatePresence mode="wait">
           
           {phase === "SETUP" && (
-            <motion.div key="setup" className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center">
-              <h2 className="text-3xl font-black mb-6">Scegli l'Anno</h2>
+            <motion.div key="setup" className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center border border-slate-100">
+              <h2 className="text-3xl font-black mb-6 text-slate-900">Scegli l'Anno</h2>
               <div className="space-y-3 mb-8">
                 {decksDB.map(d => (
-                  <button key={d.id} onClick={() => setSelectedDeck(d.id)} className={`w-full p-4 rounded-xl border-2 font-bold ${selectedDeck === d.id ? 'border-primary-500 bg-primary-50' : 'border-slate-100'}`}>{d.name}</button>
+                  <button key={d.id} onClick={() => setSelectedDeck(d.id)} className={`w-full p-4 rounded-xl border-2 font-bold transition-all ${selectedDeck === d.id ? 'border-primary-500 bg-primary-50 text-primary-700' : 'border-slate-100 text-slate-700 hover:border-slate-300'}`}>{d.name}</button>
                 ))}
               </div>
-              <button onClick={() => setPhase("TOPICS")} className="w-full bg-primary-500 text-white py-4 rounded-xl font-black">AVANTI</button>
+
+              <div className="flex gap-3">
+                <button onClick={() => setPhase("TOPICS")} className="flex-1 bg-primary-500 text-white py-4 rounded-xl font-black shadow-lg hover:bg-primary-600 active:scale-95 transition-all">AVANTI</button>
+                <button onClick={() => setShowSavedGamesModal(true)} className="flex-1 bg-slate-100 border-2 border-slate-200 text-slate-700 py-4 rounded-xl font-black flex items-center justify-center gap-2 hover:bg-slate-200 transition-all">
+                  <FolderOpen className="w-5 h-5 text-amber-600" /> Riprendi Partita
+                </button>
+              </div>
             </motion.div>
           )}
 
           {phase === "TOPICS" && (
-            <motion.div key="topics" className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center">
+            <motion.div key="topics" className="w-full max-w-md bg-white rounded-3xl shadow-xl p-8 text-center border border-slate-100">
               <div className="flex justify-between items-center mb-4">
-                <h2 className="text-2xl sm:text-3xl font-black">Argomenti</h2>
+                <h2 className="text-2xl sm:text-3xl font-black text-slate-900">Argomenti</h2>
                 <button 
                   type="button"
                   onClick={() => setSelectedColors(selectedColors.length === colorsDB.length ? [] : colorsDB.map(c => c.id))} 
@@ -286,17 +449,17 @@ export default function LocalPlay() {
               <p className="text-xs text-slate-500 mb-4">Se non selezioni nulla, verranno usati tutti gli argomenti.</p>
               <div className="grid grid-cols-2 gap-4 mb-8">
                 {colorsDB.map(c => (
-                  <button key={c.id} onClick={() => setSelectedColors(prev => prev.includes(c.id) ? prev.filter(id => id !== c.id) : [...prev, c.id])} className={`p-4 rounded-xl border-2 font-bold text-sm ${selectedColors.includes(c.id) ? c.borderClass + ' bg-slate-50' : 'border-slate-100 opacity-50'}`}>
+                  <button key={c.id} onClick={() => setSelectedColors(prev => prev.includes(c.id) ? prev.filter(id => id !== c.id) : [...prev, c.id])} className={`p-4 rounded-xl border-2 font-bold text-sm transition-all ${selectedColors.includes(c.id) ? c.borderClass + ' bg-slate-50 text-slate-900' : 'border-slate-100 opacity-50 text-slate-600'}`}>
                     {c.name}
                   </button>
                 ))}
               </div>
-              <button onClick={initGame} className="w-full bg-emerald-500 text-white py-4 rounded-xl font-black shadow-md hover:bg-emerald-600 transition-all">AVANTI</button>
+              <button onClick={initGame} className="w-full bg-emerald-500 text-white py-4 rounded-xl font-black shadow-lg hover:bg-emerald-600 active:scale-95 transition-all">AVANTI</button>
             </motion.div>
           )}
 
           {phase === "AVATAR_A" && (
-            <motion.div key="avatarA" className="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center">
+            <motion.div key="avatarA" className="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center border border-slate-100">
               <div className="inline-flex items-center gap-2 bg-red-100 text-red-700 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider mb-3">
                 <span className="w-2.5 h-2.5 rounded-full bg-red-500 animate-pulse"></span>
                 Squadra A (Rossa)
@@ -340,45 +503,38 @@ export default function LocalPlay() {
           )}
 
           {phase === "AVATAR_B" && (
-            <motion.div key="avatarB" className="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center">
+            <motion.div key="avatarB" className="w-full max-w-3xl bg-white rounded-3xl shadow-xl p-6 sm:p-8 text-center border border-slate-100">
               <div className="inline-flex items-center gap-2 bg-blue-100 text-blue-700 px-4 py-1.5 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider mb-3">
                 <span className="w-2.5 h-2.5 rounded-full bg-blue-500 animate-pulse"></span>
                 Squadra B (Blu)
               </div>
               <h2 className="text-2xl sm:text-3xl font-black text-slate-900 mb-2">Scegli la tua Pedina</h2>
-              <p className="text-xs sm:text-sm text-slate-500 mb-6">Tocca un personaggio per sceglierlo e avviare la partita.</p>
+              <p className="text-xs sm:text-sm text-slate-500 mb-6">Tocca un personaggio per sceglierlo e avviare la sfida.</p>
 
               <div className="grid grid-cols-2 sm:grid-cols-4 gap-4 sm:gap-6 mb-6">
                 {avatars.map(a => {
-                  const isTakenByA = a === teamA.pawn;
                   const isSelected = selectedPawnB === a;
-                  
-                  if (isTakenByA) {
-                    return (
-                      <div 
-                        key={a}
-                        className="relative p-4 rounded-2xl border-2 border-red-300 bg-red-50/40 opacity-50 flex flex-col items-center justify-center cursor-not-allowed"
-                      >
-                        <img src={getPawnImg(a)} className="w-full h-24 sm:h-32 object-contain grayscale-[40%]" alt={`Pedina ${a} occupata`} />
-                        <span className="mt-2 text-[10px] sm:text-xs font-bold text-red-700 bg-red-100 px-2.5 py-0.5 rounded-full">
-                          🔴 Scelta da Squadra A
-                        </span>
-                      </div>
-                    );
-                  }
-
+                  const isTaken = selectedPawnA === a;
                   return (
                     <button 
                       key={a} 
                       type="button"
-                      onClick={() => handleSelectPawnB(a)} 
-                      className={`relative p-4 rounded-2xl border-4 transition-all flex flex-col items-center justify-center cursor-pointer ${
-                        isSelected 
-                          ? 'border-blue-500 bg-blue-50/60 shadow-xl scale-105 ring-4 ring-blue-400' 
-                          : 'border-slate-200 bg-white hover:border-blue-400 hover:scale-[1.03] hover:shadow-lg'
+                      disabled={isTaken}
+                      onClick={() => !isTaken && handleSelectPawnB(a)} 
+                      className={`relative p-4 rounded-2xl border-4 transition-all flex flex-col items-center justify-center ${
+                        isTaken
+                          ? 'border-slate-200 bg-slate-100 opacity-40 cursor-not-allowed'
+                          : isSelected 
+                            ? 'border-blue-500 bg-blue-50/60 shadow-xl scale-105 ring-4 ring-blue-400 cursor-pointer' 
+                            : 'border-slate-200 bg-white hover:border-blue-400 hover:scale-[1.03] hover:shadow-lg cursor-pointer'
                       }`}
                     >
-                      <img src={getPawnImg(a)} className="w-full h-24 sm:h-32 object-contain filter drop-shadow-md" alt={`Pedina ${a}`} />
+                      {isTaken && (
+                        <div className="absolute top-2 right-2 bg-red-500 text-white text-[10px] font-bold px-2 py-0.5 rounded-full shadow">
+                          Squadra A
+                        </div>
+                      )}
+                      <img src={getPawnImg(a)} className={`w-full h-24 sm:h-32 object-contain filter drop-shadow-md ${isTaken ? 'grayscale' : ''}`} alt={`Pedina ${a}`} />
                       <span className="mt-2 text-xs font-bold text-slate-500">
                         Personaggio #{a}
                       </span>
@@ -393,16 +549,35 @@ export default function LocalPlay() {
                   onClick={() => setPhase("AVATAR_A")} 
                   className="px-6 py-3 rounded-2xl font-bold border-2 border-slate-200 text-slate-600 hover:bg-slate-100 transition-all flex items-center justify-center gap-2 cursor-pointer text-sm"
                 >
-                  <ArrowLeft className="w-4 h-4"/> Modifica Pedina Squadra A
+                  <ArrowLeft className="w-4 h-4"/> Torna alla Squadra A
                 </button>
               </div>
             </motion.div>
           )}
 
           {phase === "READY" && (
-            <motion.div key="ready" className="text-center">
-              <h2 className="text-5xl font-black mb-4">Tocca alla Squadra {currentTurn === 1 ? 'A' : 'B'}!</h2>
-              <button onClick={startGame} className="bg-primary-500 text-white px-12 py-6 rounded-full font-black text-3xl shadow-xl hover:scale-105 transition-transform">VIA!</button>
+            <motion.div key="ready" className="text-center bg-white p-10 sm:p-14 rounded-3xl shadow-2xl border border-slate-100 max-w-lg w-full">
+              <div className={`inline-flex items-center gap-2 px-4 py-1.5 rounded-full text-sm font-black uppercase tracking-wider mb-4 ${currentTurn === 1 ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700'}`}>
+                <span className={`w-2.5 h-2.5 rounded-full ${currentTurn === 1 ? 'bg-red-500' : 'bg-blue-500'} animate-pulse`}></span>
+                Turno della Squadra {currentTurn === 1 ? 'A (Rossa)' : 'B (Blu)'}
+              </div>
+
+              <h2 className="text-4xl sm:text-5xl font-black mb-4 text-slate-900">Preparatevi!</h2>
+              <p className="text-slate-500 mb-6 font-medium">Il suggeritore tiene il dispositivo. Quando sei pronto, premi VIA per avviare il timer.</p>
+
+              {((currentTurn === 1 ? teamA : teamB).pendingBonus?.doubleTime || (currentTurn === 1 ? teamA : teamB).pendingBonus?.unlimitedPass) && (
+                <div className="mb-6 bg-amber-50 border-2 border-amber-300 p-4 rounded-2xl text-amber-800 text-sm font-bold flex items-center justify-center gap-2 animate-pulse">
+                  <Sparkles className="w-5 h-5 text-amber-600" />
+                  <span>
+                    {(currentTurn === 1 ? teamA : teamB).pendingBonus?.doubleTime && "✖️2 Bonus 120s Attivo! "}
+                    {(currentTurn === 1 ? teamA : teamB).pendingBonus?.unlimitedPass && "🎣 Scarti Infiniti Attivi!"}
+                  </span>
+                </div>
+              )}
+
+              <button onClick={startGame} className="w-full bg-primary-500 text-white py-5 rounded-2xl font-black text-3xl shadow-xl hover:bg-primary-600 active:scale-95 transition-all">
+                VIA!
+              </button>
             </motion.div>
           )}
 
@@ -432,6 +607,13 @@ export default function LocalPlay() {
                 </div>
               </div>
 
+              {(activeDoubleTime || activeUnlimitedPass) && (
+                <div className="w-full max-w-3xl mb-2 bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-500/20 border border-amber-400 p-2 rounded-xl text-center text-amber-900 font-black text-xs sm:text-sm flex items-center justify-center gap-3">
+                  {activeDoubleTime && <span className="bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full">✖️2 Tempo 120s</span>}
+                  {activeUnlimitedPass && <span className="bg-emerald-400 text-slate-900 px-2.5 py-0.5 rounded-full">🎣 Scarti Infiniti</span>}
+                </div>
+              )}
+
               <div className={`w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border-4 overflow-hidden ${card.colorTheme.borderClass} flex flex-col flex-1 min-h-0`}>
                 <div className={`px-4 py-2 ${card.colorTheme.colorClass} text-white font-black text-lg sm:text-2xl flex justify-between shrink-0`}>
                   <span>Squadra {currentTurn === 1 ? 'A' : 'B'}</span>
@@ -450,7 +632,7 @@ export default function LocalPlay() {
 
                   <div className="p-2 sm:p-4 bg-slate-50 border-t-4 md:border-t-0 md:border-l-4 border-slate-100 grid grid-cols-3 md:grid-cols-1 gap-2 sm:gap-4 shrink-0 md:w-64">
                     <button onClick={() => handleAction("SCARTA")} className="bg-white border-2 sm:border-4 border-slate-200 text-slate-700 font-black text-xs sm:text-2xl rounded-xl sm:rounded-2xl py-3 sm:py-6 flex flex-col items-center justify-center hover:bg-slate-100 active:scale-95 transition-all md:flex-1">
-                      <X className="w-5 h-5 sm:w-8 sm:h-8 mb-1"/> <span>Scarta</span> <span className="text-[10px] sm:text-sm opacity-60">({turnStats.passed}/{unlimitedPass ? '∞' : '2'})</span>
+                      <X className="w-5 h-5 sm:w-8 sm:h-8 mb-1"/> <span>Scarta</span> <span className="text-[10px] sm:text-sm opacity-60">({turnStats.passed}/{activeUnlimitedPass ? '∞' : '2'})</span>
                     </button>
                     <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 sm:border-4 border-emerald-600 text-white font-black text-xs sm:text-2xl rounded-xl sm:rounded-2xl py-3 sm:py-6 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-md md:flex-1">
                       <Check className="w-5 h-5 sm:w-8 sm:h-8 mb-1"/> <span>Esatta!</span>
@@ -470,14 +652,20 @@ export default function LocalPlay() {
           )}
 
           {phase === "SUMMARY" && (
-            <motion.div key="summary" className="text-center bg-white p-12 rounded-3xl shadow-xl">
-              <h2 className="text-5xl font-black text-primary-500 mb-8">Fine Turno</h2>
-              <div className="text-2xl font-medium space-y-4 mb-8">
-                <p>Indovinate: <span className="text-emerald-500 font-black">+{turnStats.guessed}</span></p>
-                <p>Scarti: <span className="text-amber-500 font-black">-{turnStats.passed}</span></p>
-                <p>Errori OPS: <span className="text-red-500 font-black">-{turnStats.ops}</span></p>
+            <motion.div key="summary" className="text-center bg-white p-10 sm:p-14 rounded-3xl shadow-xl max-w-lg w-full border border-slate-100">
+              <h2 className="text-4xl sm:text-5xl font-black text-primary-500 mb-6">Fine Turno</h2>
+              <div className="text-xl sm:text-2xl font-bold space-y-3 mb-8 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+                <p className="flex justify-between items-center"><span>Parole Indovinate:</span> <span className="text-emerald-600 font-black">+{turnStats.guessed}</span></p>
+                <p className="flex justify-between items-center"><span>Scarti Effettuati:</span> <span className="text-amber-600 font-black">-{turnStats.passed}</span></p>
+                <p className="flex justify-between items-center"><span>Errori OPS!:</span> <span className="text-red-600 font-black">-{turnStats.ops}</span></p>
+                <div className="border-t pt-3 flex justify-between items-center text-slate-900 font-black">
+                  <span>Passi Guadagnati:</span>
+                  <span className="text-primary-600">+{Math.max(0, turnStats.guessed - turnStats.ops - turnStats.passed)}</span>
+                </div>
               </div>
-              <button onClick={() => setPhase("BOARD")} className="bg-slate-900 text-white px-8 py-4 rounded-xl font-bold shadow-lg">Mostra Tabellone</button>
+              <button onClick={() => setPhase("BOARD")} className="w-full bg-slate-900 hover:bg-black text-white py-4 rounded-2xl font-black text-xl shadow-lg transition-all">
+                Mostra Tabellone & Pedine
+              </button>
             </motion.div>
           )}
 
@@ -487,13 +675,214 @@ export default function LocalPlay() {
                 teamA={{ pos: teamA.pos, pawn: teamA.pawn, id: "A" }} 
                 teamB={{ pos: teamB.pos, pawn: teamB.pawn, id: "B" }} 
               />
-              <button onClick={nextTurn} className="bg-primary-500 text-white px-8 py-4 rounded-xl font-bold shadow-lg text-xl mt-6 shrink-0">Passa al Turno Successivo</button>
+
+              {lastSpecialNotice && (
+                <div className="mt-3 bg-amber-100 border border-amber-300 text-amber-900 px-4 py-1.5 rounded-full text-xs sm:text-sm font-bold animate-bounce">
+                  {lastSpecialNotice}
+                </div>
+              )}
+
+              <div className="flex gap-3 justify-center items-center mt-4 shrink-0">
+                <button 
+                  onClick={() => {
+                    setIsFinalLeaderboard(false);
+                    setPhase("LEADERBOARD");
+                  }} 
+                  className="bg-slate-100 hover:bg-slate-200 text-slate-800 px-6 py-4 rounded-xl font-bold shadow-sm border border-slate-300 flex items-center gap-2 transition-all"
+                >
+                  <Pause className="w-5 h-5 text-amber-600" /> Sospendi / Classifica
+                </button>
+                <button 
+                  onClick={nextTurn} 
+                  className="bg-primary-500 hover:bg-primary-600 text-white px-8 py-4 rounded-xl font-black shadow-lg text-lg sm:text-xl transition-all"
+                >
+                  Passa al Turno Successivo
+                </button>
+              </div>
+            </motion.div>
+          )}
+
+          {phase === "LEADERBOARD" && (
+            <motion.div key="leaderboard" className="w-full max-w-4xl bg-white rounded-3xl shadow-2xl p-6 sm:p-10 border border-slate-100 text-center">
+              <div className="mb-6">
+                <span className={`inline-flex items-center gap-2 px-4 py-1 rounded-full text-xs sm:text-sm font-black uppercase tracking-wider mb-2 ${isFinalLeaderboard ? 'bg-amber-100 text-amber-800' : 'bg-blue-100 text-blue-800'}`}>
+                  {isFinalLeaderboard ? <Trophy className="w-4 h-4 text-amber-600" /> : <Pause className="w-4 h-4 text-blue-600" />}
+                  {isFinalLeaderboard ? "Podio Finale dei Vincitori" : "Classifica Provvisoria"}
+                </span>
+                <h2 className="text-3xl sm:text-5xl font-black text-slate-900">
+                  {isFinalLeaderboard 
+                    ? `🏆 ${(teamA.pos >= 24 || teamA.pos > teamB.pos) ? teamA.name : teamB.name} Vince la Sfida!` 
+                    : "Stato della Partita"}
+                </h2>
+                <p className="text-slate-500 text-sm sm:text-base mt-1">
+                  Avanzamento pedine sul tracciato storico a 24 caselle.
+                </p>
+              </div>
+
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mb-8 max-w-2xl mx-auto">
+                <div className={`p-6 rounded-3xl border-4 text-center transition-all ${teamA.pos >= teamB.pos ? 'border-amber-400 bg-amber-50/50 shadow-xl' : 'border-slate-200 bg-slate-50'}`}>
+                  <div className="text-2xl mb-1">{teamA.pos >= teamB.pos ? '🥇 1° Posto' : '🥈 2° Posto'}</div>
+                  <div className="w-20 h-20 rounded-full border-4 border-red-500 mx-auto mb-3 overflow-hidden bg-white shadow-md">
+                    <img src={getPawnImg(teamA.pawn)} className="w-full h-full object-contain" alt="Squadra A" />
+                  </div>
+                  <h3 className="text-xl font-black text-red-600 mb-1">{teamA.name}</h3>
+                  <div className="text-3xl font-black text-slate-900 mb-2">Casella {teamA.pos || 1} / 24</div>
+                  <div className="text-xs font-bold text-slate-500">Punti Totali: {teamA.score}</div>
+                  {teamA.pendingBonus?.doubleTime && <div className="mt-2 text-xs bg-yellow-100 text-yellow-800 font-bold px-2 py-0.5 rounded-full inline-block">✖️2 Tempo 120s</div>}
+                  {teamA.pendingBonus?.unlimitedPass && <div className="mt-2 text-xs bg-green-100 text-green-800 font-bold px-2 py-0.5 rounded-full inline-block">🎣 Scarti Infiniti</div>}
+                </div>
+
+                <div className={`p-6 rounded-3xl border-4 text-center transition-all ${teamB.pos > teamA.pos ? 'border-amber-400 bg-amber-50/50 shadow-xl' : 'border-slate-200 bg-slate-50'}`}>
+                  <div className="text-2xl mb-1">{teamB.pos > teamA.pos ? '🥇 1° Posto' : '🥈 2° Posto'}</div>
+                  <div className="w-20 h-20 rounded-full border-4 border-blue-500 mx-auto mb-3 overflow-hidden bg-white shadow-md">
+                    <img src={getPawnImg(teamB.pawn)} className="w-full h-full object-contain" alt="Squadra B" />
+                  </div>
+                  <h3 className="text-xl font-black text-blue-600 mb-1">{teamB.name}</h3>
+                  <div className="text-3xl font-black text-slate-900 mb-2">Casella {teamB.pos || 1} / 24</div>
+                  <div className="text-xs font-bold text-slate-500">Punti Totali: {teamB.score}</div>
+                  {teamB.pendingBonus?.doubleTime && <div className="mt-2 text-xs bg-yellow-100 text-yellow-800 font-bold px-2 py-0.5 rounded-full inline-block">✖️2 Tempo 120s</div>}
+                  {teamB.pendingBonus?.unlimitedPass && <div className="mt-2 text-xs bg-green-100 text-green-800 font-bold px-2 py-0.5 rounded-full inline-block">🎣 Scarti Infiniti</div>}
+                </div>
+              </div>
+
+              <div className="flex flex-wrap gap-4 justify-center items-center pt-4 border-t border-slate-100">
+                {isFinalLeaderboard ? (
+                  <>
+                    <button 
+                      onClick={() => setPhase("SETUP")} 
+                      className="bg-primary-500 text-white px-8 py-4 rounded-xl font-black text-lg shadow-lg hover:bg-primary-600 transition-all"
+                    >
+                      Nuova Partita
+                    </button>
+                    <Link 
+                      href="/" 
+                      className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-6 py-4 rounded-xl font-bold transition-all"
+                    >
+                      Torna alla Home
+                    </Link>
+                  </>
+                ) : (
+                  <>
+                    <button 
+                      onClick={() => {
+                        const now = new Date();
+                        setSaveSessionName(`Classe - ${now.toLocaleDateString('it-IT')}`);
+                        setShowSaveDialog(true);
+                      }} 
+                      className="bg-slate-100 border-2 border-slate-200 text-slate-800 px-6 py-4 rounded-xl font-bold flex items-center gap-2 hover:bg-slate-200 transition-all"
+                    >
+                      <Save className="w-5 h-5 text-amber-600" /> Salva Sessione ed Esci
+                    </button>
+                    <button 
+                      onClick={() => setPhase("BOARD")} 
+                      className="bg-primary-500 text-white px-8 py-4 rounded-xl font-black text-lg shadow-lg hover:bg-primary-600 transition-all flex items-center gap-2"
+                    >
+                      <Play className="w-5 h-5" /> Continua Partita
+                    </button>
+                    <button 
+                      onClick={() => {
+                        if (confirm("Vuoi concludere la partita adesso e proclamare la squadra vincitrice?")) {
+                          setIsFinalLeaderboard(true);
+                        }
+                      }} 
+                      className="bg-red-50 text-red-600 hover:bg-red-100 px-4 py-4 rounded-xl font-bold text-sm transition-all"
+                    >
+                      Termina Ora & Proclama Vincitore
+                    </button>
+                  </>
+                )}
+              </div>
             </motion.div>
           )}
 
         </AnimatePresence>
         )}
       </main>
+
+      {showSavedGamesModal && (
+        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-lg w-full border border-slate-100 max-h-[85vh] flex flex-col">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                <FolderOpen className="w-6 h-6 text-amber-600" /> Partite Salvate
+              </h3>
+              <button onClick={() => setShowSavedGamesModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <p className="text-xs text-slate-500 mb-4">Seleziona una sessione precedente per riprendere la partita dal punto esatto.</p>
+
+            <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+              {getSavedGames().length === 0 ? (
+                <div className="text-center py-10 text-slate-400 font-medium text-sm">
+                  Nessuna partita salvata trovata.
+                </div>
+              ) : (
+                getSavedGames().map(s => (
+                  <div key={s.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 hover:border-amber-400 transition-all">
+                    <div>
+                      <h4 className="font-black text-slate-900 text-base">{s.name}</h4>
+                      <div className="text-xs text-slate-500 font-medium">
+                        {s.date} • A: c.{s.teamA.pos || 1} vs B: c.{s.teamB.pos || 1}
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <button 
+                        onClick={() => handleLoadGame(s)} 
+                        className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow"
+                      >
+                        Riprendi
+                      </button>
+                      <button 
+                        onClick={() => handleDeleteSavedGame(s.id)} 
+                        className="text-slate-400 hover:text-red-500 p-1.5" 
+                        title="Elimina"
+                      >
+                        <Trash2 className="w-4 h-4" />
+                      </button>
+                    </div>
+                  </div>
+                ))
+              )}
+            </div>
+
+            <div className="mt-4 pt-3 border-t flex justify-end">
+              <button onClick={() => setShowSavedGamesModal(false)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm">
+                Chiudi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {showSaveDialog && (
+        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-slate-100">
+            <h3 className="text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
+              <Save className="w-6 h-6 text-amber-600" /> Salva Sessione di Gioco
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">Assegna un nome alla sessione per ritrovarla alla prossima lezione.</p>
+
+            <input 
+              type="text" 
+              value={saveSessionName}
+              onChange={(e) => setSaveSessionName(e.target.value)}
+              placeholder="Es. Classe 2ª B - Medioevo"
+              className="w-full p-3.5 border-2 border-slate-200 rounded-xl font-bold text-slate-900 mb-6 focus:border-primary-500 outline-none"
+            />
+
+            <div className="flex gap-3 justify-end">
+              <button onClick={() => setShowSaveDialog(false)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-3 rounded-xl font-bold text-sm">
+                Annulla
+              </button>
+              <button onClick={handleSaveGame} className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md">
+                Salva ed Esci
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
