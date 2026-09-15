@@ -93,12 +93,21 @@ export default function AdminDashboard() {
       setLoading(false);
     });
 
-    // Carica eventuali modifiche salvate in localStorage
+    // Carica eventuali modifiche salvate in localStorage (con auto-migrazione di Terza Media)
     const saved = localStorage.getItem("ops_storia_custom_cards");
     if (saved) {
       try {
         const parsed = JSON.parse(saved);
-        setCardsMap(parsed);
+        // Se Terza in localStorage ha il vecchio formato con parole spezzate (es. "Belle"), aggiorna automaticamente Terza con il file aggiornato
+        if (!parsed.Terza || !Array.isArray(parsed.Terza) || parsed.Terza.length === 0 || parsed.Terza[0]?.parola_chiave === "Belle") {
+          parsed.Terza = cardsTerza as CardItem[];
+          localStorage.setItem("ops_storia_custom_cards", JSON.stringify(parsed));
+        }
+        setCardsMap({
+          Prima: parsed.Prima || (cardsPrima as CardItem[]),
+          Seconda: parsed.Seconda || (cardsSeconda as CardItem[]),
+          Terza: parsed.Terza || (cardsTerza as CardItem[])
+        });
       } catch (err) {}
     }
 
@@ -111,7 +120,7 @@ export default function AdminDashboard() {
   };
 
   const handleSaveCard = (card: CardItem) => {
-    const currentList = [...cardsMap[card.classe]];
+    const currentList = [...(cardsMap[card.classe] || [])];
     const idx = currentList.findIndex(c => c.id === card.id);
     if (idx >= 0) {
       currentList[idx] = card;
@@ -126,7 +135,7 @@ export default function AdminDashboard() {
 
   const handleDeleteCard = (cardId: string, classe: "Prima" | "Seconda" | "Terza") => {
     if (confirm("Sei sicuro di voler eliminare questa carta?")) {
-      const currentList = cardsMap[classe].filter(c => c.id !== cardId);
+      const currentList = (cardsMap[classe] || []).filter(c => c.id !== cardId);
       const newMap = { ...cardsMap, [classe]: currentList };
       saveToStorage(newMap);
     }

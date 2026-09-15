@@ -3,26 +3,26 @@
         "id": "Terza_0",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Belle",
+        "parola_chiave": "Belle Époque",
         "parole_taboo": [
-            "Époque",
             "progresso",
             "Europa",
             "Ottocento",
-            "ottimismo"
+            "ottimismo",
+            "sviluppo"
         ]
     },
     {
         "id": "Terza_1",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Seconda",
+        "parola_chiave": "Seconda rivoluzione industriale",
         "parole_taboo": [
-            "rivoluzione",
-            "industriale",
             "elettricità",
             "acciaio",
-            "industria"
+            "industria",
+            "fabbrica",
+            "innovazione"
         ]
     },
     {
@@ -42,13 +42,13 @@
         "id": "Terza_3",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Catena",
+        "parola_chiave": "Catena di montaggio",
         "parole_taboo": [
-            "di",
-            "montaggio",
             "Ford",
             "fabbrica",
-            "produzione"
+            "produzione",
+            "industria",
+            "lavoro"
         ]
     },
     {
@@ -120,13 +120,13 @@
         "id": "Terza_9",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Società",
+        "parola_chiave": "Società di massa",
         "parole_taboo": [
-            "di",
-            "massa",
             "consumi",
             "popolazione",
-            "industria"
+            "industria",
+            "città",
+            "modernità"
         ]
     },
     {
@@ -146,52 +146,52 @@
         "id": "Terza_11",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Partito",
+        "parola_chiave": "Partito politico",
         "parole_taboo": [
-            "politico",
             "elezioni",
             "voto",
             "politica",
-            "programma"
+            "programma",
+            "parlamento"
         ]
     },
     {
         "id": "Terza_12",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Partito",
+        "parola_chiave": "Partito socialista",
         "parole_taboo": [
-            "socialista",
             "operai",
             "socialismo",
             "lavoratori",
-            "sinistra"
+            "sinistra",
+            "diritti"
         ]
     },
     {
         "id": "Terza_13",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Suffragio",
+        "parola_chiave": "Suffragio universale",
         "parole_taboo": [
-            "universale",
             "voto",
             "elezioni",
             "cittadini",
-            "diritto"
+            "diritto",
+            "politica"
         ]
     },
     {
         "id": "Terza_14",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Emancipazione",
+        "parola_chiave": "Emancipazione femminile",
         "parole_taboo": [
-            "femminile",
             "donne",
             "diritti",
             "uguaglianza",
-            "voto"
+            "voto",
+            "femminismo"
         ]
     },
     {
@@ -250,13 +250,13 @@
         "id": "Terza_19",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Classe",
+        "parola_chiave": "Classe operaia",
         "parole_taboo": [
-            "operaia",
             "fabbrica",
             "lavoratori",
             "operai",
-            "industria"
+            "industria",
+            "salario"
         ]
     },
     {
@@ -302,26 +302,26 @@
         "id": "Terza_23",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Spartizione",
+        "parola_chiave": "Spartizione dell'Africa",
         "parole_taboo": [
-            "dell'Africa",
             "colonialismo",
             "Europa",
             "conferenza",
-            "territori"
+            "territori",
+            "impero"
         ]
     },
     {
         "id": "Terza_24",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Conferenza",
+        "parola_chiave": "Conferenza di Berlino",
         "parole_taboo": [
-            "di",
-            "Berlino",
             "Africa",
             "colonialismo",
-            "1884"
+            "1884",
+            "potenze",
+            "spartizione"
         ]
     },
     {
@@ -367,13 +367,13 @@
         "id": "Terza_28",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Raj",
+        "parola_chiave": "Raj britannico",
         "parole_taboo": [
-            "britannico",
             "India",
             "Inghilterra",
             "colonia",
-            "impero"
+            "impero",
+            "Asia"
         ]
     },
     {
@@ -393,13 +393,13 @@
         "id": "Terza_30",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Guerra",
+        "parola_chiave": "Guerra dell'oppio",
         "parole_taboo": [
-            "dell'oppio",
             "Cina",
             "Inghilterra",
             "commercio",
-            "Asia"
+            "Asia",
+            "conflitto"
         ]
     },
     {
@@ -419,78 +419,78 @@
         "id": "Terza_32",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Era",
+        "parola_chiave": "Era Meiji",
         "parole_taboo": [
-            "Meiji",
             "Giappone",
             "modernizzazione",
             "Asia",
-            "imperatore"
+            "imperatore",
+            "riforme"
         ]
     },
     {
         "id": "Terza_33",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Triplice",
+        "parola_chiave": "Triplice Alleanza",
         "parole_taboo": [
-            "Alleanza",
             "Germania",
             "Austria",
             "Italia",
-            "accordo"
+            "accordo",
+            "alleanza"
         ]
     },
     {
         "id": "Terza_34",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Triplice",
+        "parola_chiave": "Triplice Intesa",
         "parole_taboo": [
-            "Intesa",
             "Francia",
             "Inghilterra",
             "Russia",
-            "accordo"
+            "accordo",
+            "alleanza"
         ]
     },
     {
         "id": "Terza_35",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Età",
+        "parola_chiave": "Età giolittiana",
         "parole_taboo": [
-            "giolittiana",
             "Giolitti",
             "Italia",
             "riforme",
-            "1903"
+            "1903",
+            "1914"
         ]
     },
     {
         "id": "Terza_36",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Giovanni",
+        "parola_chiave": "Giovanni Giolitti",
         "parole_taboo": [
-            "Giolitti",
             "Italia",
             "presidente",
             "del",
-            "consiglio"
+            "consiglio",
+            "riforme"
         ]
     },
     {
         "id": "Terza_37",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Guerra",
+        "parola_chiave": "Guerra di Libia",
         "parole_taboo": [
-            "di",
-            "Libia",
             "Italia",
             "1911",
-            "colonia"
+            "colonia",
+            "Africa",
+            "Ottomani"
         ]
     },
     {
@@ -523,39 +523,39 @@
         "id": "Terza_40",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Prima",
+        "parola_chiave": "Prima guerra mondiale",
         "parole_taboo": [
-            "guerra",
-            "mondiale",
             "1914",
             "1918",
-            "trincee"
+            "trincee",
+            "Europa",
+            "conflitto"
         ]
     },
     {
         "id": "Terza_41",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Attentato",
+        "parola_chiave": "Attentato di Sarajevo",
         "parole_taboo": [
-            "di",
-            "Sarajevo",
             "Francesco",
             "Ferdinando",
-            "1914"
+            "1914",
+            "Austria",
+            "Serbia"
         ]
     },
     {
         "id": "Terza_42",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Francesco",
+        "parola_chiave": "Francesco Ferdinando",
         "parole_taboo": [
-            "Ferdinando",
             "Austria",
             "Sarajevo",
             "arciduca",
-            "1914"
+            "1914",
+            "attentato"
         ]
     },
     {
@@ -575,26 +575,26 @@
         "id": "Terza_44",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Guerra",
+        "parola_chiave": "Guerra di posizione",
         "parole_taboo": [
-            "di",
-            "posizione",
             "trincee",
             "fronte",
-            "Prima"
+            "Prima",
+            "guerra",
+            "mondiale"
         ]
     },
     {
         "id": "Terza_45",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Gas",
+        "parola_chiave": "Gas tossici",
         "parole_taboo": [
-            "tossici",
             "armi",
             "guerra",
             "chimica",
-            "trincee"
+            "trincee",
+            "attacco"
         ]
     },
     {
@@ -614,13 +614,13 @@
         "id": "Terza_47",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Vittorio",
+        "parola_chiave": "Vittorio Veneto",
         "parole_taboo": [
-            "Veneto",
             "Italia",
             "vittoria",
             "1918",
-            "guerra"
+            "guerra",
+            "fronte"
         ]
     },
     {
@@ -640,39 +640,39 @@
         "id": "Terza_49",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Trattato",
+        "parola_chiave": "Trattato di Versailles",
         "parole_taboo": [
-            "di",
-            "Versailles",
             "Germania",
             "pace",
-            "1919"
+            "1919",
+            "sanzioni",
+            "guerra"
         ]
     },
     {
         "id": "Terza_50",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Società",
+        "parola_chiave": "Società delle Nazioni",
         "parole_taboo": [
-            "delle",
-            "Nazioni",
             "pace",
             "cooperazione",
-            "Stati"
+            "Stati",
+            "ONU",
+            "organizzazione"
         ]
     },
     {
         "id": "Terza_51",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Rivoluzione",
+        "parola_chiave": "Rivoluzione russa",
         "parole_taboo": [
-            "russa",
             "Russia",
             "1917",
             "zar",
-            "Lenin"
+            "Lenin",
+            "rivoluzione"
         ]
     },
     {
@@ -757,13 +757,13 @@
         "id": "Terza_58",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Piano",
+        "parola_chiave": "Piano quinquennale",
         "parole_taboo": [
-            "quinquennale",
             "Stalin",
             "economia",
             "industria",
-            "URSS"
+            "URSS",
+            "produzione"
         ]
     },
     {
@@ -809,26 +809,26 @@
         "id": "Terza_62",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Benito",
+        "parola_chiave": "Benito Mussolini",
         "parole_taboo": [
-            "Mussolini",
             "duce",
             "fascismo",
             "Italia",
-            "dittatore"
+            "dittatore",
+            "regime"
         ]
     },
     {
         "id": "Terza_63",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Marcia",
+        "parola_chiave": "Marcia su Roma",
         "parole_taboo": [
-            "su",
-            "Roma",
             "Mussolini",
             "1922",
-            "fascismo"
+            "fascismo",
+            "potere",
+            "camicie"
         ]
     },
     {
@@ -848,13 +848,13 @@
         "id": "Terza_65",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Camicie",
+        "parola_chiave": "Camicie nere",
         "parole_taboo": [
-            "nere",
             "fascismo",
             "Mussolini",
             "squadristi",
-            "Italia"
+            "Italia",
+            "violenza"
         ]
     },
     {
@@ -900,13 +900,13 @@
         "id": "Terza_69",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Adolf",
+        "parola_chiave": "Adolf Hitler",
         "parole_taboo": [
-            "Hitler",
             "Germania",
             "nazismo",
             "führer",
-            "dittatore"
+            "dittatore",
+            "partito"
         ]
     },
     {
@@ -926,13 +926,13 @@
         "id": "Terza_71",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Partito",
+        "parola_chiave": "Partito nazista",
         "parole_taboo": [
-            "nazista",
             "Hitler",
             "Germania",
             "nazismo",
-            "politica"
+            "politica",
+            "regime"
         ]
     },
     {
@@ -952,91 +952,91 @@
         "id": "Terza_73",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Leggi",
+        "parola_chiave": "Leggi razziali",
         "parole_taboo": [
-            "razziali",
             "ebrei",
             "discriminazione",
             "Italia",
-            "Germania"
+            "Germania",
+            "razzismo"
         ]
     },
     {
         "id": "Terza_74",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Notte",
+        "parola_chiave": "Notte dei cristalli",
         "parole_taboo": [
-            "dei",
-            "cristalli",
             "ebrei",
             "Germania",
-            "1938"
+            "1938",
+            "violenza",
+            "nazismo"
         ]
     },
     {
         "id": "Terza_75",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Guerra",
+        "parola_chiave": "Guerra civile spagnola",
         "parole_taboo": [
-            "civile",
-            "spagnola",
             "Spagna",
             "Franco",
-            "1936"
+            "1936",
+            "conflitto",
+            "repubblica"
         ]
     },
     {
         "id": "Terza_76",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Francisco",
+        "parola_chiave": "Francisco Franco",
         "parole_taboo": [
-            "Franco",
             "Spagna",
             "dittatore",
             "guerra",
-            "civile"
+            "civile",
+            "generale"
         ]
     },
     {
         "id": "Terza_77",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Seconda",
+        "parola_chiave": "Seconda guerra mondiale",
         "parole_taboo": [
-            "guerra",
-            "mondiale",
             "1939",
             "1945",
-            "conflitto"
+            "conflitto",
+            "Hitler",
+            "guerra"
         ]
     },
     {
         "id": "Terza_78",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Invasione",
+        "parola_chiave": "Invasione della Polonia",
         "parole_taboo": [
-            "della",
-            "Polonia",
             "1939",
             "Germania",
-            "Hitler"
+            "Hitler",
+            "inizio",
+            "guerra"
         ]
     },
     {
         "id": "Terza_79",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Asse",
+        "parola_chiave": "Asse Roma-Berlino",
         "parole_taboo": [
-            "Roma-",
-            "Berlino",
             "Italia",
             "Germania",
-            "alleanza"
+            "alleanza",
+            "Mussolini",
+            "Hitler"
         ]
     },
     {
@@ -1056,39 +1056,39 @@
         "id": "Terza_81",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Winston",
+        "parola_chiave": "Winston Churchill",
         "parole_taboo": [
-            "Churchill",
             "Inghilterra",
             "primo",
             "ministro",
-            "guerra"
+            "guerra",
+            "leader"
         ]
     },
     {
         "id": "Terza_82",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Franklin",
+        "parola_chiave": "Franklin Roosevelt",
         "parole_taboo": [
-            "Roosevelt",
             "Stati",
             "Uniti",
             "presidente",
-            "New"
+            "New",
+            "Deal"
         ]
     },
     {
         "id": "Terza_83",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Sbarco",
+        "parola_chiave": "Sbarco in Normandia",
         "parole_taboo": [
-            "in",
-            "Normandia",
             "1944",
             "Francia",
-            "Alleati"
+            "Alleati",
+            "D-Day",
+            "invasione"
         ]
     },
     {
@@ -1134,13 +1134,13 @@
         "id": "Terza_87",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Campo",
+        "parola_chiave": "Campo di concentramento",
         "parole_taboo": [
-            "di",
-            "concentramento",
             "prigionieri",
             "nazismo",
-            "deportazione"
+            "deportazione",
+            "lager",
+            "campo"
         ]
     },
     {
@@ -1173,13 +1173,13 @@
         "id": "Terza_90",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Bomba",
+        "parola_chiave": "Bomba atomica",
         "parole_taboo": [
-            "atomica",
             "Hiroshima",
             "Nagasaki",
             "Giappone",
-            "nucleare"
+            "nucleare",
+            "1945"
         ]
     },
     {
@@ -1199,52 +1199,52 @@
         "id": "Terza_92",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Guerra",
+        "parola_chiave": "Guerra Fredda",
         "parole_taboo": [
-            "Fredda",
             "USA",
             "URSS",
             "conflitto",
-            "tensione"
+            "tensione",
+            "superpotenze"
         ]
     },
     {
         "id": "Terza_93",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Stati",
+        "parola_chiave": "Stati Uniti",
         "parole_taboo": [
-            "Uniti",
             "America",
             "USA",
             "Washington",
-            "superpotenza"
+            "superpotenza",
+            "occidente"
         ]
     },
     {
         "id": "Terza_94",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Unione",
+        "parola_chiave": "Unione Sovietica",
         "parole_taboo": [
-            "Sovietica",
             "URSS",
             "Russia",
             "comunismo",
-            "Stalin"
+            "Stalin",
+            "superpotenza"
         ]
     },
     {
         "id": "Terza_95",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Cortina",
+        "parola_chiave": "Cortina di ferro",
         "parole_taboo": [
-            "di",
-            "ferro",
             "Europa",
             "divisione",
-            "URSS"
+            "URSS",
+            "occidente",
+            "confine"
         ]
     },
     {
@@ -1264,39 +1264,39 @@
         "id": "Terza_97",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Patto",
+        "parola_chiave": "Patto di Varsavia",
         "parole_taboo": [
-            "di",
-            "Varsavia",
             "URSS",
             "alleanza",
-            "Est"
+            "Est",
+            "militare",
+            "comunismo"
         ]
     },
     {
         "id": "Terza_98",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Muro",
+        "parola_chiave": "Muro di Berlino",
         "parole_taboo": [
-            "di",
-            "Berlino",
             "Germania",
             "divisione",
-            "1989"
+            "1989",
+            "Est",
+            "Ovest"
         ]
     },
     {
         "id": "Terza_99",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Corsa",
+        "parola_chiave": "Corsa allo spazio",
         "parole_taboo": [
-            "allo",
-            "spazio",
             "Sputnik",
             "NASA",
-            "URSS"
+            "URSS",
+            "astronauti",
+            "spazio"
         ]
     },
     {
@@ -1316,91 +1316,91 @@
         "id": "Terza_101",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Yuri",
+        "parola_chiave": "Yuri Gagarin",
         "parole_taboo": [
-            "Gagarin",
             "cosmonauta",
             "URSS",
             "spazio",
-            "uomo"
+            "uomo",
+            "orbita"
         ]
     },
     {
         "id": "Terza_102",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Apollo",
+        "parola_chiave": "Apollo 11",
         "parole_taboo": [
-            "11",
             "Luna",
             "NASA",
             "1969",
-            "Armstrong"
+            "Armstrong",
+            "missione"
         ]
     },
     {
         "id": "Terza_103",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Repubblica",
+        "parola_chiave": "Repubblica italiana",
         "parole_taboo": [
-            "italiana",
             "1946",
             "Italia",
             "referendum",
-            "Stato"
+            "Stato",
+            "democrazia"
         ]
     },
     {
         "id": "Terza_104",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Referendum",
+        "parola_chiave": "Referendum del 1946",
         "parole_taboo": [
-            "del",
-            "1946",
             "monarchia",
             "repubblica",
-            "Italia"
+            "Italia",
+            "voto",
+            "popolo"
         ]
     },
     {
         "id": "Terza_105",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Costituzione",
+        "parola_chiave": "Costituzione italiana",
         "parole_taboo": [
-            "italiana",
             "1948",
             "legge",
             "Italia",
-            "diritti"
+            "diritti",
+            "Stato"
         ]
     },
     {
         "id": "Terza_106",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Boom",
+        "parola_chiave": "Boom economico",
         "parole_taboo": [
-            "economico",
             "crescita",
             "Italia",
             "anni",
-            "Sessanta"
+            "Sessanta",
+            "industria"
         ]
     },
     {
         "id": "Terza_107",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Guerra",
+        "parola_chiave": "Guerra del Vietnam",
         "parole_taboo": [
-            "del",
-            "Vietnam",
             "USA",
             "Asia",
-            "Vietnam"
+            "Vietnam",
+            "conflitto",
+            "guerra"
         ]
     },
     {
@@ -1433,26 +1433,26 @@
         "id": "Terza_110",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Mahatma",
+        "parola_chiave": "Mahatma Gandhi",
         "parole_taboo": [
-            "Gandhi",
             "India",
             "non",
             "violenza",
-            "indipendenza"
+            "indipendenza",
+            "leader"
         ]
     },
     {
         "id": "Terza_111",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Nelson",
+        "parola_chiave": "Nelson Mandela",
         "parole_taboo": [
-            "Mandela",
             "Sudafrica",
             "apartheid",
             "diritti",
-            "Africa"
+            "Africa",
+            "leader"
         ]
     },
     {
@@ -1498,13 +1498,13 @@
         "id": "Terza_115",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Guerra",
+        "parola_chiave": "Guerra dei Sei Giorni",
         "parole_taboo": [
-            "dei",
-            "Sei",
-            "Giorni",
             "Israele",
-            "1967"
+            "1967",
+            "Medio",
+            "Oriente",
+            "Egitto"
         ]
     },
     {
@@ -1550,26 +1550,26 @@
         "id": "Terza_119",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "11",
+        "parola_chiave": "11 settembre",
         "parole_taboo": [
-            "settembre",
             "terrorismo",
             "Twin",
             "Towers",
-            "2001"
+            "2001",
+            "USA"
         ]
     },
     {
         "id": "Terza_120",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Unione",
+        "parola_chiave": "Unione Europea",
         "parole_taboo": [
-            "Europea",
             "Europa",
             "Stati",
             "Bruxelles",
-            "integrazione"
+            "integrazione",
+            "UE"
         ]
     },
     {
@@ -1602,26 +1602,26 @@
         "id": "Terza_123",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Guerra",
+        "parola_chiave": "Guerra Russia-Ucraina",
         "parole_taboo": [
-            "Russia-",
-            "Ucraina",
             "Russia",
             "Ucraina",
-            "invasione"
+            "invasione",
+            "2022",
+            "conflitto"
         ]
     },
     {
         "id": "Terza_124",
         "classe": "Terza",
         "categoria": "Età Contemporanea",
-        "parola_chiave": "Vladimir",
+        "parola_chiave": "Vladimir Putin",
         "parole_taboo": [
-            "Putin",
             "Russia",
             "presidente",
             "Cremlino",
-            "Mosca"
+            "Mosca",
+            "leader"
         ]
     }
 ]
