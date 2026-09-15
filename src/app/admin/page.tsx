@@ -20,8 +20,7 @@ import {
   Sparkles,
   ArrowLeft,
   X,
-  Check,
-  RefreshCw
+  Check
 } from "lucide-react";
 import HostLogin from "@/components/HostLogin";
 import Header from "@/components/Header";
@@ -139,27 +138,6 @@ export default function AdminDashboard() {
       const currentList = (cardsMap[classe] || []).filter(c => c.id !== cardId);
       const newMap = { ...cardsMap, [classe]: currentList };
       saveToStorage(newMap);
-    }
-  };
-
-  const handleResetCurrentDeck = () => {
-    const fileSource = activeTab === "Prima" ? cardsPrima : activeTab === "Seconda" ? cardsSeconda : cardsTerza;
-    if (confirm(`Vuoi ricaricare il mazzo ${activeTab} Media direttamente dal file sorgente aggiornato?`)) {
-      const newMap = { ...cardsMap, [activeTab]: fileSource as CardItem[] };
-      saveToStorage(newMap);
-      alert(`✅ Mazzo ${activeTab} Media ricaricato con successo dal file!`);
-    }
-  };
-
-  const handleResetAllDecks = () => {
-    if (confirm("Vuoi ripristinare TUTTI e 3 i mazzi (Prima, Seconda e Terza) direttamente dai file sorgente?")) {
-      const freshMap = {
-        Prima: cardsPrima as CardItem[],
-        Seconda: cardsSeconda as CardItem[],
-        Terza: cardsTerza as CardItem[]
-      };
-      saveToStorage(freshMap);
-      alert("✅ Tutti i mazzi sono stati ripristinati dai file sorgente!");
     }
   };
 
@@ -322,18 +300,8 @@ export default function AdminDashboard() {
             })}
           </div>
 
-          <div className="flex items-center gap-3">
-            <button
-              onClick={handleResetCurrentDeck}
-              className="flex items-center gap-1.5 bg-amber-50 hover:bg-amber-100 border border-amber-200 text-amber-800 font-bold px-3 py-1.5 rounded-xl text-xs transition-colors cursor-pointer shadow-sm"
-              title={`Ricarica mazzo ${activeTab} dal file sorgente JSON`}
-            >
-              <RefreshCw className="w-3.5 h-3.5" />
-              <span>Ricarica {activeTab} da File</span>
-            </button>
-            <div className="text-xs font-bold text-slate-500">
-              Database: <span className="text-slate-900 font-black">{totalCardsCount}</span> carte
-            </div>
+          <div className="text-xs font-bold text-slate-500">
+            Database complessivo: <span className="text-slate-900 font-black">{totalCardsCount}</span> carte
           </div>
         </div>
 
