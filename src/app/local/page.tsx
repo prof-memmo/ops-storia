@@ -9,8 +9,9 @@ import {
 import Link from "next/link";
 import DynamicBoard from "../components/DynamicBoard";
 import HostLogin from "@/components/HostLogin";
-import { auth } from "@/lib/firebase";
+import { auth, hubDb } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { collection, doc, setDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
 import { getPawnImg } from "@/lib/assets";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
@@ -78,6 +79,7 @@ interface SavedGame {
   teamA: TeamData;
   teamB: TeamData;
   currentCardIndex: number;
+  source?: "cloud" | "local";
 }
 
 export default function LocalPlay() {
@@ -119,6 +121,7 @@ export default function LocalPlay() {
   const [showSavedGamesModal, setShowSavedGamesModal] = useState(false);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [saveSessionName, setSaveSessionName] = useState("");
+  const [cloudSavedGames, setCloudSavedGames] = useState<SavedGame[]>([]);
 
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -140,6 +143,7 @@ export default function LocalPlay() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        fetchCloudSavedGames(currentUser);
         if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
           const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
             user: { uid: currentUser.uid, email: currentUser.email },
@@ -295,23 +299,47 @@ export default function LocalPlay() {
     setPhase("READY");
   };
 
+  const fetchCloudSavedGames = async (currentUser?: User | null) => {
+    const activeUser = currentUser || user;
+    if (!activeUser || !hubDb) return;
+    try {
+      const q = query(collection(hubDb, "ops_saved_games"), where("userId", "==", activeUser.uid));
+      const snap = await getDocs(q);
+      const list: SavedGame[] = [];
+      snap.forEach(d => {
+        list.push({ ...(d.data() as SavedGame), id: d.id, source: "cloud" });
+      });
+      setCloudSavedGames(list);
+    } catch(e) {
+      console.warn("Errore caricamento cloud saves:", e);
+    }
+  };
+
   const getSavedGames = (): SavedGame[] => {
     try {
       const raw = localStorage.getItem("ops_storia_saved_games");
-      return raw ? JSON.parse(raw) : [];
+      const localSaves: SavedGame[] = raw ? JSON.parse(raw) : [];
+      const map = new Map<string, SavedGame>();
+
+      cloudSavedGames.forEach(s => map.set(s.id, { ...s, source: "cloud" }));
+      localSaves.forEach(s => {
+        if (!map.has(s.id)) map.set(s.id, { ...s, source: "local" });
+      });
+
+      return Array.from(map.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     } catch(e) {
       return [];
     }
   };
 
-  const handleSaveGame = () => {
-    const saved = getSavedGames();
+  const handleSaveGame = async () => {
     const now = new Date();
     const dateFormatted = now.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
     const cleanName = saveSessionName.trim() || `Sessione del ${dateFormatted}`;
+    const saveId = `save_${Date.now()}`;
 
     const newSave: SavedGame = {
-      id: `save_${Date.now()}`,
+      id: saveId,
       name: cleanName,
       date: dateFormatted,
       timestamp: Date.now(),
@@ -320,13 +348,36 @@ export default function LocalPlay() {
       currentTurn,
       teamA,
       teamB,
-      currentCardIndex
+      currentCardIndex,
+      source: user ? "cloud" : "local"
     };
 
-    saved.unshift(newSave);
-    localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved.slice(0, 15)));
+    // 1. Salva in LocalStorage (cache immediata offline)
+    try {
+      let raw = localStorage.getItem("ops_storia_saved_games");
+      let saved: SavedGame[] = raw ? JSON.parse(raw) : [];
+      saved.unshift(newSave);
+      localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved.slice(0, 20)));
+    } catch(e) {}
+
+    // 2. Salva su Firestore Cloud se autenticato
+    if (user && hubDb) {
+      try {
+        await setDoc(doc(hubDb, "ops_saved_games", saveId), {
+          ...newSave,
+          userId: user.uid,
+          userEmail: (user.email || '').toLowerCase().trim(),
+          mode: "local",
+          updatedAt: new Date().toISOString()
+        });
+        console.log("☁️ Partita salvata sul Cloud Firestore!");
+      } catch (errCloud) {
+        console.warn("Salvataggio Cloud fallito, mantenuto in locale:", errCloud);
+      }
+    }
+
     setShowSaveDialog(false);
-    alert("Partita salvata con successo! Potrai riprenderla in qualsiasi momento.");
+    alert("Partita salvata con successo! Potrai riprenderla in qualsiasi momento da questo o da un altro dispositivo.");
     setPhase("SETUP");
   };
 
@@ -362,11 +413,22 @@ export default function LocalPlay() {
     setPhase("BOARD");
   };
 
-  const handleDeleteSavedGame = (saveId: string) => {
-    let saved = getSavedGames();
-    saved = saved.filter(s => s.id !== saveId);
-    localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved));
-    setSaveSessionName(s => s + " ");
+  const handleDeleteSavedGame = async (saveId: string) => {
+    try {
+      let raw = localStorage.getItem("ops_storia_saved_games");
+      if (raw) {
+        let saved: SavedGame[] = JSON.parse(raw);
+        saved = saved.filter(s => s.id !== saveId);
+        localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved));
+      }
+      setCloudSavedGames(prev => prev.filter(s => s.id !== saveId));
+    } catch(e) {}
+
+    if (user && hubDb) {
+      try {
+        await deleteDoc(doc(hubDb, "ops_saved_games", saveId));
+      } catch (_) {}
+    }
   };
 
   const handleLogout = async () => {
@@ -818,31 +880,45 @@ export default function LocalPlay() {
                   Nessuna partita salvata trovata.
                 </div>
               ) : (
-                getSavedGames().map(s => (
-                  <div key={s.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 hover:border-amber-400 transition-all">
-                    <div>
-                      <h4 className="font-black text-slate-900 text-base">{s.name}</h4>
-                      <div className="text-xs text-slate-500 font-medium">
-                        {s.date} • A: c.{s.teamA.pos || 1} vs B: c.{s.teamB.pos || 1}
+                getSavedGames().map(s => {
+                  const isCloud = s.source === "cloud";
+                  return (
+                    <div key={s.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 hover:border-amber-400 transition-all">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-black text-slate-900 text-base">{s.name}</h4>
+                          {isCloud ? (
+                            <span className="bg-indigo-100 text-indigo-700 border border-indigo-200 text-[10px] font-extrabold px-1.5 py-0.5 rounded-md">
+                              ☁️ Cloud
+                            </span>
+                          ) : (
+                            <span className="bg-slate-200 text-slate-700 text-[10px] font-semibold px-1.5 py-0.5 rounded-md">
+                              🖥️ Locale
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-slate-500 font-medium mt-1">
+                          {s.date} • A: c.{s.teamA.pos || 1} vs B: c.{s.teamB.pos || 1}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => handleLoadGame(s)} 
+                          className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow"
+                        >
+                          Riprendi
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteSavedGame(s.id)} 
+                          className="text-slate-400 hover:text-red-500 p-1.5" 
+                          title="Elimina"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button 
-                        onClick={() => handleLoadGame(s)} 
-                        className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow"
-                      >
-                        Riprendi
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteSavedGame(s.id)} 
-                        className="text-slate-400 hover:text-red-500 p-1.5" 
-                        title="Elimina"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
 

@@ -2,13 +2,14 @@
 
 import { useState, useEffect } from "react";
 import { motion, AnimatePresence } from "framer-motion";
-import { Users, Timer, Check, X, Home, AlertOctagon, Undo2, Play, BookOpen, Settings, Layers, Pause, PlayCircle, LogOut, Trophy, Sparkles, Award } from "lucide-react";
+import { Users, Timer, Check, X, Home, AlertOctagon, Undo2, Play, BookOpen, Settings, Layers, Pause, PlayCircle, LogOut, Trophy, Sparkles, Award, FolderOpen, Save, Trash2 } from "lucide-react";
 import Link from "next/link";
 import DynamicBoard from "../components/DynamicBoard";
 import HostLogin from "@/components/HostLogin";
 import { createRoom, subscribeToRoom, updateRoomStatus, updateRoomState, updateTeamStats, RoomState } from "@/lib/gameLogic";
-import { auth } from "@/lib/firebase";
+import { auth, hubDb } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
+import { collection, doc, setDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
 import { getPawnImg } from "@/lib/assets";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
@@ -47,10 +48,16 @@ export default function HostBoard() {
   const [authLoading, setAuthLoading] = useState(true);
   const [isAllowed, setIsAllowed] = useState(true);
 
+  const [savedHostGames, setSavedHostGames] = useState<any[]>([]);
+  const [showSavedHostModal, setShowSavedHostModal] = useState(false);
+  const [showSaveDialog, setShowSaveDialog] = useState(false);
+  const [saveSessionName, setSaveSessionName] = useState("");
+
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        fetchSavedHostGames(currentUser);
         if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
           const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
             user: { uid: currentUser.uid, email: currentUser.email },
@@ -249,6 +256,136 @@ export default function HostBoard() {
     }
   };
 
+  const fetchSavedHostGames = async (currentUser?: User | null) => {
+    const activeUser = currentUser || user;
+    let localSaves: any[] = [];
+    try {
+      const raw = localStorage.getItem("ops_storia_saved_host_games");
+      if (raw) localSaves = JSON.parse(raw);
+    } catch (_) {}
+
+    const map = new Map<string, any>();
+    localSaves.forEach(s => map.set(s.id, { ...s, source: "local" }));
+
+    if (activeUser && hubDb) {
+      try {
+        const q = query(collection(hubDb, "ops_saved_games"), where("userId", "==", activeUser.uid), where("mode", "==", "multiplayer"));
+        const snap = await getDocs(q);
+        snap.forEach(d => {
+          map.set(d.id, { ...d.data(), id: d.id, source: "cloud" });
+        });
+      } catch (e) {
+        console.warn("Errore caricamento salvataggi cloud host:", e);
+      }
+    }
+
+    setSavedHostGames(Array.from(map.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0)));
+  };
+
+  const handleSaveHostGame = async () => {
+    if (!room) return;
+    const now = new Date();
+    const dateFormatted = now.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
+    const cleanName = saveSessionName.trim() || `Sfida Multiplayer del ${dateFormatted}`;
+    const saveId = `host_save_${Date.now()}`;
+
+    const newSave = {
+      id: saveId,
+      name: cleanName,
+      date: dateFormatted,
+      timestamp: Date.now(),
+      mode: "multiplayer",
+      settings: room.settings || { deckId: selectedDeck, topics: selectedColors },
+      deck: room.deck || [],
+      state: room.state,
+      teamA: room.teamA,
+      teamB: room.teamB,
+      source: user ? "cloud" : "local"
+    };
+
+    // 1. Salva in LocalStorage
+    try {
+      let raw = localStorage.getItem("ops_storia_saved_host_games");
+      let list: any[] = raw ? JSON.parse(raw) : [];
+      list.unshift(newSave);
+      localStorage.setItem("ops_storia_saved_host_games", JSON.stringify(list.slice(0, 20)));
+    } catch (_) {}
+
+    // 2. Salva in Cloud Firestore
+    if (user && hubDb) {
+      try {
+        await setDoc(doc(hubDb, "ops_saved_games", saveId), {
+          ...newSave,
+          userId: user.uid,
+          userEmail: (user.email || '').toLowerCase().trim(),
+          updatedAt: new Date().toISOString()
+        });
+        console.log("☁️ Sessione Multiplayer salvata sul Cloud!");
+      } catch (e) {
+        console.warn("Salvataggio Cloud host fallito:", e);
+      }
+    }
+
+    setShowSaveDialog(false);
+    alert("Sessione Multiplayer salvata con successo! Potrai riprenderla in qualsiasi momento da questo o da un altro dispositivo.");
+    setPhase("SETUP_DECK");
+  };
+
+  const handleLoadHostGame = async (savedItem: any) => {
+    setIsLoading(true);
+    try {
+      const newRoomCode = await createRoom(savedItem.settings, savedItem.deck || []);
+      
+      // Ripristina statistiche e posizioni squadre
+      await updateTeamStats(newRoomCode, 1, {
+        name: savedItem.teamA?.name || "Squadra A",
+        score: savedItem.teamA?.score || 0,
+        pawn: savedItem.teamA?.pawn || 1,
+        position: savedItem.teamA?.position || 1
+      });
+      await updateTeamStats(newRoomCode, 2, {
+        name: savedItem.teamB?.name || "Squadra B",
+        score: savedItem.teamB?.score || 0,
+        pawn: savedItem.teamB?.pawn || 2,
+        position: savedItem.teamB?.position || 1
+      });
+
+      if (savedItem.state) {
+        await updateRoomState(newRoomCode, {
+          currentTurn: savedItem.state.currentTurn || 1,
+          cardIndex: savedItem.state.cardIndex || 0,
+          timeLeft: savedItem.state.timeLeft || 60
+        });
+      }
+
+      setRoomCode(newRoomCode);
+      setShowSavedHostModal(false);
+      setPhase("ROOM");
+    } catch (e: any) {
+      alert("Errore caricamento sessione: " + e.message);
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  const handleDeleteSavedHostGame = async (saveId: string) => {
+    try {
+      let raw = localStorage.getItem("ops_storia_saved_host_games");
+      if (raw) {
+        let list: any[] = JSON.parse(raw);
+        list = list.filter(s => s.id !== saveId);
+        localStorage.setItem("ops_storia_saved_host_games", JSON.stringify(list));
+      }
+      setSavedHostGames(prev => prev.filter(s => s.id !== saveId));
+    } catch (_) {}
+
+    if (user && hubDb) {
+      try {
+        await deleteDoc(doc(hubDb, "ops_saved_games", saveId));
+      } catch (_) {}
+    }
+  };
+
   const getRankedTeams = () => {
     if (!room) return [];
     const tA = { ...room.teamA, id: 'A', isTeamA: true };
@@ -309,7 +446,12 @@ export default function HostBoard() {
                   </button>
                 ))}
               </div>
-              <button onClick={() => setPhase("SETUP_TOPICS")} className="w-full bg-primary-500 text-white py-4 rounded-xl font-black text-xl shadow-lg active:scale-95 transition-all">AVANTI</button>
+              <div className="flex gap-3">
+                <button onClick={() => setPhase("SETUP_TOPICS")} className="flex-1 bg-primary-500 text-white py-4 rounded-xl font-black text-xl shadow-lg active:scale-95 transition-all">AVANTI</button>
+                <button onClick={() => { fetchSavedHostGames(); setShowSavedHostModal(true); }} className="flex-1 bg-slate-100 border-2 border-slate-200 text-slate-700 py-4 rounded-xl font-black flex items-center justify-center gap-2 hover:bg-slate-200 transition-all text-sm">
+                  <FolderOpen className="w-5 h-5 text-amber-600" /> Riprendi Partita
+                </button>
+              </div>
             </motion.div>
           )}
 
@@ -523,13 +665,19 @@ export default function HostBoard() {
               )}
 
               {room.state.isPaused && (
-                <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center text-white">
-                  <Pause className="w-24 h-24 mb-6 text-white/50" />
-                  <h2 className="text-6xl font-black mb-4 tracking-tight">PAUSA</h2>
-                  <p className="text-2xl font-medium text-white/70">La partita è momentaneamente sospesa dal Docente.</p>
-                  <button onClick={togglePause} className="mt-12 bg-white text-slate-900 px-12 py-5 rounded-full font-black text-xl shadow-2xl hover:scale-105 transition-transform">
-                    RIPRENDI GIOCO
-                  </button>
+                <div className="absolute inset-0 bg-slate-900/90 backdrop-blur-sm z-50 flex flex-col items-center justify-center text-white p-6">
+                  <Pause className="w-20 h-20 mb-4 text-white/50" />
+                  <h2 className="text-5xl font-black mb-2 tracking-tight">PAUSA</h2>
+                  <p className="text-xl font-medium text-white/70 mb-8">La partita è momentaneamente sospesa dal Docente.</p>
+                  
+                  <div className="flex flex-wrap gap-4 justify-center">
+                    <button onClick={togglePause} className="bg-white text-slate-900 px-10 py-4 rounded-full font-black text-lg shadow-2xl hover:scale-105 transition-transform flex items-center gap-2">
+                      <Play className="w-5 h-5 fill-current" /> RIPRENDI GIOCO
+                    </button>
+                    <button onClick={() => setShowSaveDialog(true)} className="bg-amber-500 hover:bg-amber-600 text-white px-8 py-4 rounded-full font-black text-lg shadow-xl hover:scale-105 transition-transform flex items-center gap-2">
+                      <Save className="w-5 h-5" /> SALVA SESSIONE
+                    </button>
+                  </div>
                 </div>
               )}
 
@@ -539,6 +687,108 @@ export default function HostBoard() {
         </AnimatePresence>
         )}
       </main>
+
+      {/* Modal Partite Multiplayer Salvate */}
+      {showSavedHostModal && (
+        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-lg w-full border border-slate-100 max-h-[85vh] flex flex-col">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-2xl font-black text-slate-900 flex items-center gap-2">
+                <FolderOpen className="w-6 h-6 text-amber-600" /> Sfide Multiplayer Salvate
+              </h3>
+              <button onClick={() => setShowSavedHostModal(false)} className="text-slate-400 hover:text-slate-600 p-1">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+            <p className="text-xs text-slate-500 mb-4">Seleziona una sessione multiplayer per rigenerare la stanza con i punteggi e le posizioni salvate.</p>
+
+            <div className="flex-1 overflow-y-auto space-y-3 pr-1">
+              {savedHostGames.length === 0 ? (
+                <div className="text-center py-10 text-slate-400 font-medium text-sm">
+                  Nessuna sfida multiplayer salvata trovata.
+                </div>
+              ) : (
+                savedHostGames.map(s => {
+                  const isCloud = s.source === "cloud";
+                  return (
+                    <div key={s.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 hover:border-amber-400 transition-all">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-black text-slate-900 text-base">{s.name}</h4>
+                          {isCloud ? (
+                            <span className="bg-indigo-100 text-indigo-700 border border-indigo-200 text-[10px] font-extrabold px-1.5 py-0.5 rounded-md">
+                              ☁️ Cloud
+                            </span>
+                          ) : (
+                            <span className="bg-slate-200 text-slate-700 text-[10px] font-semibold px-1.5 py-0.5 rounded-md">
+                              🖥️ Locale
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-slate-500 font-medium mt-1">
+                          {s.date} • A: c.{s.teamA?.position || 1} ({s.teamA?.score || 0} pts) vs B: c.{s.teamB?.position || 1} ({s.teamB?.score || 0} pts)
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => handleLoadHostGame(s)} 
+                          disabled={isLoading}
+                          className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow"
+                        >
+                          Riprendi
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteSavedHostGame(s.id)} 
+                          className="text-slate-400 hover:text-red-500 p-1.5" 
+                          title="Elimina"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
+                      </div>
+                    </div>
+                  );
+                })
+              )}
+            </div>
+
+            <div className="mt-4 pt-3 border-t flex justify-end">
+              <button onClick={() => setShowSavedHostModal(false)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-2.5 rounded-xl font-bold text-sm">
+                Chiudi
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Dialog Salva Sessione Host */}
+      {showSaveDialog && (
+        <div className="fixed inset-0 bg-slate-900/80 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="bg-white rounded-3xl shadow-2xl p-6 sm:p-8 max-w-md w-full border border-slate-100">
+            <h3 className="text-2xl font-black text-slate-900 mb-2 flex items-center gap-2">
+              <Save className="w-6 h-6 text-amber-600" /> Salva Sfida Multiplayer
+            </h3>
+            <p className="text-xs text-slate-500 mb-4">Assegna un nome alla sessione per riprenderla alla prossima lezione.</p>
+
+            <input 
+              type="text" 
+              value={saveSessionName}
+              onChange={(e) => setSaveSessionName(e.target.value)}
+              placeholder="Es. Sfida 2ª A vs 2ª B"
+              className="w-full p-3.5 border-2 border-slate-200 rounded-xl font-bold text-slate-900 mb-6 focus:border-primary-500 outline-none"
+            />
+
+            <div className="flex gap-3 justify-end">
+              <button onClick={() => setShowSaveDialog(false)} className="bg-slate-100 hover:bg-slate-200 text-slate-700 px-5 py-3 rounded-xl font-bold text-sm">
+                Annulla
+              </button>
+              <button onClick={handleSaveHostGame} className="bg-primary-500 hover:bg-primary-600 text-white px-6 py-3 rounded-xl font-bold text-sm shadow-md">
+                Salva ed Esci
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
     </div>
   );
 }
