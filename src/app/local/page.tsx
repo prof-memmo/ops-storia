@@ -738,13 +738,13 @@ export default function LocalPlay() {
                       <Check className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>Esatta!</span>
                     </button>
                     <button onClick={() => handleAction("OPS")} className="bg-red-500 border-2 border-red-600 text-white font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-2.5 sm:py-4 flex flex-col items-center justify-center hover:bg-red-600 active:scale-95 transition-all shadow-xs md:flex-1">
-                      <AlertOctagon className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>OPS! (-1)</span>
+                      <AlertOctagon className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>Sbagliata!</span>
                     </button>
                   </div>
                 </div>
                 {showUndoOps && (
                   <div className="absolute bottom-36 left-1/2 -translate-x-1/2 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-slate-700 z-50">
-                    <button onClick={undoOps} className="font-bold flex items-center text-lg"><Undo2 className="w-6 h-6 mr-2"/> Annulla OPS</button>
+                    <button onClick={undoOps} className="font-bold flex items-center text-lg"><Undo2 className="w-6 h-6 mr-2"/> Annulla Sbagliata</button>
                   </div>
                 )}
               </div>
