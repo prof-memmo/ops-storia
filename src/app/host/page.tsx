@@ -189,40 +189,73 @@ export default function HostBoard() {
   const showBoardAfterSummary = async () => {
     if (!room) return;
     const activeTeamKey = room.state.currentTurn === 1 ? 'teamA' : 'teamB';
-    const currentPos = room[activeTeamKey].position || 1;
-    const netMovement = room.state.cardsGuessed - room.state.opsPenalties - room.state.cardsPassed;
+    const opponentTeamKey = room.state.currentTurn === 1 ? 'teamB' : 'teamA';
+    const opponentTurn: 1 | 2 = room.state.currentTurn === 1 ? 2 : 1;
+
+    const currentPosActive = room[activeTeamKey].position || 1;
+    const currentPosOpponent = room[opponentTeamKey].position || 1;
+
+    const activeGain = Math.max(0, room.state.cardsGuessed);
+    const opponentGain = Math.max(0, room.state.opsPenalties + room.state.cardsPassed);
+
+    let newPosActive = Math.min(24, Math.max(1, currentPosActive + activeGain));
+    let newPosOpponent = Math.min(24, Math.max(1, currentPosOpponent + opponentGain));
+    let notices: string[] = [];
     
-    let newPos = Math.min(24, Math.max(1, currentPos + netMovement));
-    let notice = "";
-    
-    let teamBonus = {
-      unlimitedPass: false,
-      doubleTime: false,
-      ...(room[activeTeamKey].pendingBonus || {})
+    let activeBonus = {
+      unlimitedPass: room[activeTeamKey].pendingBonus?.unlimitedPass || false,
+      doubleTime: room[activeTeamKey].pendingBonus?.doubleTime || false
     };
 
-    if (newPos === 6) {
-      teamBonus.unlimitedPass = true;
-      notice = `🎣 Casella 6 (Pesca Illimitata): ${room[activeTeamKey].name} potrà scartare senza limiti nel suo prossimo turno!`;
-    } else if (newPos === 12) {
-      notice = `📍 Casella 12: Checkpoint intermedio raggiunto!`;
-    } else if (newPos === 18) {
-      newPos = Math.min(24, newPos + 1);
-      notice = `♟️ Casella 18 (Mossa del Cavallo): Salto bonus immediato alla casella ${newPos}!`;
-    } else if (newPos === 21) {
-      teamBonus.doubleTime = true;
-      notice = `✖️2 Casella 21 (Tempo Doppio): ${room[activeTeamKey].name} avrà 120 secondi nel suo prossimo turno!`;
-    } else if (newPos === 24) {
-      notice = `🏆 Casella 24: ${room[activeTeamKey].name} ha raggiunto il traguardo finale!`;
+    let opponentBonus = {
+      unlimitedPass: room[opponentTeamKey].pendingBonus?.unlimitedPass || false,
+      doubleTime: room[opponentTeamKey].pendingBonus?.doubleTime || false
+    };
+
+    if (newPosActive === 6) {
+      activeBonus.unlimitedPass = true;
+      notices.push(`🎣 Casella 6 (Pesca Illimitata): ${room[activeTeamKey].name} potrà scartare senza limiti nel prossimo turno!`);
+    } else if (newPosActive === 12) {
+      notices.push(`📍 Casella 12: Checkpoint intermedio raggiunto da ${room[activeTeamKey].name}!`);
+    } else if (newPosActive === 18) {
+      newPosActive = Math.min(24, newPosActive + 1);
+      notices.push(`♟️ Casella 18 (Mossa del Cavallo): ${room[activeTeamKey].name} balza alla casella ${newPosActive}!`);
+    } else if (newPosActive === 21) {
+      activeBonus.doubleTime = true;
+      notices.push(`✖️2 Casella 21 (Tempo Doppio): ${room[activeTeamKey].name} avrà 120 secondi nel prossimo turno!`);
+    } else if (newPosActive === 24) {
+      notices.push(`🏆 TRAGUARDO: ${room[activeTeamKey].name} ha raggiunto il traguardo finale!`);
+    }
+
+    if (opponentGain > 0) {
+      if (newPosOpponent === 6) {
+        opponentBonus.unlimitedPass = true;
+        notices.push(`🎣 Casella 6: ${room[opponentTeamKey].name} ottiene scarti illimitati!`);
+      } else if (newPosOpponent === 18) {
+        newPosOpponent = Math.min(24, newPosOpponent + 1);
+        notices.push(`♟️ Casella 18: ${room[opponentTeamKey].name} balza alla casella ${newPosOpponent}!`);
+      } else if (newPosOpponent === 21) {
+        opponentBonus.doubleTime = true;
+        notices.push(`✖️2 Casella 21: ${room[opponentTeamKey].name} ottiene tempo doppio!`);
+      } else if (newPosOpponent === 24) {
+        notices.push(`🏆 TRAGUARDO: ${room[opponentTeamKey].name} ha raggiunto il traguardo finale!`);
+      }
     }
 
     await updateTeamStats(room.code, room.state.currentTurn, {
-      position: newPos,
-      pendingBonus: teamBonus
+      position: newPosActive,
+      pendingBonus: activeBonus
     });
 
+    if (opponentGain > 0 || newPosOpponent !== currentPosOpponent) {
+      await updateTeamStats(room.code, opponentTurn, {
+        position: newPosOpponent,
+        pendingBonus: opponentBonus
+      });
+    }
+
     await updateRoomState(room.code, {
-      lastSpecialNotice: notice
+      lastSpecialNotice: notices.join(" | ")
     });
 
     await updateRoomStatus(room.code, "BOARD");
