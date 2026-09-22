@@ -60,7 +60,7 @@ export default function ClientBoard() {
         cardsGuessed: room.state.cardsGuessed + 1,
         cardIndex: room.state.cardIndex + 1 
       });
-      await updateTeamStats(room.code, room.state.currentTurn, { score: room[teamKey].score + 1 });
+      await updateTeamStats(room.code, room.state.currentTurn, { score: (room[teamKey].score || 0) + 1 });
     } 
     else if (action === "SCARTA") {
       if (room.state.cardsPassed >= 2 && !room.state.unlimitedPass) {
@@ -71,14 +71,15 @@ export default function ClientBoard() {
         cardsPassed: room.state.cardsPassed + 1,
         cardIndex: room.state.cardIndex + 1 
       });
-      await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: room[opponentKey].score + 1 });
+      await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: (room[opponentKey].score || 0) + 1 });
     }
     else if (action === "OPS") {
       await updateRoomState(room.code, { 
         opsPenalties: room.state.opsPenalties + 1,
+        cardIndex: room.state.cardIndex + 1,
         showUndo: true
       });
-      await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: room[opponentKey].score + 1 });
+      await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: (room[opponentKey].score || 0) + 1 });
       
       // Auto hide undo after 3s
       setTimeout(() => {
@@ -95,7 +96,7 @@ export default function ClientBoard() {
       opsPenalties: Math.max(0, room.state.opsPenalties - 1),
       showUndo: false
     });
-    await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: Math.max(0, room[opponentKey].score - 1) });
+    await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: Math.max(0, (room[opponentKey].score || 1) - 1) });
   };
 
   const currentCard = room && room.deck && room.deck.length > 0 ? room.deck[room.state.cardIndex % room.deck.length] : null;
@@ -107,25 +108,25 @@ export default function ClientBoard() {
   return (
     <div className="h-[100dvh] w-screen bg-slate-50 flex flex-col font-sans overflow-hidden">
       
-      <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0 border-b border-slate-100">
+      <header className="bg-white px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0 border-b border-slate-100">
         <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
-          <Link href="/" className="shrink-0 flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-bold text-xs sm:text-sm transition-all" title="Torna alla Home">
+          <Link href="/" className="shrink-0 flex items-center gap-1.5 bg-slate-100 hover:bg-slate-200 text-slate-700 px-2.5 sm:px-3 py-1 sm:py-1.5 rounded-full font-bold text-xs sm:text-sm transition-all" title="Torna alla Home">
             <Home className="w-4 h-4 text-primary-500" />
             <span className="hidden sm:inline">Home</span>
           </Link>
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0" />
+          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-8 sm:h-12 object-contain shrink-0" />
         </div>
         
         <div className="flex items-center justify-center flex-1">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
+           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-9 sm:h-14 object-contain" />
         </div>
 
-        <div className="text-sm font-black text-primary-500 text-right flex-1 uppercase tracking-tighter">
+        <div className="text-xs sm:text-sm font-black text-primary-500 text-right flex-1 uppercase tracking-tighter">
           {room ? `STANZA ${room.code}` : 'UNISCITI'}
         </div>
       </header>
 
-      <main className="flex-1 relative flex items-center justify-center p-2 sm:p-4 overflow-hidden">
+      <main className="flex-1 relative flex items-center justify-center p-2 sm:p-4 overflow-hidden min-h-0">
         <AnimatePresence mode="wait">
           
           {phase === "JOIN" && (
@@ -185,51 +186,51 @@ export default function ClientBoard() {
           )}
 
           {phase === "PLAYING" && currentCard && room && (
-            <motion.div key="playing" className={`w-full max-w-4xl h-full max-h-[700px] bg-white rounded-3xl shadow-xl flex flex-col border-4 overflow-hidden ${currentCard.colorTheme.borderClass}`}>
+            <motion.div key="playing" className={`w-full max-w-4xl h-full max-h-[92vh] bg-white rounded-2xl sm:rounded-3xl shadow-xl flex flex-col border-3 sm:border-4 overflow-hidden ${currentCard.colorTheme?.borderClass || 'border-orange-500'}`}>
               
-              <div className={`${currentCard.colorTheme.colorClass} text-white text-center py-2 font-bold text-xs sm:text-sm uppercase tracking-widest shrink-0 flex justify-between px-4`}>
-                <span>{isActiveTeam ? "Il tuo turno" : "Controlla"}</span>
-                <span>{room.state.timeLeft}s</span>
+              <div className={`${currentCard.colorTheme?.colorClass || 'bg-orange-500'} text-white text-center py-1.5 sm:py-2 font-bold text-xs sm:text-sm uppercase tracking-widest shrink-0 flex justify-between px-3 sm:px-4`}>
+                <span>{isActiveTeam ? "Il tuo turno" : "Controlla Avversari"}</span>
+                <span className="font-black">{room.state.timeLeft}s</span>
               </div>
               
-              <div className="flex flex-col md:flex-row flex-1 min-h-0">
-                  <div className="flex-1 flex flex-col items-center justify-center p-4">
-                    <h1 className={`text-3xl sm:text-5xl md:text-6xl font-black mb-2 text-center leading-tight shrink-0 ${currentCard.colorTheme?.textClass || 'text-slate-900'}`}>
+              <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
+                  <div className="flex-1 flex flex-col items-center justify-between p-2 sm:p-4 min-h-0 overflow-hidden">
+                    <h1 className={`text-2xl sm:text-4xl md:text-5xl font-black my-1 sm:my-2 text-center leading-tight shrink-0 ${currentCard.colorTheme?.textClass || 'text-slate-900'}`}>
                       {cardKeyword}
                     </h1>
                     
-                    <div className="bg-slate-100 w-full p-4 rounded-xl border border-slate-200 mt-2 min-h-0 flex-1 overflow-y-auto">
-                      <p className="text-center font-bold text-slate-400 text-xs uppercase tracking-widest mb-1">Parole Vietate</p>
-                      <ul className="text-center space-y-1 sm:space-y-2">
+                    <div className="bg-slate-100/80 w-full p-2 sm:p-3 rounded-xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center">
+                      <p className="text-center font-black text-slate-400 text-[10px] sm:text-xs uppercase tracking-widest mb-1 shrink-0">Parole Vietate</p>
+                      <div className="flex-1 flex flex-col justify-evenly gap-1 sm:gap-1.5 min-h-0">
                         {cardTaboos.map((word: string) => (
-                          <div key={word} className="bg-slate-50 text-slate-700 font-bold py-1.5 sm:py-2 px-2 sm:px-4 rounded-lg sm:rounded-xl text-center text-base sm:text-xl border border-slate-100">{word}</div>
+                          <div key={word} className="bg-white text-slate-800 font-extrabold py-1 sm:py-2 px-2 sm:px-3 rounded-lg text-center text-sm sm:text-lg border border-slate-200/80 shadow-xs flex items-center justify-center">
+                            {word}
+                          </div>
                         ))}
-                      </ul>
+                      </div>
                     </div>
                   </div>
 
-                  <div className="p-2 sm:p-4 bg-slate-50 border-t-2 md:border-t-0 md:border-l-4 sm:border-t-4 border-slate-100 shrink-0 md:w-64">
+                  <div className="p-2 sm:p-3 bg-slate-50 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 shrink-0 md:w-60 flex flex-col justify-center">
                     {isActiveTeam ? (
-                      <div className="grid grid-cols-2 md:grid-cols-1 gap-2 sm:gap-4 h-full">
-                        <button onClick={() => handleAction("SCARTA")} className={`bg-white border-2 sm:border-4 border-slate-200 text-slate-700 font-black text-xs sm:text-2xl rounded-xl sm:rounded-2xl py-3 sm:py-6 flex flex-col items-center justify-center transition-all shadow-sm sm:shadow-md md:flex-1 ${room.state.cardsPassed >= 2 && !room.state.unlimitedPass ? 'opacity-50 pointer-events-none' : 'hover:bg-slate-100 active:scale-95'}`}>
-                          <X className="w-5 h-5 sm:w-8 sm:h-8 mb-1"/> <span>Scarta</span> <span className="text-[10px] sm:text-sm opacity-60">({room.state.cardsPassed}/{room.state.unlimitedPass ? '∞' : '2'})</span>
+                      <div className="grid grid-cols-2 md:grid-cols-1 gap-2 h-full">
+                        <button onClick={() => handleAction("SCARTA")} className={`bg-white border-2 border-slate-200 text-slate-700 font-black text-xs sm:text-lg rounded-xl py-2.5 sm:py-5 flex flex-col items-center justify-center transition-all shadow-xs md:flex-1 ${room.state.cardsPassed >= 2 && !room.state.unlimitedPass ? 'opacity-50 pointer-events-none' : 'hover:bg-slate-100 active:scale-95'}`}>
+                          <X className="w-5 h-5 sm:w-6 sm:h-6 mb-0.5 text-slate-500"/> <span>Scarta</span> <span className="text-[10px] sm:text-xs opacity-60">({room.state.cardsPassed}/{room.state.unlimitedPass ? '∞' : '2'})</span>
                         </button>
-                        <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 sm:border-4 border-emerald-600 text-white font-black text-xs sm:text-2xl rounded-xl sm:rounded-2xl py-3 sm:py-6 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-sm sm:shadow-md md:flex-1">
-                          <Check className="w-5 h-5 sm:w-8 sm:h-8 mb-1"/> <span>Esatta!</span>
+                        <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 border-emerald-600 text-white font-black text-xs sm:text-lg rounded-xl py-2.5 sm:py-5 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-xs md:flex-1">
+                          <Check className="w-5 h-5 sm:w-6 sm:h-6 mb-0.5"/> <span>Esatta!</span>
                         </button>
                       </div>
                     ) : (
-                      <div className="flex flex-col space-y-2 h-full">
-                        <button onClick={() => handleAction("OPS")} className="w-full bg-red-500 text-white py-3 sm:py-6 rounded-xl sm:rounded-2xl flex flex-col justify-center items-center font-black text-xl sm:text-3xl shadow-xl hover:bg-red-600 active:scale-95 transition-all border-2 sm:border-4 border-red-600 flex-1">
-                          <AlertOctagon className="w-6 h-6 sm:w-10 sm:h-10 mb-1 sm:mr-2" /> OPS! (Sbagliata)
+                      <div className="flex flex-col space-y-1.5 h-full justify-center">
+                        <button onClick={() => handleAction("OPS")} className="w-full bg-red-500 text-white py-3 sm:py-6 rounded-xl flex flex-col justify-center items-center font-black text-base sm:text-2xl shadow-lg hover:bg-red-600 active:scale-95 transition-all border-2 border-red-600 flex-1">
+                          <AlertOctagon className="w-6 h-6 sm:w-8 sm:h-8 mb-1" /> OPS! (-1)
                         </button>
                         {room.state.showUndo ? (
-                          <button onClick={undoOps} className="flex items-center justify-center text-slate-500 active:text-slate-800 font-bold py-2 bg-slate-200 rounded-xl text-sm sm:text-base shrink-0 mt-2">
-                            <Undo2 className="w-4 h-4 sm:w-5 sm:h-5 mr-2" /> Annulla penalità
+                          <button onClick={undoOps} className="flex items-center justify-center text-slate-700 active:text-slate-900 font-bold py-1.5 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs sm:text-sm shrink-0">
+                            <Undo2 className="w-3.5 h-3.5 mr-1" /> Annulla OPS
                           </button>
-                        ) : (
-                          <div className="h-9 shrink-0 mt-2"></div> 
-                        )}
+                        ) : null}
                       </div>
                     )}
                   </div>
