@@ -12,7 +12,7 @@ import HostLogin from "@/components/HostLogin";
 import { auth, hubDb } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { collection, doc, setDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
-import { getPawnImg } from "@/lib/assets";
+import { getPawnImg, getAssetPath } from "@/lib/assets";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -434,7 +434,7 @@ export default function LocalPlay() {
   const handleLogout = async () => {
     if (confirm("Vuoi disconnettere il tuo account e tornare alla Home?")) {
       await signOut(auth);
-      window.location.href = "/";
+      window.location.href = getAssetPath("/");
     }
   };
 

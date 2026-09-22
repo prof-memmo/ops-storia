@@ -10,7 +10,7 @@ import { createRoom, subscribeToRoom, updateRoomStatus, updateRoomState, updateT
 import { auth, hubDb } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { collection, doc, setDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
-import { getPawnImg } from "@/lib/assets";
+import { getPawnImg, getAssetPath } from "@/lib/assets";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -93,64 +93,68 @@ export default function HostBoard() {
   }, [room]);
 
   const initializeGame = async () => {
-    if (selectedColors.length === 0) return alert("Seleziona almeno un colore!");
-    
     setIsLoading(true);
-    let allCards: any[] = CARDS_MAP[selectedDeck] || [];
-    
-    if (!allCards || allCards.length === 0) {
-      try {
-        const res = await fetch(`data/cards_${selectedDeck}.json`);
-        const data = await res.json();
-        allCards = data;
-      } catch (e) {
+    try {
+      let allCards: any[] = CARDS_MAP[selectedDeck] || [];
+      
+      if (!allCards || allCards.length === 0) {
         try {
-          const res = await fetch(`/data/cards_${selectedDeck}.json`);
+          const res = await fetch(`data/cards_${selectedDeck}.json`);
           const data = await res.json();
           allCards = data;
-        } catch(e2) {
-          allCards = cardsPrima;
+        } catch (e) {
+          try {
+            const res = await fetch(`/data/cards_${selectedDeck}.json`);
+            const data = await res.json();
+            allCards = data;
+          } catch(e2) {
+            allCards = cardsPrima;
+          }
         }
       }
-    }
 
-    const activeColors = selectedColors.length > 0 ? selectedColors : colorsDB.map(c => c.id);
-    const chunkSize = Math.ceil(allCards.length / 6);
-    let finalDeck: any[] = [];
-    
-    allCards.forEach((c: any, index: number) => {
-      const chunkIndex = Math.min(5, Math.floor(index / chunkSize));
-      const colorObj = colorsDB[chunkIndex];
-      if (activeColors.includes(colorObj.id)) {
-        finalDeck.push({ 
-          word: c.parola_chiave, 
-          taboos: c.parole_taboo, 
-          parola_chiave: c.parola_chiave, 
-          parole_taboo: c.parole_taboo, 
-          colorTheme: colorObj 
-        });
-      }
-    });
-
-    if (finalDeck.length === 0) {
+      const activeColors = selectedColors.length > 0 ? selectedColors : colorsDB.map(c => c.id);
+      const chunkSize = Math.ceil(allCards.length / 6);
+      let finalDeck: any[] = [];
+      
       allCards.forEach((c: any, index: number) => {
         const chunkIndex = Math.min(5, Math.floor(index / chunkSize));
-        finalDeck.push({ 
-          word: c.parola_chiave, 
-          taboos: c.parole_taboo, 
-          parola_chiave: c.parola_chiave, 
-          parole_taboo: c.parole_taboo, 
-          colorTheme: colorsDB[chunkIndex] 
-        });
+        const colorObj = colorsDB[chunkIndex];
+        if (activeColors.includes(colorObj.id)) {
+          finalDeck.push({ 
+            word: c.parola_chiave, 
+            taboos: c.parole_taboo, 
+            parola_chiave: c.parola_chiave, 
+            parole_taboo: c.parole_taboo, 
+            colorTheme: colorObj 
+          });
+        }
       });
-    }
 
-    finalDeck = finalDeck.sort(() => Math.random() - 0.5);
-    
-    const code = await createRoom({ deckId: selectedDeck, topics: selectedColors }, finalDeck);
-    setRoomCode(code);
-    setIsLoading(false);
-    setPhase("ROOM");
+      if (finalDeck.length === 0) {
+        allCards.forEach((c: any, index: number) => {
+          const chunkIndex = Math.min(5, Math.floor(index / chunkSize));
+          finalDeck.push({ 
+            word: c.parola_chiave, 
+            taboos: c.parole_taboo, 
+            parola_chiave: c.parola_chiave, 
+            parole_taboo: c.parole_taboo, 
+            colorTheme: colorsDB[chunkIndex] 
+          });
+        });
+      }
+
+      finalDeck = finalDeck.sort(() => Math.random() - 0.5);
+      
+      const code = await createRoom({ deckId: selectedDeck, topics: activeColors }, finalDeck);
+      setRoomCode(code);
+      setPhase("ROOM");
+    } catch (err: any) {
+      console.error("Errore creazione stanza:", err);
+      alert("Impossibile creare la stanza: " + (err.message || "Verifica la connessione e riprova."));
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const toggleColor = (id: string) => {
@@ -252,7 +256,7 @@ export default function HostBoard() {
   const handleLogout = async () => {
     if (confirm("Vuoi disconnettere il tuo account e tornare alla Home?")) {
       await signOut(auth);
-      window.location.href = "/";
+      window.location.href = getAssetPath("/");
     }
   };
 
