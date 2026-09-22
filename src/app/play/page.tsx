@@ -222,15 +222,10 @@ export default function ClientBoard() {
                         </button>
                       </div>
                     ) : (
-                      <div className="flex flex-col space-y-1.5 h-full justify-center">
+                      <div className="flex flex-col h-full justify-center">
                         <button onClick={() => handleAction("OPS")} className="w-full bg-red-500 text-white py-3 sm:py-6 rounded-xl flex flex-col justify-center items-center font-black text-base sm:text-2xl shadow-lg hover:bg-red-600 active:scale-95 transition-all border-2 border-red-600 flex-1">
-                          <AlertOctagon className="w-6 h-6 sm:w-8 sm:h-8 mb-1" /> OPS! (Sbagliata)
+                          <AlertOctagon className="w-6 h-6 sm:w-8 sm:h-8 mb-1" /> Sbagliata!
                         </button>
-                        {room.state.showUndo ? (
-                          <button onClick={undoOps} className="flex items-center justify-center text-slate-700 active:text-slate-900 font-bold py-1.5 bg-slate-200 hover:bg-slate-300 rounded-xl text-xs sm:text-sm shrink-0">
-                            <Undo2 className="w-3.5 h-3.5 mr-1" /> Annulla penalità
-                          </button>
-                        ) : null}
                       </div>
                     )}
                   </div>

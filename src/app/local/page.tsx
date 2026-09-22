@@ -742,11 +742,6 @@ export default function LocalPlay() {
                     </button>
                   </div>
                 </div>
-                {showUndoOps && (
-                  <div className="absolute bottom-36 left-1/2 -translate-x-1/2 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-slate-700 z-50">
-                    <button onClick={undoOps} className="font-bold flex items-center text-lg"><Undo2 className="w-6 h-6 mr-2"/> Annulla Sbagliata</button>
-                  </div>
-                )}
               </div>
             </motion.div>
           )}
