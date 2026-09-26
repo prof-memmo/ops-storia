@@ -52,6 +52,7 @@ export default function HostBoard() {
   const [showSavedHostModal, setShowSavedHostModal] = useState(false);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [saveSessionName, setSaveSessionName] = useState("");
+  const [lastHostStartPos, setLastHostStartPos] = useState({ oldPosA: 1, oldPosB: 1 });
 
   useEffect(() => {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
@@ -253,6 +254,11 @@ export default function HostBoard() {
         pendingBonus: opponentBonus
       });
     }
+
+    setLastHostStartPos({
+      oldPosA: room.teamA.position || 1,
+      oldPosB: room.teamB.position || 1
+    });
 
     await updateRoomState(room.code, {
       lastSpecialNotice: notices.join(" | ")
@@ -575,8 +581,8 @@ export default function HostBoard() {
                   {room.status === "BOARD" && (
                     <div className="w-full max-w-5xl flex flex-col items-center">
                       <DynamicBoard 
-                        teamA={{ pos: room.teamA.position || 1, pawn: room.teamA.pawn, id: "A" }} 
-                        teamB={{ pos: room.teamB.position || 1, pawn: room.teamB.pawn, id: "B" }} 
+                        teamA={{ pos: room.teamA.position || 1, oldPos: lastHostStartPos.oldPosA, pawn: room.teamA.pawn, id: "A", name: room.teamA.name }} 
+                        teamB={{ pos: room.teamB.position || 1, oldPos: lastHostStartPos.oldPosB, pawn: room.teamB.pawn, id: "B", name: room.teamB.name }} 
                       />
 
                       {room.state.lastSpecialNotice && (

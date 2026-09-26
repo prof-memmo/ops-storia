@@ -113,6 +113,7 @@ export default function LocalPlay() {
   
   const [turnStats, setTurnStats] = useState({ guessed: 0, passed: 0, ops: 0 });
   const [showUndoOps, setShowUndoOps] = useState(false);
+  const [lastTurnStartPos, setLastTurnStartPos] = useState({ oldPosA: 1, oldPosB: 1 });
   const [activeDoubleTime, setActiveDoubleTime] = useState(false);
   const [activeUnlimitedPass, setActiveUnlimitedPass] = useState(false);
   const [lastSpecialNotice, setLastSpecialNotice] = useState<string>("");
@@ -313,6 +314,11 @@ export default function LocalPlay() {
         notices.push(`🏆 TRAGUARDO: ${opponentTeam.name} ha raggiunto la vittoria!`);
       }
     }
+
+    setLastTurnStartPos({
+      oldPosA: teamA.pos || 1,
+      oldPosB: teamB.pos || 1
+    });
 
     setActiveTeam(s => ({ ...s, pos: newPosActive, pendingBonus: activeBonus }));
     setOpponentTeam(s => ({ ...s, pos: newPosOpponent, pendingBonus: opponentBonus }));
@@ -767,8 +773,8 @@ export default function LocalPlay() {
           {phase === "BOARD" && (
             <motion.div key="board" className="w-full max-w-5xl text-center h-full max-h-[85vh] flex flex-col items-center justify-center">
               <DynamicBoard 
-                teamA={{ pos: teamA.pos, pawn: teamA.pawn, id: "A" }} 
-                teamB={{ pos: teamB.pos, pawn: teamB.pawn, id: "B" }} 
+                teamA={{ pos: teamA.pos, oldPos: lastTurnStartPos.oldPosA, pawn: teamA.pawn, id: "A", name: teamA.name }} 
+                teamB={{ pos: teamB.pos, oldPos: lastTurnStartPos.oldPosB, pawn: teamB.pawn, id: "B", name: teamB.name }} 
               />
 
               {lastSpecialNotice && (

@@ -1,12 +1,15 @@
 "use client";
 
+import { useEffect, useState, useRef } from "react";
 import { motion } from "framer-motion";
 import { getAssetPath, getPawnImg } from "@/lib/assets";
 
-type Team = {
+type TeamBoardProps = {
   pos: number;
+  oldPos?: number;
   pawn: number;
   id: string;
+  name?: string;
 };
 
 // Coordinate percentuali esatte per le 24 caselle sul tabellone autentico di Ops! Storia (1920x1080)
@@ -37,15 +40,111 @@ const BOARD_COORDINATES = [
   { x: 78.70, y: 56.67 }  // 24: TRAGUARDO FINALE (col 9, row 4)
 ];
 
-export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Team }) {
-  // Normalizza gli indici delle caselle (supporta sia 0-23 sia 1-24)
-  const getIndex = (pos: number) => {
-    if (pos >= 1 && pos <= 24) return pos - 1;
-    return Math.max(0, Math.min(23, pos || 0));
-  };
+// Funzione audio per riprodurre il suono del passo/tick senza dipendenze esterne
+function playStepTick() {
+  try {
+    const AudioCtx = window.AudioContext || (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext;
+    if (!AudioCtx) return;
+    if (!(window as unknown as { __opsAudioCtx?: AudioContext }).__opsAudioCtx) {
+      (window as unknown as { __opsAudioCtx: AudioContext }).__opsAudioCtx = new AudioCtx();
+    }
+    const ctx = (window as unknown as { __opsAudioCtx: AudioContext }).__opsAudioCtx;
+    if (ctx.state === "suspended") {
+      ctx.resume();
+    }
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.setValueAtTime(820, ctx.currentTime);
+    gain.gain.setValueAtTime(0.09, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.05);
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.05);
+  } catch {
+    // Fallback sicuro se audio non disponibile
+  }
+}
 
-  const idxA = getIndex(teamA.pos);
-  const idxB = getIndex(teamB.pos);
+export default function DynamicBoard({ 
+  teamA, 
+  teamB,
+  onAnimationDone 
+}: { 
+  teamA: TeamBoardProps; 
+  teamB: TeamBoardProps;
+  onAnimationDone?: () => void;
+}) {
+  const targetPosA = Math.max(1, Math.min(24, teamA.pos || 1));
+  const targetPosB = Math.max(1, Math.min(24, teamB.pos || 1));
+  const startPosA = Math.max(1, Math.min(24, teamA.oldPos ?? targetPosA));
+  const startPosB = Math.max(1, Math.min(24, teamB.oldPos ?? targetPosB));
+
+  const [displayPosA, setDisplayPosA] = useState(startPosA);
+  const [displayPosB, setDisplayPosB] = useState(startPosB);
+  const [isMovingA, setIsMovingA] = useState(false);
+  const [isMovingB, setIsMovingB] = useState(false);
+
+  const hasAnimatedRef = useRef(false);
+
+  useEffect(() => {
+    if (hasAnimatedRef.current) return;
+    hasAnimatedRef.current = true;
+
+    let curA = startPosA;
+    let curB = startPosB;
+
+    const animateTeamA = () => {
+      if (curA < targetPosA) {
+        setIsMovingA(true);
+        const intervalA = setInterval(() => {
+          curA += 1;
+          setDisplayPosA(curA);
+          playStepTick();
+
+          if (curA >= targetPosA) {
+            clearInterval(intervalA);
+            setIsMovingA(false);
+            setTimeout(animateTeamB, 200);
+          }
+        }, 260);
+      } else {
+        animateTeamB();
+      }
+    };
+
+    const animateTeamB = () => {
+      if (curB < targetPosB) {
+        setIsMovingB(true);
+        const intervalB = setInterval(() => {
+          curB += 1;
+          setDisplayPosB(curB);
+          playStepTick();
+
+          if (curB >= targetPosB) {
+            clearInterval(intervalB);
+            setIsMovingB(false);
+            if (onAnimationDone) onAnimationDone();
+          }
+        }, 260);
+      } else {
+        if (onAnimationDone) onAnimationDone();
+      }
+    };
+
+    // Avvia l'animazione dopo un breve delay di montaggio per consentire la visualizzazione iniziale
+    const startTimeout = setTimeout(() => {
+      animateTeamA();
+    }, 350);
+
+    return () => {
+      clearTimeout(startTimeout);
+    };
+  }, [startPosA, targetPosA, startPosB, targetPosB, onAnimationDone]);
+
+  const idxA = Math.max(0, Math.min(23, displayPosA - 1));
+  const idxB = Math.max(0, Math.min(23, displayPosB - 1));
   const isSameTile = idxA === idxB;
 
   const coordA = BOARD_COORDINATES[idxA] || BOARD_COORDINATES[0];
@@ -56,7 +155,7 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
       {/* Immagine del Tabellone Originale di Ops! Storia */}
       <div className="relative w-full aspect-[1920/1080]">
         <img 
-          src={getAssetPath('/images/tabellone_page_1.png')} 
+          src={getAssetPath("/images/tabellone_page_1.png")} 
           alt="Tabellone Ufficiale Ops! Storia" 
           className="w-full h-full object-contain select-none pointer-events-none"
         />
@@ -73,11 +172,11 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
               top: `${coordA.y}%`,
               x: isSameTile ? "-70%" : "-50%",
               y: "-50%",
-              scale: [1, 1.25, 1]
+              scale: isMovingA ? 1.3 : 1
             }}
-            transition={{ type: "spring", stiffness: 120, damping: 14 }}
+            transition={{ type: "spring", stiffness: 180, damping: 18 }}
             className="absolute z-20 flex flex-col items-center justify-center pointer-events-auto"
-            title={`Squadra A (Casella ${idxA + 1})`}
+            title={`${teamA.name || "Squadra A"} (Casella ${displayPosA})`}
           >
             <div className="relative w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-3 sm:border-4 border-red-500 bg-white shadow-2xl ring-2 sm:ring-4 ring-red-400/60 overflow-hidden flex items-center justify-center">
               <img 
@@ -87,7 +186,7 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
               />
             </div>
             <span className="mt-1 bg-red-600 text-white text-[9px] sm:text-[11px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider whitespace-nowrap">
-              Squadra A
+              {teamA.name || "Squadra A"} ({displayPosA})
             </span>
           </motion.div>
 
@@ -101,11 +200,11 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
               top: `${coordB.y}%`,
               x: isSameTile ? "-30%" : "-50%",
               y: "-50%",
-              scale: [1, 1.25, 1]
+              scale: isMovingB ? 1.3 : 1
             }}
-            transition={{ type: "spring", stiffness: 120, damping: 14 }}
+            transition={{ type: "spring", stiffness: 180, damping: 18 }}
             className="absolute z-20 flex flex-col items-center justify-center pointer-events-auto"
-            title={`Squadra B (Casella ${idxB + 1})`}
+            title={`${teamB.name || "Squadra B"} (Casella ${displayPosB})`}
           >
             <div className="relative w-10 h-10 sm:w-14 sm:h-14 md:w-16 md:h-16 rounded-full border-3 sm:border-4 border-blue-500 bg-white shadow-2xl ring-2 sm:ring-4 ring-blue-400/60 overflow-hidden flex items-center justify-center">
               <img 
@@ -115,7 +214,7 @@ export default function DynamicBoard({ teamA, teamB }: { teamA: Team, teamB: Tea
               />
             </div>
             <span className="mt-1 bg-blue-600 text-white text-[9px] sm:text-[11px] font-black px-1.5 sm:px-2 py-0.5 rounded-full shadow-md uppercase tracking-wider whitespace-nowrap">
-              Squadra B
+              {teamB.name || "Squadra B"} ({displayPosB})
             </span>
           </motion.div>
         </div>
