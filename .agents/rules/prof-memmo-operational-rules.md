@@ -1,32 +1,62 @@
-# Regole Operative Fondamentali dell'Ecosistema Prof. Memmo
+# REGOLE OPERATIVE DI SICUREZZA PER L'ECOSISTEMA PROF. MEMMO
+# Versione 2.0 - Consolidata e Blindata (16 Settembre 2026)
 
-Queste regole sono vincolanti per qualsiasi operazione su tutti i repository e i siti dell'Ecosistema Prof. Memmo (L'Oratore, La Rotta degli Eroi, La Corte della Commedia, FantaLetteratura, Palestra di Riflessione, Ops! Storia, Hub Admin, Hub Vetrina, Supplenze App).
+Tutti gli agenti AI e i programmatori che operano sui repository dell'Ecosistema Prof. Memmo DEVONO rispettare rigorosamente le seguenti regole inderogabili.
 
 ---
 
-## 1. Zero Iniziative Arbitrarie (No Over-Engineering)
-- L'assistente deve eseguire **esclusivamente e rigorosamente ciò che l'utente richiede in modo esplicito**.
-- È severamente vietato aggiungere funzionalità, campi di testo, pulsanti, opzioni, modali o sezioni non richieste.
-- Non eseguire refactoring non richiesti, non "migliorare" o "ripulire" codice funzionante di propria iniziativa.
+### ART. 1 - NESSUNA INIZIATIVA NON RICHIESTA (ZERO UNSOLICITED INITIATIVES)
+- E' fatto divieto assoluto di introdurre nuovi componenti UI, campi input, selettori, form, modali o stili che non siano stati espressamente richiesti e concordati con l'utente.
+- Le implementazioni devono attenersi scrupolosamente all'obiettivo pattuito, senza estensioni arbitrarie.
 
-## 2. Principio di Isolamento Chirurgico (Non toccare ciò che funziona)
-- Se una sezione, file o funzione è già stabile e funzionante, **è vietato aprirla, re-impaginarla o rinominarne le classi CSS/HTML**.
-- Ogni modifica deve toccare solo ed esclusivamente il punto esatto richiesto.
-- Se una classe CSS o un tag HTML funziona, non va rinominato o alterato.
+---
 
-## 3. Rispetto Assoluto della Modalità "READ ONLY"
-- Quando l'utente specifica `read only` o `solo analisi`, l'assistente **non deve modificare alcun file**, non deve eseguire comandi distruttivi o di scrittura, non deve fare commit né push. Si eseguono solo analisi, letture e report.
+### ART. 2 - DIVIETO ASSOLUTO DI CANCELLAZIONE SILENZIOSA (ZERO DELETIONS GUARD)
+- E' severamente vietato cancellare, rinominare, commentare o svuotare:
+  1. Blocchi di markup HTML preesistenti (viste, card, pulsanti, riepiloghi, elenchi).
+  2. Metodi e funzioni JavaScript dei motori core (GameEngine, Board, AudioEngine, LiveEditor, App, Auth, DiagnosticsService).
+  3. Classi o regole CSS preesistenti.
+  4. Strutture dati e record nei file JSON.
+- Qualsiasi modifica deve essere puramente additiva o di correzione mirata, preservando la retrocompatibilita totale con il markup storico approvato.
 
-## 4. Regola di Rilascio: Esclusivamente su `preview`
-- **MAI eseguire `git push` sul branch `main`**.
-- Tutti i commit e push devono essere indirizzati **esclusivamente al branch `preview`**.
-- Il passaggio a `main` (produzione) spetta unicamente all'utente dal pannello Rilasci dell'Hub Admin.
+---
 
-## 5. Controllo di Coerenza Preventivo (Anti-Regressione)
-Prima di dichiarare completata qualsiasi modifica:
-- **Verifica HTML ↔ CSS**: Ogni classe usata nell'HTML deve esistere nel foglio di stile CSS.
-- **Integrità Dati & Metodi**: Nessuna funzione JS preesistente deve essere rimossa o alterata, nessun file JSON di dati (carte, domande) deve essere troncato o corrotto.
-- **Cache Busting**: Aggiornare sempre la versione nei link CSS/JS (es. `style.css?v=YYYYMMDD_...`).
+### ART. 3 - SALVAGUARDIA TOTALE DI UTENTE, AUTENTICAZIONE (SSO), LOGIN E ABBONAMENTI
+- E' fatto divieto di alterare o rimuovere i componenti di autenticazione Firebase, i file di sessione (js/auth/session.js), la guardia abbonamenti (hub-subscription-guard.js) e il menu profilo utente (user-dropdown, avatar, nome, ruolo, scuola).
+- I flussi di Single Sign-On (SSO) cross-progetto e i reindirizzamenti via query param (?redirect=...) devono essere sempre garantiti e funzionanti sia in ambiente standard che in ambiente /preview/.
+- Le collezioni Cloud Firestore (hub_users, eroi_users, corte_users, fanta_users, palestra_users, ops_users, hub_settings, hub_didactic_overrides) non devono mai essere corrotte, svuotate o private di permessi di sicurezza.
 
-## 6. Trasparenza del Diff Minimo
-- L'assistente deve mostrare con precisione i file toccati e le righe modificate, garantendo che non siano stati toccati file estranei al compito.
+---
+
+### ART. 4 - INTEGRITA STRUTTURALE DEI COMPONENTI PROTETTI
+- **Footer di Copyright Patamu**: Deve essere presente in tutte le viste principali, con altezza badge esattamente a 52px (object-fit: contain; flex-shrink: 0;), testo legale giustificato e opacita controllata.
+- **Barra di Navigazione Inferiore (Dock Bar)**: Posizionamento fisso in basso a 64px di altezza, centrata, con icone, etichette e transizioni fluide.
+- **Isolamento Modali**: Tutti i modali secondari (legale, profilo, salvataggi, live editor) devono avere la regola CSS `.hidden, [hidden] { display: none !important; }` per non influenzare mai il flusso e lo scroll delle pagine.
+
+---
+
+### ART. 5 - AUDIT AUTOMATICO ANTI-REGRESSIONE E VERIFICA VISIVA OBBLIGATORIA (PRE-COMMIT)
+Prima di considerare conclusa qualsiasi modifica e prima di effettuare il push su Git, l'agente DEVE eseguire una verifica programmatica e visiva rigorosa:
+1. **Audit Sintassi CSS Totale (File esterni e tag `<style>` inline)**:
+   - Conteggio e bilanciamento matematico perfetto delle parentesi graffe `{` e `}` su tutti i file `.css` e su tutti i tag `<style>` embedded nelle pagine HTML (scarto zero tollerato).
+   - Verifica di chiusura esplicita di ogni selettore e proprietà con `;` e `}`.
+2. **Audit Visivo Obbligatorio (Browser Subagent / Visual Testing)**:
+   - Per qualsiasi modifica che tocca HTML, CSS o flussi di navigazione/onboarding/login, l'agente ha il divieto assoluto di concludere il task senza aver prima eseguito una verifica con il browser reale/subagent.
+   - L'agente deve catturare gli screenshot di collaudo per ogni sotto-vista (es. Scelta Ruolo, Accesso Docente, Codice Classe Studente, Roster Claiming, Onboarding Profilo) e confermare visivamente proporzioni, griglie e allineamenti.
+3. **Defensive UI Pattern (Contenimento Forzato Asset & Immagini)**:
+   - Nessuna immagine, avatar, badge o icona può essere inserita senza stili o classi di contenimento protetto (`max-width: 100%; max-height: 100%; object-fit: cover; aspect-ratio: 1/1;` e dimensioni fisse sul container) per impedire il rendering sformato anche in caso di anomalie di stile.
+4. **Audit Database JSON**: Validazione di tutti i file JSON tramite parser automatico per certificare l'assenza di errori di sintassi, virgole mancanti o codifica.
+5. **Audit Coerenza DOM / JS**: Verifica che nessun metodo JS referenzi ID o classi cancellati o inesistenti.
+6. **Audit Working Tree**: Controllo di git diff e git status per verificare che non ci siano file sporchi o modifiche collaterali non intenzionali.
+
+---
+
+### ART. 6 - MODALITA CONSULTIVA (READ-ONLY) SU DOMANDE ESPLORATIVE
+- Quando l'utente formula domande di parere, riflessione o strategia ("che ne pensi?", "come la vedi?", "cosa faresti?"), l'agente opera in modalita rigorosamente **READ-ONLY**.
+- In questa modalita e vietato modificare file, eseguire comandi distruttivi o avviare refactoring: l'agente deve limitarsi a fornire analisi obiettive, confronti tecnici e proposte dettagliate in attesa dell'approvazione esplicita.
+
+---
+
+### ART. 7 - GESTIONE BRANCH E PUSH GIT
+- Tutti i test, le verifiche e le nuove implementazioni DEVONO essere committati e spinti esclusivamente sul branch **preview** (git push origin preview).
+- E' fatto divieto assoluto di eseguire il push diretto sul branch main a meno di esplicito comando di rilascio in produzione da parte dell'utente.
