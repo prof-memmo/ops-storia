@@ -6,8 +6,10 @@ import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipF
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import { getAssetPath } from "@/lib/assets";
+import { useRules } from "@/lib/rules-service";
 
 export default function Home() {
+  const { parsed: rulesParsed } = useRules();
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
   const [showRules, setShowRules] = useState(false);
@@ -302,49 +304,72 @@ export default function Home() {
               </div>
 
               <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-slate-600 text-base sm:text-lg leading-relaxed">
+                {/* 1. Scopo */}
                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
                   <div className="bg-primary-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">1</div>
                   <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">Obiettivo del Gioco</h3>
-                    <p>Ops! è un gioco a squadre basato sulla comunicazione. Lo scopo è far indovinare ai compagni una parola storica segreta senza MAI pronunciare nessuna delle <strong>5 parole vietate</strong>.</p>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.scopo.title}</h3>
+                    <p>{rulesParsed.scopo.body}</p>
                   </div>
                 </div>
 
+                {/* 2. Turno */}
                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
                   <div className="bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">2</div>
                   <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">Svolgimento del Turno (60s)</h3>
-                    <p>Il Suggeritore ha 60 secondi per far indovinare più parole possibili:</p>
-                    <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
-                      <li><strong>Parola Indovinata:</strong> +1 punto e avanzamento pedina.</li>
-                      <li><strong>Scarto:</strong> Massimo 2 scarti per turno. Ogni scarto regala 1 punto agli avversari.</li>
-                    </ul>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.turno.title}</h3>
+                    {rulesParsed.turno.intro && <p>{rulesParsed.turno.intro}</p>}
+                    {rulesParsed.turno.points.length > 0 && (
+                      <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
+                        {rulesParsed.turno.points.map((pt, pIdx) => (
+                          <li key={pIdx}>
+                            {pt.label && <strong>{pt.label}: </strong>}
+                            {pt.text}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
+                {/* 3. Tasto OPS */}
                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
                   <div className="bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">3</div>
                   <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">Il Tasto OPS!</h3>
-                    <p>L'avversario controlla lo schermo. Se il suggeritore pronuncia una parola vietata o gesticola, l'avversario preme <strong>OPS!</strong>, bloccando la carta e <strong>rubando il punto</strong>.</p>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.tastoOps.title}</h3>
+                    <p>{rulesParsed.tastoOps.body}</p>
                   </div>
                 </div>
 
+                {/* 4. Tabellone */}
                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
                   <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">4</div>
                   <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">Carte Magiche e Vittoria</h3>
-                    <p>Lungo il tabellone potrai sbloccare carte con effetti speciali (Tempo Doppio, Pesca Illimitata, Imprevisto). Vince la prima squadra che raggiunge la casella 24!</p>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.tabellone.title}</h3>
+                    {rulesParsed.tabellone.intro && <p className="mb-2">{rulesParsed.tabellone.intro}</p>}
+                    {rulesParsed.tabellone.tiles.length > 0 && (
+                      <ul className="list-disc pl-5 space-y-1 font-medium text-slate-700 text-sm">
+                        {rulesParsed.tabellone.tiles.map((tile, tIdx) => (
+                          <li key={tIdx}>
+                            <strong>{tile.title}: </strong>{tile.desc}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
+                {/* 5. Modalità */}
                 <div className="bg-amber-500/10 p-5 rounded-2xl border border-amber-500/30 flex items-start space-x-4">
                   <div className="bg-amber-500 text-slate-950 w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">5</div>
                   <div>
-                    <h3 className="font-black text-slate-900 text-lg mb-1">Le 2 Modalità di Gioco</h3>
+                    <h3 className="font-black text-slate-900 text-lg mb-1">{rulesParsed.modalita.title}</h3>
                     <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
-                      <li><strong>1 Dispositivo (Passa e Gioca • Party):</strong> Ideale per giocare con un unico tablet, PC o device. I giocatori si passano il dispositivo a ogni turno per non svelare le parole taboo.</li>
-                      <li><strong>Multi-Device (LIM + Tablet/Device con PIN):</strong> Il docente proietta il tabellone alla LIM e gli studenti interagiscono dai loro tablet o device inserendo il PIN della stanza a 4 cifre.</li>
+                      {rulesParsed.modalita.items.map((item, mIdx) => (
+                        <li key={mIdx}>
+                          <strong>{item.title}: </strong>{item.desc}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>

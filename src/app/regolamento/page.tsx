@@ -1,7 +1,13 @@
+"use client";
+
 import Link from "next/link";
-import { ArrowLeft, BookOpen, CheckCircle, AlertOctagon, Timer, Flag } from "lucide-react";
+import { BookOpen, CheckCircle, Timer, Flag } from "lucide-react";
+import { useRules } from "@/lib/rules-service";
 
 export default function Regolamento() {
+  const { parsed } = useRules();
+  const { scopo, turno, tastoOps, tabellone, modalita } = parsed;
+
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 relative shrink-0">
@@ -23,91 +29,108 @@ export default function Regolamento() {
         <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 border border-slate-100">
           
           <div className="flex items-center mb-8 pb-6 border-b border-slate-100">
-            <BookOpen className="w-12 h-12 text-primary-500 mr-4" />
+            <BookOpen className="w-12 h-12 text-primary-500 mr-4 shrink-0" />
             <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Come si gioca a Ops!</h1>
           </div>
 
           <div className="space-y-12">
             
+            {/* 1. Scopo */}
             <section>
               <div className="bg-slate-50 p-6 rounded-2xl border-2 border-slate-100 flex items-start space-x-4">
                 <div className="bg-primary-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-black text-xl shrink-0">1</div>
                 <p className="text-lg text-slate-600 leading-relaxed">
-                Ops! è un gioco a squadre basato sulla comunicazione. Lo scopo è far indovinare ai propri compagni di squadra una parola segreta, indicata in grande sulla carta, senza MAI pronunciare nessuna delle 5 "parole vietate" elencate sotto di essa. Vince la squadra che porta la propria pedina per prima alla casella d'arrivo.
+                  {scopo.body}
                 </p>
               </div>
             </section>
 
+            {/* 2. Turno */}
             <section>
               <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
-                <Timer className="w-6 h-6 text-blue-500 mr-2" /> 2. Svolgimento del Turno
+                <Timer className="w-6 h-6 text-blue-500 mr-2 shrink-0" /> {turno.title}
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                Ogni turno dura 60 secondi. Un giocatore (il "Suggeritore") prende il dispositivo e cerca di far indovinare più parole possibili alla sua squadra. 
-              </p>
-              <ul className="list-disc pl-6 space-y-2 text-lg text-slate-600 font-medium">
-                <li><strong className="text-slate-800">Parola Indovinata:</strong> La squadra guadagna 1 punto e la pedina avanzerà di uno spazio sul tabellone.</li>
-                <li><strong className="text-slate-800">Scarto:</strong> Se una parola è troppo difficile, il Suggeritore può scartarla. Si possono fare massimo 2 scarti per turno. Ogni scarto regala 1 punto alla squadra avversaria.</li>
-              </ul>
+              {turno.intro && (
+                <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                  {turno.intro}
+                </p>
+              )}
+              {turno.points.length > 0 && (
+                <ul className="list-disc pl-6 space-y-2 text-lg text-slate-600 font-medium">
+                  {turno.points.map((pt, pIdx) => (
+                    <li key={pIdx}>
+                      {pt.label && <strong className="text-slate-800">{pt.label}: </strong>}
+                      {pt.text}
+                    </li>
+                  ))}
+                </ul>
+              )}
             </section>
 
+            {/* 3. Tasto OPS */}
             <section>
               <div className="bg-slate-50 p-6 rounded-2xl border-2 border-slate-100 flex items-start space-x-4">
                 <div className="bg-primary-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-black text-xl shrink-0">3</div>
                 <p className="text-lg text-slate-600 leading-relaxed">
-                Durante il turno, un giocatore della squadra avversaria controllerà il proprio schermo. Se il Suggeritore pronuncia una parola Vietata, parte di essa, oppure gesticola, l'avversario premerà il grosso tasto <strong>OPS!</strong>. Questo blocca la carta attuale e regala immediatamente 1 punto agli avversari, rubandolo alla vostra squadra.
+                  {tastoOps.body}
                 </p>
               </div>
             </section>
 
+            {/* 4. Tabellone */}
             <section>
               <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
-                <CheckCircle className="w-6 h-6 text-purple-500 mr-2" /> 4. Il Tabellone e Caselle Speciali
+                <CheckCircle className="w-6 h-6 text-purple-500 mr-2 shrink-0" /> {tabellone.title}
               </h2>
-              <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                Al termine dei 60 secondi, le pedine avanzano sul tabellone a 24 caselle. Lungo il tracciato sono presenti caselle speciali che garantiscono vantaggi esclusivi alla squadra che vi atterra:
-              </p>
+              {tabellone.intro && (
+                <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                  {tabellone.intro}
+                </p>
+              )}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-green-50 p-4 rounded-xl border border-green-200">
-                  <h4 className="font-bold text-green-700 text-xl mb-1">Casella 6: 🎣 Pesca Illimitata</h4>
-                  <p className="text-green-600">Nel turno successivo la squadra può scartare infinite carte senza il limite standard di 2 scarti.</p>
-                </div>
-                <div className="bg-blue-50 p-4 rounded-xl border border-blue-200">
-                  <h4 className="font-bold text-blue-700 text-xl mb-1">Casella 12: 📍 Checkpoint Intermedio</h4>
-                  <p className="text-blue-600">Traguardo a metà percorso: sancisce l'ingresso nella seconda metà del tabellone storico.</p>
-                </div>
-                <div className="bg-purple-50 p-4 rounded-xl border border-purple-200">
-                  <h4 className="font-bold text-purple-700 text-xl mb-1">Casella 18: ♟️ Mossa del Cavallo</h4>
-                  <p className="text-purple-600">Scacco al tabellone! La pedina compie un balzo immediato alla casella 19.</p>
-                </div>
-                <div className="bg-yellow-50 p-4 rounded-xl border border-yellow-200">
-                  <h4 className="font-bold text-yellow-700 text-xl mb-1">Casella 21: ✖️2 Tempo Doppio (120s)</h4>
-                  <p className="text-yellow-600">Volata finale! Nel turno successivo la squadra avrà ben 120 secondi di tempo a disposizione.</p>
-                </div>
-                <div className="bg-amber-50 p-4 rounded-xl border border-amber-300 md:col-span-2 text-center">
-                  <h4 className="font-bold text-amber-800 text-xl mb-1">Casella 24: 🏆 Traguardo Finale</h4>
-                  <p className="text-amber-700">La prima squadra che raggiunge o supera la casella 24 trionfa nella sfida storica!</p>
-                </div>
+                {tabellone.tiles.map((tile, tIdx) => {
+                  const isFullWidth = tIdx === tabellone.tiles.length - 1 && tabellone.tiles.length % 2 !== 0;
+                  const colorStyles: Record<string, { bg: string; border: string; title: string; desc: string }> = {
+                    green: { bg: "bg-green-50", border: "border-green-200", title: "text-green-700", desc: "text-green-600" },
+                    blue: { bg: "bg-blue-50", border: "border-blue-200", title: "text-blue-700", desc: "text-blue-600" },
+                    purple: { bg: "bg-purple-50", border: "border-purple-200", title: "text-purple-700", desc: "text-purple-600" },
+                    yellow: { bg: "bg-yellow-50", border: "border-yellow-200", title: "text-yellow-700", desc: "text-yellow-600" },
+                    amber: { bg: "bg-amber-50", border: "border-amber-300", title: "text-amber-800", desc: "text-amber-700" }
+                  };
+                  const style = colorStyles[tile.color] || colorStyles.amber;
+
+                  return (
+                    <div 
+                      key={tIdx} 
+                      className={`${style.bg} p-4 rounded-xl border ${style.border} ${isFullWidth ? "md:col-span-2 text-center" : ""}`}
+                    >
+                      <h4 className={`font-bold ${style.title} text-xl mb-1`}>{tile.title}</h4>
+                      <p className={style.desc}>{tile.desc}</p>
+                    </div>
+                  );
+                })}
               </div>
             </section>
 
+            {/* 5. Modalità */}
             <section>
               <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
-                <Flag className="w-6 h-6 text-emerald-500 mr-2" /> 5. Le 2 Modalità di Gioco
+                <Flag className="w-6 h-6 text-emerald-500 mr-2 shrink-0" /> {modalita.title}
               </h2>
               <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                <div className="bg-slate-50 p-5 rounded-2xl border-2 border-slate-200">
-                  <h3 className="text-lg font-black text-slate-900 mb-2">📱 1 Dispositivo (Passa e Gioca • Party)</h3>
-                  <p className="text-sm text-slate-600 leading-relaxed">
-                    Perfetta per sfide veloci con un unico <strong>tablet, PC o device</strong> condiviso. Il suggeritore tiene il dispositivo per sé durante il suo turno per non mostrare le parole taboo alla squadra, poi lo passa alla squadra avversaria al termine dei 60 secondi.
-                  </p>
-                </div>
-                <div className="bg-primary-50/50 p-5 rounded-2xl border-2 border-primary-200">
-                  <h3 className="text-lg font-black text-primary-900 mb-2">🖥️ Multi-Device (LIM + Tablet/Device)</h3>
-                  <p className="text-sm text-slate-700 leading-relaxed">
-                    La modalità regina per la classe! Il docente proietta il tabellone alla LIM e genera un <strong>PIN Stanza a 4 cifre</strong>. Gli studenti accedono dai propri tablet o device per visualizzare le carte del proprio turno e premere il tasto <strong>OPS!</strong> in tempo reale, senza spoiler per la classe.
-                  </p>
-                </div>
+                {modalita.items.map((item, mIdx) => (
+                  <div 
+                    key={mIdx} 
+                    className={mIdx === 0 ? "bg-slate-50 p-5 rounded-2xl border-2 border-slate-200" : "bg-primary-50/50 p-5 rounded-2xl border-2 border-primary-200"}
+                  >
+                    <h3 className={`text-lg font-black mb-2 ${mIdx === 0 ? "text-slate-900" : "text-primary-900"}`}>
+                      {item.title}
+                    </h3>
+                    <p className={`text-sm leading-relaxed ${mIdx === 0 ? "text-slate-600" : "text-slate-700"}`}>
+                      {item.desc}
+                    </p>
+                  </div>
+                ))}
               </div>
             </section>
 
