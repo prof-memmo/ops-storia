@@ -25,6 +25,7 @@ import {
 import HostLogin from "@/components/HostLogin";
 import Header from "@/components/Header";
 import RulesEditor from "@/components/RulesEditor";
+import MiniguidaEditor from "@/components/MiniguidaEditor";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -44,8 +45,8 @@ export default function AdminDashboard() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAllowed, setIsAllowed] = useState(true);
 
-  // Dati Carte per le 3 classi + Tab Regolamento
-  const [activeTab, setActiveTab] = useState<"Prima" | "Seconda" | "Terza" | "Regolamento">("Prima");
+  // Dati Carte per le 3 classi + Tab Regolamento + Tab Miniguida
+  const [activeTab, setActiveTab] = useState<"Prima" | "Seconda" | "Terza" | "Regolamento" | "Miniguida">("Prima");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
@@ -147,7 +148,7 @@ export default function AdminDashboard() {
     const lines = bulkText.split("\n").map(l => l.trim()).filter(Boolean);
     const newCards: CardItem[] = [];
     let currentCard: Partial<CardItem> | null = null;
-    const targetClasse: "Prima" | "Seconda" | "Terza" = activeTab === "Regolamento" ? "Prima" : activeTab;
+    const targetClasse: "Prima" | "Seconda" | "Terza" = (activeTab === "Regolamento" || activeTab === "Miniguida") ? "Prima" : activeTab;
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
@@ -311,6 +312,17 @@ export default function AdminDashboard() {
             >
               <span>📜 Regolamento</span>
             </button>
+
+            <button
+              onClick={() => setActiveTab("Miniguida")}
+              className={`px-4 sm:px-6 py-2.5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer flex items-center gap-2 ${
+                activeTab === "Miniguida" 
+                  ? "bg-white text-slate-900 shadow-md scale-102" 
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+              }`}
+            >
+              <span>❓ Miniguida</span>
+            </button>
           </div>
 
           <div className="text-xs font-bold text-slate-500">
@@ -320,6 +332,8 @@ export default function AdminDashboard() {
 
         {activeTab === "Regolamento" ? (
           <RulesEditor userEmail={user?.email} />
+        ) : activeTab === "Miniguida" ? (
+          <MiniguidaEditor userEmail={user?.email} />
         ) : (
           <>
             {/* Filtri e Barra di Ricerca */}

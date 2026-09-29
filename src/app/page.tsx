@@ -7,9 +7,20 @@ import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import { getAssetPath } from "@/lib/assets";
 import { useRules } from "@/lib/rules-service";
+import { useMiniguida } from "@/lib/miniguida-service";
+
+const MINIGUIDA_ICON_MAP: Record<string, any> = {
+  "info": Info,
+  "alert-octagon": AlertOctagon,
+  "skip-forward": SkipForward,
+  "timer": Timer,
+  "monitor-play": MonitorPlay,
+  "help-circle": HelpCircle
+};
 
 export default function Home() {
   const { parsed: rulesParsed } = useRules();
+  const { data: miniguidaData } = useMiniguida();
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
   const [showRules, setShowRules] = useState(false);
@@ -197,75 +208,56 @@ export default function Home() {
                   <X className="w-6 h-6" />
                 </button>
                 
-                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">Come si gioca?</h2>
+                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">{miniguidaData.title || "Come si gioca?"}</h2>
                 
                 <div className="flex-1 relative overflow-hidden">
                   <AnimatePresence mode="wait">
-                    {tutorialStep === 0 && (
-                      <motion.div key="step0" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <Info className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" />
-                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola indovinata!</p>
-                        </div>
-                      </motion.div>
-                    )}
-                    {tutorialStep === 1 && (
-                      <motion.div key="step1" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <AlertOctagon className="w-20 h-20 sm:w-24 sm:h-24 text-red-500 mb-4" />
-                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
-                        </div>
-                      </motion.div>
-                    )}
-                    {tutorialStep === 2 && (
-                      <motion.div key="step2" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <SkipForward className="w-20 h-20 sm:w-24 sm:h-24 text-amber-500 mb-4" />
-                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
-                        </div>
-                      </motion.div>
-                    )}
-                    {tutorialStep === 3 && (
-                      <motion.div key="step3" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <Timer className="w-20 h-20 sm:w-24 sm:h-24 text-blue-500 mb-4" />
-                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone a 24 caselle sbloccherai <strong className="text-purple-600">effetti speciali</strong> (Tempo Doppio 120s, Pesca Illimitata o Imprevisti).</p>
-                        </div>
-                      </motion.div>
-                    )}
-                    {tutorialStep === 4 && (
-                      <motion.div key="step4" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <MonitorPlay className="w-20 h-20 sm:w-24 sm:h-24 text-emerald-500 mb-4" />
-                          <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
-                            <strong>Due modalità:</strong> Gioca con <strong className="text-slate-900">1 Dispositivo</strong> (Passa e Gioca) oppure in <strong className="text-primary-600">Multi-Device</strong> (Tabellone alla LIM e carte segrete sui tablet/device con PIN).
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
+                    {(() => {
+                      const currentStep = miniguidaData.steps[tutorialStep] || miniguidaData.steps[0];
+                      if (!currentStep) return null;
+                      const StepIcon = MINIGUIDA_ICON_MAP[currentStep.icon] || Info;
+                      return (
+                        <motion.div 
+                          key={`step-${tutorialStep}`} 
+                          initial={{ x: 50, opacity: 0 }} 
+                          animate={{ x: 0, opacity: 1 }} 
+                          exit={{ x: -50, opacity: 0 }} 
+                          className="absolute inset-0 flex items-center justify-center"
+                        >
+                          <div className="flex flex-col items-center text-center w-full max-w-md px-4">
+                            <StepIcon className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" style={{ color: currentStep.iconColor || undefined }} />
+                            <h3 className="text-xl font-bold text-slate-800 mb-2">{currentStep.title}</h3>
+                            <div 
+                              className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed"
+                              dangerouslySetInnerHTML={{ __html: currentStep.desc }}
+                            />
+                          </div>
+                        </motion.div>
+                      );
+                    })()}
                   </AnimatePresence>
                 </div>
 
                 <div className="mt-6 flex justify-between items-center shrink-0">
                   <div className="flex space-x-2">
-                    {[0, 1, 2, 3, 4].map(step => (
+                    {miniguidaData.steps.map((_, step) => (
                       <div key={step} className={`w-3 h-3 rounded-full transition-colors ${tutorialStep === step ? 'bg-primary-500' : 'bg-slate-200'}`} />
                     ))}
                   </div>
                   
-                  {tutorialStep < 4 ? (
+                  {tutorialStep < miniguidaData.steps.length - 1 ? (
                     <button 
                       onClick={() => setTutorialStep(s => s + 1)}
                       className="bg-primary-500 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-primary-600 transition-colors shadow-md"
                     >
-                      AVANTI
+                      {miniguidaData.buttonLabel || "AVANTI"}
                     </button>
                   ) : (
                     <button 
                       onClick={() => { setShowTutorial(false); setTutorialStep(0); }}
                       className="bg-slate-900 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-slate-800 transition-colors shadow-md"
                     >
-                      HO CAPITO!
+                      {miniguidaData.finalButtonLabel || "HO CAPITO!"}
                     </button>
                   )}
                 </div>
