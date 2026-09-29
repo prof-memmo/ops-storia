@@ -6,8 +6,21 @@ import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipF
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import { getAssetPath } from "@/lib/assets";
+import { useRules } from "@/lib/rules-service";
+import { useMiniguida } from "@/lib/miniguida-service";
+
+const MINIGUIDA_ICON_MAP: Record<string, any> = {
+  "info": Info,
+  "alert-octagon": AlertOctagon,
+  "skip-forward": SkipForward,
+  "timer": Timer,
+  "monitor-play": MonitorPlay,
+  "help-circle": HelpCircle
+};
 
 export default function Home() {
+  const { parsed: rulesParsed } = useRules();
+  const { data: miniguidaData } = useMiniguida();
   const [showTutorial, setShowTutorial] = useState(false);
   const [tutorialStep, setTutorialStep] = useState(0);
   const [showRules, setShowRules] = useState(false);
@@ -184,7 +197,7 @@ export default function Home() {
               className="bg-white rounded-3xl w-full max-w-5xl max-h-[90vh] flex overflow-hidden shadow-2xl relative"
             >
               <div className="hidden md:flex w-1/3 bg-slate-50 items-end justify-center pt-8 border-r-2 border-slate-100">
-                 <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg" alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
+                 <img src="/assets/prof_memmo_full.jpg" onError={(e: any) => { e.currentTarget.src = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
               </div>
               
               <div className="w-full md:w-2/3 p-4 sm:p-8 flex flex-col relative min-h-[550px] md:min-h-[500px]">
@@ -195,75 +208,56 @@ export default function Home() {
                   <X className="w-6 h-6" />
                 </button>
                 
-                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">Come si gioca?</h2>
+                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">{miniguidaData.title || "Come si gioca?"}</h2>
                 
                 <div className="flex-1 relative overflow-hidden">
                   <AnimatePresence mode="wait">
-                    {tutorialStep === 0 && (
-                      <motion.div key="step0" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <Info className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" />
-                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span className="text-red-500 font-bold">5 Parole Vietate</span>. Ottieni <strong className="text-emerald-500">+1 punto</strong> per ogni parola indovinata!</p>
-                        </div>
-                      </motion.div>
-                    )}
-                    {tutorialStep === 1 && (
-                      <motion.div key="step1" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <AlertOctagon className="w-20 h-20 sm:w-24 sm:h-24 text-red-500 mb-4" />
-                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Se pronunci una <span className="text-red-500 font-bold">Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!</p>
-                        </div>
-                      </motion.div>
-                    )}
-                    {tutorialStep === 2 && (
-                      <motion.div key="step2" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <SkipForward className="w-20 h-20 sm:w-24 sm:h-24 text-amber-500 mb-4" />
-                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong className="text-red-500">+1 punto</strong> agli avversari!</p>
-                        </div>
-                      </motion.div>
-                    )}
-                    {tutorialStep === 3 && (
-                      <motion.div key="step3" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <Timer className="w-20 h-20 sm:w-24 sm:h-24 text-blue-500 mb-4" />
-                          <p className="text-lg sm:text-xl text-slate-600 font-medium leading-relaxed">Avanzando sul tabellone a 24 caselle sbloccherai <strong className="text-purple-600">effetti speciali</strong> (Tempo Doppio 120s, Pesca Illimitata o Imprevisti).</p>
-                        </div>
-                      </motion.div>
-                    )}
-                    {tutorialStep === 4 && (
-                      <motion.div key="step4" initial={{ x: 50, opacity: 0 }} animate={{ x: 0, opacity: 1 }} exit={{ x: -50, opacity: 0 }} className="absolute inset-0 flex items-center justify-center">
-                        <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                          <MonitorPlay className="w-20 h-20 sm:w-24 sm:h-24 text-emerald-500 mb-4" />
-                          <p className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed">
-                            <strong>Due modalità:</strong> Gioca con <strong className="text-slate-900">1 Dispositivo</strong> (Passa e Gioca) oppure in <strong className="text-primary-600">Multi-Device</strong> (Tabellone alla LIM e carte segrete sui tablet/device con PIN).
-                          </p>
-                        </div>
-                      </motion.div>
-                    )}
+                    {(() => {
+                      const currentStep = miniguidaData.steps[tutorialStep] || miniguidaData.steps[0];
+                      if (!currentStep) return null;
+                      const StepIcon = MINIGUIDA_ICON_MAP[currentStep.icon] || Info;
+                      return (
+                        <motion.div 
+                          key={`step-${tutorialStep}`} 
+                          initial={{ x: 50, opacity: 0 }} 
+                          animate={{ x: 0, opacity: 1 }} 
+                          exit={{ x: -50, opacity: 0 }} 
+                          className="absolute inset-0 flex items-center justify-center"
+                        >
+                          <div className="flex flex-col items-center text-center w-full max-w-md px-4">
+                            <StepIcon className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" style={{ color: currentStep.iconColor || undefined }} />
+                            <h3 className="text-xl font-bold text-slate-800 mb-2">{currentStep.title}</h3>
+                            <div 
+                              className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed"
+                              dangerouslySetInnerHTML={{ __html: currentStep.desc }}
+                            />
+                          </div>
+                        </motion.div>
+                      );
+                    })()}
                   </AnimatePresence>
                 </div>
 
                 <div className="mt-6 flex justify-between items-center shrink-0">
                   <div className="flex space-x-2">
-                    {[0, 1, 2, 3, 4].map(step => (
+                    {miniguidaData.steps.map((_, step) => (
                       <div key={step} className={`w-3 h-3 rounded-full transition-colors ${tutorialStep === step ? 'bg-primary-500' : 'bg-slate-200'}`} />
                     ))}
                   </div>
                   
-                  {tutorialStep < 4 ? (
+                  {tutorialStep < miniguidaData.steps.length - 1 ? (
                     <button 
                       onClick={() => setTutorialStep(s => s + 1)}
                       className="bg-primary-500 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-primary-600 transition-colors shadow-md"
                     >
-                      AVANTI
+                      {miniguidaData.buttonLabel || "AVANTI"}
                     </button>
                   ) : (
                     <button 
                       onClick={() => { setShowTutorial(false); setTutorialStep(0); }}
                       className="bg-slate-900 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-slate-800 transition-colors shadow-md"
                     >
-                      HO CAPITO!
+                      {miniguidaData.finalButtonLabel || "HO CAPITO!"}
                     </button>
                   )}
                 </div>
@@ -302,49 +296,72 @@ export default function Home() {
               </div>
 
               <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-slate-600 text-base sm:text-lg leading-relaxed">
+                {/* 1. Scopo */}
                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
                   <div className="bg-primary-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">1</div>
                   <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">Obiettivo del Gioco</h3>
-                    <p>Ops! è un gioco a squadre basato sulla comunicazione. Lo scopo è far indovinare ai compagni una parola storica segreta senza MAI pronunciare nessuna delle <strong>5 parole vietate</strong>.</p>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.scopo.title}</h3>
+                    <p>{rulesParsed.scopo.body}</p>
                   </div>
                 </div>
 
+                {/* 2. Turno */}
                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
                   <div className="bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">2</div>
                   <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">Svolgimento del Turno (60s)</h3>
-                    <p>Il Suggeritore ha 60 secondi per far indovinare più parole possibili:</p>
-                    <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
-                      <li><strong>Parola Indovinata:</strong> +1 punto e avanzamento pedina.</li>
-                      <li><strong>Scarto:</strong> Massimo 2 scarti per turno. Ogni scarto regala 1 punto agli avversari.</li>
-                    </ul>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.turno.title}</h3>
+                    {rulesParsed.turno.intro && <p>{rulesParsed.turno.intro}</p>}
+                    {rulesParsed.turno.points.length > 0 && (
+                      <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
+                        {rulesParsed.turno.points.map((pt, pIdx) => (
+                          <li key={pIdx}>
+                            {pt.label && <strong>{pt.label}: </strong>}
+                            {pt.text}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
+                {/* 3. Tasto OPS */}
                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
                   <div className="bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">3</div>
                   <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">Il Tasto OPS!</h3>
-                    <p>L'avversario controlla lo schermo. Se il suggeritore pronuncia una parola vietata o gesticola, l'avversario preme <strong>OPS!</strong>, bloccando la carta e <strong>rubando il punto</strong>.</p>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.tastoOps.title}</h3>
+                    <p>{rulesParsed.tastoOps.body}</p>
                   </div>
                 </div>
 
+                {/* 4. Tabellone */}
                 <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
                   <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">4</div>
                   <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">Carte Magiche e Vittoria</h3>
-                    <p>Lungo il tabellone potrai sbloccare carte con effetti speciali (Tempo Doppio, Pesca Illimitata, Imprevisto). Vince la prima squadra che raggiunge la casella 24!</p>
+                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.tabellone.title}</h3>
+                    {rulesParsed.tabellone.intro && <p className="mb-2">{rulesParsed.tabellone.intro}</p>}
+                    {rulesParsed.tabellone.tiles.length > 0 && (
+                      <ul className="list-disc pl-5 space-y-1 font-medium text-slate-700 text-sm">
+                        {rulesParsed.tabellone.tiles.map((tile, tIdx) => (
+                          <li key={tIdx}>
+                            <strong>{tile.title}: </strong>{tile.desc}
+                          </li>
+                        ))}
+                      </ul>
+                    )}
                   </div>
                 </div>
 
+                {/* 5. Modalità */}
                 <div className="bg-amber-500/10 p-5 rounded-2xl border border-amber-500/30 flex items-start space-x-4">
                   <div className="bg-amber-500 text-slate-950 w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">5</div>
                   <div>
-                    <h3 className="font-black text-slate-900 text-lg mb-1">Le 2 Modalità di Gioco</h3>
+                    <h3 className="font-black text-slate-900 text-lg mb-1">{rulesParsed.modalita.title}</h3>
                     <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
-                      <li><strong>1 Dispositivo (Passa e Gioca • Party):</strong> Ideale per giocare con un unico tablet, PC o device. I giocatori si passano il dispositivo a ogni turno per non svelare le parole taboo.</li>
-                      <li><strong>Multi-Device (LIM + Tablet/Device con PIN):</strong> Il docente proietta il tabellone alla LIM e gli studenti interagiscono dai loro tablet o device inserendo il PIN della stanza a 4 cifre.</li>
+                      {rulesParsed.modalita.items.map((item, mIdx) => (
+                        <li key={mIdx}>
+                          <strong>{item.title}: </strong>{item.desc}
+                        </li>
+                      ))}
                     </ul>
                   </div>
                 </div>

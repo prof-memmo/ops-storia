@@ -9,9 +9,10 @@ import {
 import Link from "next/link";
 import DynamicBoard from "../components/DynamicBoard";
 import HostLogin from "@/components/HostLogin";
-import { auth } from "@/lib/firebase";
+import { auth, hubDb } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
-import { getPawnImg } from "@/lib/assets";
+import { collection, doc, setDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
+import { getPawnImg, getAssetPath } from "@/lib/assets";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -78,6 +79,7 @@ interface SavedGame {
   teamA: TeamData;
   teamB: TeamData;
   currentCardIndex: number;
+  source?: "cloud" | "local";
 }
 
 export default function LocalPlay() {
@@ -111,6 +113,7 @@ export default function LocalPlay() {
   
   const [turnStats, setTurnStats] = useState({ guessed: 0, passed: 0, ops: 0 });
   const [showUndoOps, setShowUndoOps] = useState(false);
+  const [lastTurnStartPos, setLastTurnStartPos] = useState({ oldPosA: 1, oldPosB: 1 });
   const [activeDoubleTime, setActiveDoubleTime] = useState(false);
   const [activeUnlimitedPass, setActiveUnlimitedPass] = useState(false);
   const [lastSpecialNotice, setLastSpecialNotice] = useState<string>("");
@@ -119,6 +122,7 @@ export default function LocalPlay() {
   const [showSavedGamesModal, setShowSavedGamesModal] = useState(false);
   const [showSaveDialog, setShowSaveDialog] = useState(false);
   const [saveSessionName, setSaveSessionName] = useState("");
+  const [cloudSavedGames, setCloudSavedGames] = useState<SavedGame[]>([]);
 
   const [user, setUser] = useState<User | null>(null);
   const [authLoading, setAuthLoading] = useState(true);
@@ -140,6 +144,7 @@ export default function LocalPlay() {
     const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
       setUser(currentUser);
       if (currentUser) {
+        fetchCloudSavedGames(currentUser);
         if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
           const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
             user: { uid: currentUser.uid, email: currentUser.email },
@@ -252,66 +257,130 @@ export default function LocalPlay() {
     setShowUndoOps(false);
   };
 
-  const nextTurn = () => {
+  const showBoardFromSummary = () => {
     const activeTeam = currentTurn === 1 ? teamA : teamB;
+    const opponentTeam = currentTurn === 1 ? teamB : teamA;
     const setActiveTeam = currentTurn === 1 ? setTeamA : setTeamB;
+    const setOpponentTeam = currentTurn === 1 ? setTeamB : setTeamA;
 
-    const oldPos = activeTeam.pos || 1;
-    const netGain = turnStats.guessed - turnStats.ops - turnStats.passed;
-    let newPos = Math.min(24, Math.max(1, oldPos + netGain));
+    const oldPosActive = activeTeam.pos || 1;
+    const oldPosOpponent = opponentTeam.pos || 1;
 
-    let notice = "";
+    const activeGain = Math.max(0, turnStats.guessed);
+    const opponentGain = Math.max(0, turnStats.ops + turnStats.passed);
 
-    if (newPos === 6) {
-      setActiveTeam(s => ({
-        ...s,
-        pos: newPos,
-        pendingBonus: { ...s.pendingBonus, unlimitedPass: true }
-      }));
-      notice = "🎣 Canna da Pesca! Scarti illimitati nel tuo prossimo turno!";
-    } else if (newPos === 18) {
-      newPos = Math.min(24, newPos + 1);
-      setActiveTeam(s => ({ ...s, pos: newPos }));
-      notice = "♟️ Mossa del Cavallo! Balzo immediato alla casella 19!";
-    } else if (newPos === 21) {
-      setActiveTeam(s => ({
-        ...s,
-        pos: newPos,
-        pendingBonus: { ...s.pendingBonus, doubleTime: true }
-      }));
-      notice = "✖️2 Tempo Doppio! 120 secondi a disposizione nel tuo prossimo turno!";
-    } else if (newPos >= 24) {
-      newPos = 24;
-      setActiveTeam(s => ({ ...s, pos: newPos }));
-      setIsFinalLeaderboard(true);
-      setPhase("LEADERBOARD");
-      return;
-    } else {
-      setActiveTeam(s => ({ ...s, pos: newPos }));
+    let newPosActive = Math.min(24, Math.max(1, oldPosActive + activeGain));
+    let newPosOpponent = Math.min(24, Math.max(1, oldPosOpponent + opponentGain));
+    let notices: string[] = [];
+
+    let activeBonus = {
+      unlimitedPass: activeTeam.pendingBonus?.unlimitedPass || false,
+      doubleTime: activeTeam.pendingBonus?.doubleTime || false
+    };
+
+    let opponentBonus = {
+      unlimitedPass: opponentTeam.pendingBonus?.unlimitedPass || false,
+      doubleTime: opponentTeam.pendingBonus?.doubleTime || false
+    };
+
+    if (newPosActive === 6) {
+      activeBonus.unlimitedPass = true;
+      notices.push(`🎣 Canna da Pesca (Casella 6): ${activeTeam.name} potrà scartare senza limiti nel prossimo turno!`);
+    } else if (newPosActive === 12) {
+      notices.push(`📍 Checkpoint (Casella 12) raggiunto da ${activeTeam.name}!`);
+    } else if (newPosActive === 18) {
+      newPosActive = Math.min(24, newPosActive + 1);
+      notices.push(`♟️ Mossa del Cavallo (Casella 18): ${activeTeam.name} balza alla casella ${newPosActive}!`);
+    } else if (newPosActive === 21) {
+      activeBonus.doubleTime = true;
+      notices.push(`✖️2 Tempo Doppio (Casella 21): ${activeTeam.name} avrà 120 secondi nel prossimo turno!`);
+    } else if (newPosActive >= 24) {
+      newPosActive = 24;
+      notices.push(`🏆 TRAGUARDO: ${activeTeam.name} ha raggiunto la vittoria!`);
     }
 
-    setLastSpecialNotice(notice);
+    if (opponentGain > 0) {
+      if (newPosOpponent === 6) {
+        opponentBonus.unlimitedPass = true;
+        notices.push(`🎣 Casella 6: ${opponentTeam.name} ottiene scarti illimitati!`);
+      } else if (newPosOpponent === 18) {
+        newPosOpponent = Math.min(24, newPosOpponent + 1);
+        notices.push(`♟️ Casella 18: ${opponentTeam.name} balza alla casella ${newPosOpponent}!`);
+      } else if (newPosOpponent === 21) {
+        opponentBonus.doubleTime = true;
+        notices.push(`✖️2 Casella 21: ${opponentTeam.name} ottiene tempo doppio!`);
+      } else if (newPosOpponent >= 24) {
+        newPosOpponent = 24;
+        notices.push(`🏆 TRAGUARDO: ${opponentTeam.name} ha raggiunto la vittoria!`);
+      }
+    }
+
+    setLastTurnStartPos({
+      oldPosA: teamA.pos || 1,
+      oldPosB: teamB.pos || 1
+    });
+
+    setActiveTeam(s => ({ ...s, pos: newPosActive, pendingBonus: activeBonus }));
+    setOpponentTeam(s => ({ ...s, pos: newPosOpponent, pendingBonus: opponentBonus }));
+    setLastSpecialNotice(notices.join(" | "));
+
+    if (newPosActive >= 24 || newPosOpponent >= 24) {
+      setIsFinalLeaderboard(true);
+    }
+
+    setPhase("BOARD");
+  };
+
+  const nextTurn = () => {
+    if (isFinalLeaderboard) {
+      setPhase("LEADERBOARD");
+      return;
+    }
     setCurrentTurn(currentTurn === 1 ? 2 : 1);
     setPhase("READY");
+  };
+
+  const fetchCloudSavedGames = async (currentUser?: User | null) => {
+    const activeUser = currentUser || user;
+    if (!activeUser || !hubDb) return;
+    try {
+      const q = query(collection(hubDb, "ops_saved_games"), where("userId", "==", activeUser.uid));
+      const snap = await getDocs(q);
+      const list: SavedGame[] = [];
+      snap.forEach(d => {
+        list.push({ ...(d.data() as SavedGame), id: d.id, source: "cloud" });
+      });
+      setCloudSavedGames(list);
+    } catch(e) {
+      console.warn("Errore caricamento cloud saves:", e);
+    }
   };
 
   const getSavedGames = (): SavedGame[] => {
     try {
       const raw = localStorage.getItem("ops_storia_saved_games");
-      return raw ? JSON.parse(raw) : [];
+      const localSaves: SavedGame[] = raw ? JSON.parse(raw) : [];
+      const map = new Map<string, SavedGame>();
+
+      cloudSavedGames.forEach(s => map.set(s.id, { ...s, source: "cloud" }));
+      localSaves.forEach(s => {
+        if (!map.has(s.id)) map.set(s.id, { ...s, source: "local" });
+      });
+
+      return Array.from(map.values()).sort((a, b) => (b.timestamp || 0) - (a.timestamp || 0));
     } catch(e) {
       return [];
     }
   };
 
-  const handleSaveGame = () => {
-    const saved = getSavedGames();
+  const handleSaveGame = async () => {
     const now = new Date();
     const dateFormatted = now.toLocaleDateString('it-IT', { day: '2-digit', month: '2-digit', year: 'numeric', hour: '2-digit', minute: '2-digit' });
     const cleanName = saveSessionName.trim() || `Sessione del ${dateFormatted}`;
+    const saveId = `save_${Date.now()}`;
 
     const newSave: SavedGame = {
-      id: `save_${Date.now()}`,
+      id: saveId,
       name: cleanName,
       date: dateFormatted,
       timestamp: Date.now(),
@@ -320,13 +389,36 @@ export default function LocalPlay() {
       currentTurn,
       teamA,
       teamB,
-      currentCardIndex
+      currentCardIndex,
+      source: user ? "cloud" : "local"
     };
 
-    saved.unshift(newSave);
-    localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved.slice(0, 15)));
+    // 1. Salva in LocalStorage (cache immediata offline)
+    try {
+      let raw = localStorage.getItem("ops_storia_saved_games");
+      let saved: SavedGame[] = raw ? JSON.parse(raw) : [];
+      saved.unshift(newSave);
+      localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved.slice(0, 20)));
+    } catch(e) {}
+
+    // 2. Salva su Firestore Cloud se autenticato
+    if (user && hubDb) {
+      try {
+        await setDoc(doc(hubDb, "ops_saved_games", saveId), {
+          ...newSave,
+          userId: user.uid,
+          userEmail: (user.email || '').toLowerCase().trim(),
+          mode: "local",
+          updatedAt: new Date().toISOString()
+        });
+        console.log("☁️ Partita salvata sul Cloud Firestore!");
+      } catch (errCloud) {
+        console.warn("Salvataggio Cloud fallito, mantenuto in locale:", errCloud);
+      }
+    }
+
     setShowSaveDialog(false);
-    alert("Partita salvata con successo! Potrai riprenderla in qualsiasi momento.");
+    alert("Partita salvata con successo! Potrai riprenderla in qualsiasi momento da questo o da un altro dispositivo.");
     setPhase("SETUP");
   };
 
@@ -362,17 +454,28 @@ export default function LocalPlay() {
     setPhase("BOARD");
   };
 
-  const handleDeleteSavedGame = (saveId: string) => {
-    let saved = getSavedGames();
-    saved = saved.filter(s => s.id !== saveId);
-    localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved));
-    setSaveSessionName(s => s + " ");
+  const handleDeleteSavedGame = async (saveId: string) => {
+    try {
+      let raw = localStorage.getItem("ops_storia_saved_games");
+      if (raw) {
+        let saved: SavedGame[] = JSON.parse(raw);
+        saved = saved.filter(s => s.id !== saveId);
+        localStorage.setItem("ops_storia_saved_games", JSON.stringify(saved));
+      }
+      setCloudSavedGames(prev => prev.filter(s => s.id !== saveId));
+    } catch(e) {}
+
+    if (user && hubDb) {
+      try {
+        await deleteDoc(doc(hubDb, "ops_saved_games", saveId));
+      } catch (_) {}
+    }
   };
 
   const handleLogout = async () => {
     if (confirm("Vuoi disconnettere il tuo account e tornare alla Home?")) {
       await signOut(auth);
-      window.location.href = "/";
+      window.location.href = getAssetPath("/");
     }
   };
 
@@ -614,56 +717,54 @@ export default function LocalPlay() {
                 </div>
               )}
 
-              <div className={`w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border-4 overflow-hidden ${card.colorTheme.borderClass} flex flex-col flex-1 min-h-0`}>
-                <div className={`px-4 py-2 ${card.colorTheme.colorClass} text-white font-black text-lg sm:text-2xl flex justify-between shrink-0`}>
+              <div className={`w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border-3 sm:border-4 overflow-hidden ${card.colorTheme?.borderClass || 'border-orange-500'} flex flex-col flex-1 min-h-0`}>
+                <div className={`px-4 py-2 ${card.colorTheme?.colorClass || 'bg-orange-500'} text-white font-black text-base sm:text-xl flex justify-between shrink-0`}>
                   <span>Squadra {currentTurn === 1 ? 'A' : 'B'}</span>
                   <span>{timeLeft}s</span>
                 </div>
                 
                 <div className="flex flex-col md:flex-row flex-1 min-h-0">
-                  <div className="flex-1 flex flex-col items-center justify-start p-4 sm:p-8 overflow-y-auto min-h-0">
-                    <h1 className={`text-4xl sm:text-6xl md:text-7xl font-black mb-4 sm:mb-8 text-center leading-tight ${card.colorTheme.textClass}`}>{card.parola_chiave}</h1>
-                    <div className="space-y-2 sm:space-y-4 w-full max-w-sm mt-2 sm:mt-4">
-                      {card.parole_taboo.map((t: string) => (
-                        <div key={t} className="bg-slate-100 font-bold text-xl sm:text-3xl py-2 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-2xl text-center border-2 border-slate-200 text-slate-800">{t}</div>
-                      ))}
+                  <div className="flex-1 flex flex-col items-center justify-between p-2.5 sm:p-5 min-h-0">
+                    <h1 className={`text-3xl sm:text-4xl md:text-5xl font-black my-1 sm:my-2 text-center leading-tight shrink-0 ${card.colorTheme?.textClass || 'text-slate-900'}`}>{card.parola_chiave}</h1>
+                    <div className="w-full max-w-md bg-slate-100/80 p-2 sm:p-3 rounded-2xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center">
+                      <p className="text-center font-black text-slate-400 text-[10px] sm:text-xs uppercase tracking-widest mb-1 shrink-0">Parole Vietate</p>
+                      <div className="flex-1 flex flex-col justify-center gap-1 sm:gap-1.5 min-h-0">
+                        {card.parole_taboo.map((t: string) => (
+                          <div key={t} className="bg-white font-extrabold text-sm sm:text-lg md:text-xl py-1 sm:py-2 px-3 sm:px-4 rounded-xl text-center border border-slate-200/80 shadow-xs text-slate-800 flex items-center justify-center leading-snug">{t}</div>
+                        ))}
+                      </div>
                     </div>
                   </div>
 
-                  <div className="p-2 sm:p-4 bg-slate-50 border-t-4 md:border-t-0 md:border-l-4 border-slate-100 grid grid-cols-3 md:grid-cols-1 gap-2 sm:gap-4 shrink-0 md:w-64">
-                    <button onClick={() => handleAction("SCARTA")} className="bg-white border-2 sm:border-4 border-slate-200 text-slate-700 font-black text-xs sm:text-2xl rounded-xl sm:rounded-2xl py-3 sm:py-6 flex flex-col items-center justify-center hover:bg-slate-100 active:scale-95 transition-all md:flex-1">
-                      <X className="w-5 h-5 sm:w-8 sm:h-8 mb-1"/> <span>Scarta</span> <span className="text-[10px] sm:text-sm opacity-60">({turnStats.passed}/{activeUnlimitedPass ? '∞' : '2'})</span>
+                  <div className="p-2 sm:p-4 bg-slate-50 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 grid grid-cols-3 md:grid-cols-1 gap-2 sm:gap-3 shrink-0 md:w-60 flex-col justify-center">
+                    <button onClick={() => handleAction("SCARTA")} className="bg-white border-2 border-slate-200 text-slate-700 font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-2.5 sm:py-4 flex flex-col items-center justify-center hover:bg-slate-100 active:scale-95 transition-all md:flex-1 shadow-xs">
+                      <X className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>Scarta</span> <span className="text-[10px] sm:text-xs opacity-60">({turnStats.passed}/{activeUnlimitedPass ? '∞' : '2'})</span>
                     </button>
-                    <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 sm:border-4 border-emerald-600 text-white font-black text-xs sm:text-2xl rounded-xl sm:rounded-2xl py-3 sm:py-6 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-md md:flex-1">
-                      <Check className="w-5 h-5 sm:w-8 sm:h-8 mb-1"/> <span>Esatta!</span>
+                    <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 border-emerald-600 text-white font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-2.5 sm:py-4 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-xs md:flex-1">
+                      <Check className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>Esatta!</span>
                     </button>
-                    <button onClick={() => handleAction("OPS")} className="bg-red-500 border-2 sm:border-4 border-red-600 text-white font-black text-xs sm:text-2xl rounded-xl sm:rounded-2xl py-3 sm:py-6 flex flex-col items-center justify-center hover:bg-red-600 active:scale-95 transition-all shadow-md md:flex-1">
-                      <AlertOctagon className="w-5 h-5 sm:w-8 sm:h-8 mb-1"/> <span>Sbagliata!</span>
+                    <button onClick={() => handleAction("OPS")} className="bg-red-500 border-2 border-red-600 text-white font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-2.5 sm:py-4 flex flex-col items-center justify-center hover:bg-red-600 active:scale-95 transition-all shadow-xs md:flex-1">
+                      <AlertOctagon className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>Sbagliata!</span>
                     </button>
                   </div>
                 </div>
-                {showUndoOps && (
-                  <div className="absolute bottom-36 left-1/2 -translate-x-1/2 bg-slate-900 text-white p-4 rounded-2xl shadow-2xl border border-slate-700 z-50">
-                    <button onClick={undoOps} className="font-bold flex items-center text-lg"><Undo2 className="w-6 h-6 mr-2"/> Annulla Sbagliata</button>
-                  </div>
-                )}
               </div>
             </motion.div>
           )}
 
           {phase === "SUMMARY" && (
-            <motion.div key="summary" className="text-center bg-white p-10 sm:p-14 rounded-3xl shadow-xl max-w-lg w-full border border-slate-100">
-              <h2 className="text-4xl sm:text-5xl font-black text-primary-500 mb-6">Fine Turno</h2>
-              <div className="text-xl sm:text-2xl font-bold space-y-3 mb-8 bg-slate-50 p-6 rounded-2xl border border-slate-200">
+            <motion.div key="summary" className="text-center bg-white p-8 sm:p-12 rounded-3xl shadow-xl max-w-lg w-full border border-slate-100">
+              <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6">Fine Turno</h2>
+              <div className="text-lg sm:text-xl font-bold space-y-3 mb-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                 <p className="flex justify-between items-center"><span>Parole Indovinate:</span> <span className="text-emerald-600 font-black">+{turnStats.guessed}</span></p>
-                <p className="flex justify-between items-center"><span>Scarti Effettuati:</span> <span className="text-amber-600 font-black">-{turnStats.passed}</span></p>
-                <p className="flex justify-between items-center"><span>Errori OPS!:</span> <span className="text-red-600 font-black">-{turnStats.ops}</span></p>
+                <p className="flex justify-between items-center"><span>Scarti Avversari:</span> <span className="text-amber-600 font-black">+{turnStats.passed}</span></p>
+                <p className="flex justify-between items-center"><span>Errori OPS Avversari:</span> <span className="text-red-600 font-black">+{turnStats.ops}</span></p>
                 <div className="border-t pt-3 flex justify-between items-center text-slate-900 font-black">
-                  <span>Passi Guadagnati:</span>
-                  <span className="text-primary-600">+{Math.max(0, turnStats.guessed - turnStats.ops - turnStats.passed)}</span>
+                  <span>Avanzamento Squadra:</span>
+                  <span className="text-primary-600">+{turnStats.guessed} caselle</span>
                 </div>
               </div>
-              <button onClick={() => setPhase("BOARD")} className="w-full bg-slate-900 hover:bg-black text-white py-4 rounded-2xl font-black text-xl shadow-lg transition-all">
+              <button onClick={showBoardFromSummary} className="w-full bg-slate-900 hover:bg-black text-white py-4 rounded-2xl font-black text-xl shadow-lg transition-all">
                 Mostra Tabellone & Pedine
               </button>
             </motion.div>
@@ -672,8 +773,8 @@ export default function LocalPlay() {
           {phase === "BOARD" && (
             <motion.div key="board" className="w-full max-w-5xl text-center h-full max-h-[85vh] flex flex-col items-center justify-center">
               <DynamicBoard 
-                teamA={{ pos: teamA.pos, pawn: teamA.pawn, id: "A" }} 
-                teamB={{ pos: teamB.pos, pawn: teamB.pawn, id: "B" }} 
+                teamA={{ pos: teamA.pos, oldPos: lastTurnStartPos.oldPosA, pawn: teamA.pawn, id: "A", name: teamA.name }} 
+                teamB={{ pos: teamB.pos, oldPos: lastTurnStartPos.oldPosB, pawn: teamB.pawn, id: "B", name: teamB.name }} 
               />
 
               {lastSpecialNotice && (
@@ -818,31 +919,45 @@ export default function LocalPlay() {
                   Nessuna partita salvata trovata.
                 </div>
               ) : (
-                getSavedGames().map(s => (
-                  <div key={s.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 hover:border-amber-400 transition-all">
-                    <div>
-                      <h4 className="font-black text-slate-900 text-base">{s.name}</h4>
-                      <div className="text-xs text-slate-500 font-medium">
-                        {s.date} • A: c.{s.teamA.pos || 1} vs B: c.{s.teamB.pos || 1}
+                getSavedGames().map(s => {
+                  const isCloud = s.source === "cloud";
+                  return (
+                    <div key={s.id} className="p-4 rounded-2xl bg-slate-50 border border-slate-200 flex items-center justify-between gap-3 hover:border-amber-400 transition-all">
+                      <div>
+                        <div className="flex items-center gap-2">
+                          <h4 className="font-black text-slate-900 text-base">{s.name}</h4>
+                          {isCloud ? (
+                            <span className="bg-indigo-100 text-indigo-700 border border-indigo-200 text-[10px] font-extrabold px-1.5 py-0.5 rounded-md">
+                              ☁️ Cloud
+                            </span>
+                          ) : (
+                            <span className="bg-slate-200 text-slate-700 text-[10px] font-semibold px-1.5 py-0.5 rounded-md">
+                              🖥️ Locale
+                            </span>
+                          )}
+                        </div>
+                        <div className="text-xs text-slate-500 font-medium mt-1">
+                          {s.date} • A: c.{s.teamA.pos || 1} vs B: c.{s.teamB.pos || 1}
+                        </div>
+                      </div>
+                      <div className="flex items-center gap-2">
+                        <button 
+                          onClick={() => handleLoadGame(s)} 
+                          className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow"
+                        >
+                          Riprendi
+                        </button>
+                        <button 
+                          onClick={() => handleDeleteSavedGame(s.id)} 
+                          className="text-slate-400 hover:text-red-500 p-1.5" 
+                          title="Elimina"
+                        >
+                          <Trash2 className="w-4 h-4" />
+                        </button>
                       </div>
                     </div>
-                    <div className="flex items-center gap-2">
-                      <button 
-                        onClick={() => handleLoadGame(s)} 
-                        className="bg-primary-500 hover:bg-primary-600 text-white font-bold px-3 py-1.5 rounded-lg text-xs shadow"
-                      >
-                        Riprendi
-                      </button>
-                      <button 
-                        onClick={() => handleDeleteSavedGame(s.id)} 
-                        className="text-slate-400 hover:text-red-500 p-1.5" 
-                        title="Elimina"
-                      >
-                        <Trash2 className="w-4 h-4" />
-                      </button>
-                    </div>
-                  </div>
-                ))
+                  );
+                })
               )}
             </div>
 

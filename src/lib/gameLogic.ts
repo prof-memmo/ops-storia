@@ -1,5 +1,5 @@
-import { ref, set, get, onValue, update, child, push } from "firebase/database";
-import { rtdb } from "./firebase";
+import { doc, setDoc, getDoc, updateDoc, onSnapshot } from "firebase/firestore";
+import { hubDb } from "./firebase";
 
 export type RoomState = {
   status: "LOBBY" | "PLAYING" | "SUMMARY" | "BOARD" | "LEADERBOARD";
@@ -55,7 +55,7 @@ export const generateRoomCode = () => {
 
 export const createRoom = async (settings: any, deck: any[]) => {
   const code = generateRoomCode();
-  const roomRef = ref(rtdb, `rooms/${code}`);
+  const roomRef = doc(hubDb, "ops_rooms", code);
   
   const newRoom: RoomState = {
     status: "LOBBY",
@@ -99,53 +99,66 @@ export const createRoom = async (settings: any, deck: any[]) => {
     hostConnected: true
   };
 
-  await set(roomRef, newRoom);
+  await setDoc(roomRef, newRoom);
   return code;
 };
 
 export const joinRoom = async (code: string, teamId: 1 | 2, pawnId: number, teamName: string) => {
-  const roomRef = ref(rtdb, `rooms/${code.toUpperCase()}`);
-  const snapshot = await get(roomRef);
+  const cleanCode = code.trim().toUpperCase();
+  const roomRef = doc(hubDb, "ops_rooms", cleanCode);
+  const snapshot = await getDoc(roomRef);
   if (!snapshot.exists()) {
-    throw new Error("Stanza non trovata");
+    throw new Error("Stanza non trovata. Verifica il codice inserito.");
   }
   
-  const room = snapshot.val() as RoomState;
+  const room = snapshot.data() as RoomState;
   const teamKey = teamId === 1 ? 'teamA' : 'teamB';
   
-  if (room[teamKey].connected) {
-    throw new Error("Squadra già occupata");
+  if (room[teamKey] && room[teamKey].connected) {
+    throw new Error("Squadra già occupata da un altro dispositivo.");
   }
 
-  await update(roomRef, {
-    [`${teamKey}/connected`]: true,
-    [`${teamKey}/pawn`]: pawnId,
-    [`${teamKey}/name`]: teamName
+  await updateDoc(roomRef, {
+    [`${teamKey}.connected`]: true,
+    [`${teamKey}.pawn`]: pawnId,
+    [`${teamKey}.name`]: teamName
   });
 };
 
 export const updateRoomState = async (code: string, updates: Partial<RoomState["state"]>) => {
-  const stateRef = ref(rtdb, `rooms/${code.toUpperCase()}/state`);
-  await update(stateRef, updates);
+  const cleanCode = code.trim().toUpperCase();
+  const roomRef = doc(hubDb, "ops_rooms", cleanCode);
+  const flatUpdates: Record<string, any> = {};
+  for (const [key, val] of Object.entries(updates)) {
+    flatUpdates[`state.${key}`] = val;
+  }
+  await updateDoc(roomRef, flatUpdates);
 };
 
 export const updateRoomStatus = async (code: string, status: RoomState["status"]) => {
-  const roomRef = ref(rtdb, `rooms/${code.toUpperCase()}`);
-  await update(roomRef, { status });
+  const cleanCode = code.trim().toUpperCase();
+  const roomRef = doc(hubDb, "ops_rooms", cleanCode);
+  await updateDoc(roomRef, { status });
 };
 
 export const updateTeamStats = async (code: string, teamId: 1 | 2, updates: any) => {
+  const cleanCode = code.trim().toUpperCase();
   const teamKey = teamId === 1 ? 'teamA' : 'teamB';
-  const teamRef = ref(rtdb, `rooms/${code.toUpperCase()}/${teamKey}`);
-  await update(teamRef, updates);
+  const roomRef = doc(hubDb, "ops_rooms", cleanCode);
+  const flatUpdates: Record<string, any> = {};
+  for (const [key, val] of Object.entries(updates)) {
+    flatUpdates[`${teamKey}.${key}`] = val;
+  }
+  await updateDoc(roomRef, flatUpdates);
 };
 
 // Hook for components to subscribe to room changes
 export const subscribeToRoom = (code: string, callback: (room: RoomState) => void) => {
-  const roomRef = ref(rtdb, `rooms/${code.toUpperCase()}`);
-  return onValue(roomRef, (snapshot) => {
+  const cleanCode = code.trim().toUpperCase();
+  const roomRef = doc(hubDb, "ops_rooms", cleanCode);
+  return onSnapshot(roomRef, (snapshot) => {
     if (snapshot.exists()) {
-      callback(snapshot.val() as RoomState);
+      callback(snapshot.data() as RoomState);
     }
   });
 };

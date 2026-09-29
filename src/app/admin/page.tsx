@@ -24,6 +24,8 @@ import {
 } from "lucide-react";
 import HostLogin from "@/components/HostLogin";
 import Header from "@/components/Header";
+import RulesEditor from "@/components/RulesEditor";
+import MiniguidaEditor from "@/components/MiniguidaEditor";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -43,8 +45,8 @@ export default function AdminDashboard() {
   const [isAdmin, setIsAdmin] = useState(false);
   const [isAllowed, setIsAllowed] = useState(true);
 
-  // Dati Carte per le 3 classi
-  const [activeTab, setActiveTab] = useState<"Prima" | "Seconda" | "Terza">("Prima");
+  // Dati Carte per le 3 classi + Tab Regolamento + Tab Miniguida
+  const [activeTab, setActiveTab] = useState<"Prima" | "Seconda" | "Terza" | "Regolamento" | "Miniguida">("Prima");
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedCategory, setSelectedCategory] = useState<string>("ALL");
 
@@ -146,6 +148,7 @@ export default function AdminDashboard() {
     const lines = bulkText.split("\n").map(l => l.trim()).filter(Boolean);
     const newCards: CardItem[] = [];
     let currentCard: Partial<CardItem> | null = null;
+    const targetClasse: "Prima" | "Seconda" | "Terza" = (activeTab === "Regolamento" || activeTab === "Miniguida") ? "Prima" : activeTab;
 
     for (let i = 0; i < lines.length; i++) {
       const line = lines[i];
@@ -156,8 +159,8 @@ export default function AdminDashboard() {
           newCards.push(currentCard as CardItem);
         }
         currentCard = {
-          id: `${activeTab}_custom_${Date.now()}_${i}`,
-          classe: activeTab,
+          id: `${targetClasse}_custom_${Date.now()}_${i}`,
+          classe: targetClasse,
           categoria: selectedCategory !== "ALL" ? selectedCategory : "Età Medievale",
           parola_chiave: numMatch[2].trim(),
           parole_taboo: []
@@ -178,10 +181,10 @@ export default function AdminDashboard() {
     }
 
     if (newCards.length > 0) {
-      const updatedList = [...newCards, ...cardsMap[activeTab]];
-      const newMap = { ...cardsMap, [activeTab]: updatedList };
+      const updatedList = [...newCards, ...(cardsMap[targetClasse] || [])];
+      const newMap = { ...cardsMap, [targetClasse]: updatedList };
       saveToStorage(newMap);
-      setBulkMessage(`✅ Importate con successo ${newCards.length} carte in ${activeTab} Media!`);
+      setBulkMessage(`✅ Importate con successo ${newCards.length} carte in ${targetClasse} Media!`);
       setBulkText("");
       setTimeout(() => {
         setBulkMessage("");
@@ -298,6 +301,28 @@ export default function AdminDashboard() {
                 </button>
               );
             })}
+
+            <button
+              onClick={() => setActiveTab("Regolamento")}
+              className={`px-4 sm:px-6 py-2.5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer flex items-center gap-2 ${
+                activeTab === "Regolamento" 
+                  ? "bg-white text-slate-900 shadow-md scale-102" 
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+              }`}
+            >
+              <span>📜 Regolamento</span>
+            </button>
+
+            <button
+              onClick={() => setActiveTab("Miniguida")}
+              className={`px-4 sm:px-6 py-2.5 rounded-xl font-black text-xs sm:text-sm transition-all cursor-pointer flex items-center gap-2 ${
+                activeTab === "Miniguida" 
+                  ? "bg-white text-slate-900 shadow-md scale-102" 
+                  : "text-slate-600 hover:text-slate-900 hover:bg-white/50"
+              }`}
+            >
+              <span>❓ Miniguida</span>
+            </button>
           </div>
 
           <div className="text-xs font-bold text-slate-500">
@@ -305,99 +330,107 @@ export default function AdminDashboard() {
           </div>
         </div>
 
-        {/* Filtri e Barra di Ricerca */}
-        <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
-          <div className="relative flex-1 w-full">
-            <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
-            <input 
-              type="text"
-              placeholder="Cerca parola chiave o taboo..." 
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-400"
-            />
-          </div>
-
-          <div className="flex items-center gap-2 w-full sm:w-auto">
-            <span className="text-xs font-bold text-slate-500 shrink-0">Categoria:</span>
-            <select
-              value={selectedCategory}
-              onChange={(e) => setSelectedCategory(e.target.value)}
-              className="w-full sm:w-auto bg-slate-50 border border-slate-200 text-slate-800 text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
-            >
-              <option value="ALL">Tutte le Categorie ({categories.length})</option>
-              {categories.map(c => (
-                <option key={c} value={c}>{c}</option>
-              ))}
-            </select>
-          </div>
-        </div>
-
-        {/* Griglia Carte della Classe */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
-          {filteredCards.map((card, idx) => (
-            <div 
-              key={card.id || idx}
-              className="bg-white rounded-2xl shadow-sm hover:shadow-md border border-slate-200 overflow-hidden transition-all flex flex-col justify-between group"
-            >
-              {/* Card Header */}
-              <div className="p-4 border-b border-slate-100 flex items-start justify-between gap-2 bg-slate-50/50">
-                <span className="text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full uppercase tracking-wider truncate max-w-[170px]">
-                  {card.categoria || "Storia"}
-                </span>
-                <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100">
-                  <button
-                    onClick={() => setEditingCard(card)}
-                    className="p-1.5 hover:bg-amber-100 text-amber-700 rounded-lg transition-colors"
-                    title="Modifica Carta"
-                  >
-                    <Edit3 className="w-3.5 h-3.5" />
-                  </button>
-                  <button
-                    onClick={() => handleDeleteCard(card.id, card.classe)}
-                    className="p-1.5 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
-                    title="Elimina Carta"
-                  >
-                    <Trash2 className="w-3.5 h-3.5" />
-                  </button>
-                </div>
+        {activeTab === "Regolamento" ? (
+          <RulesEditor userEmail={user?.email} />
+        ) : activeTab === "Miniguida" ? (
+          <MiniguidaEditor userEmail={user?.email} />
+        ) : (
+          <>
+            {/* Filtri e Barra di Ricerca */}
+            <div className="bg-white p-4 rounded-2xl shadow-sm border border-slate-200 mb-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+              <div className="relative flex-1 w-full">
+                <Search className="w-4 h-4 text-slate-400 absolute left-3.5 top-1/2 -translate-y-1/2" />
+                <input 
+                  type="text"
+                  placeholder="Cerca parola chiave o taboo..." 
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
+                  className="w-full pl-10 pr-4 py-2 bg-slate-50 border border-slate-200 rounded-xl text-sm font-medium focus:outline-none focus:ring-2 focus:ring-amber-400"
+                />
               </div>
 
-              {/* Card Body: Parola Chiave */}
-              <div className="p-4 text-center">
-                <h3 className="text-xl font-black text-slate-900 mb-3 tracking-tight">
-                  {card.parola_chiave}
-                </h3>
-
-                {/* 5 Parole Taboo */}
-                <div className="space-y-1.5">
-                  <div className="text-[9px] font-black uppercase text-red-500 tracking-widest mb-1 flex items-center justify-center gap-1">
-                    <span>🚫 5 Parole Taboo</span>
-                  </div>
-                  {card.parole_taboo?.map((taboo, tIdx) => (
-                    <div 
-                      key={tIdx}
-                      className="text-xs font-bold text-slate-700 bg-slate-100 py-1 px-2.5 rounded-lg border border-slate-200/60"
-                    >
-                      {taboo}
-                    </div>
+              <div className="flex items-center gap-2 w-full sm:w-auto">
+                <span className="text-xs font-bold text-slate-500 shrink-0">Categoria:</span>
+                <select
+                  value={selectedCategory}
+                  onChange={(e) => setSelectedCategory(e.target.value)}
+                  className="w-full sm:w-auto bg-slate-50 border border-slate-200 text-slate-800 text-xs font-bold rounded-xl px-3 py-2 focus:outline-none focus:ring-2 focus:ring-amber-400"
+                >
+                  <option value="ALL">Tutte le Categorie ({categories.length})</option>
+                  {categories.map(c => (
+                    <option key={c} value={c}>{c}</option>
                   ))}
-                </div>
-              </div>
-
-              <div className="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
-                <span className="text-[10px] font-bold text-slate-400">ID: {card.id}</span>
+                </select>
               </div>
             </div>
-          ))}
-        </div>
 
-        {filteredCards.length === 0 && (
-          <div className="text-center py-16 bg-white rounded-3xl border border-slate-200 p-8">
-            <Layers className="w-12 h-12 text-slate-300 mx-auto mb-3" />
-            <h3 className="text-lg font-bold text-slate-700">Nessuna carta trovata</h3>
-            <p className="text-slate-400 text-xs mt-1">Prova a modificare i termini di ricerca o la categoria selezionata.</p>
-          </div>
+            {/* Griglia Carte della Classe */}
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-4 sm:gap-6">
+              {filteredCards.map((card, idx) => (
+                <div 
+                  key={card.id || idx}
+                  className="bg-white rounded-2xl shadow-sm hover:shadow-md border border-slate-200 overflow-hidden transition-all flex flex-col justify-between group"
+                >
+                  {/* Card Header */}
+                  <div className="p-4 border-b border-slate-100 flex items-start justify-between gap-2 bg-slate-50/50">
+                    <span className="text-[10px] font-black text-amber-700 bg-amber-100 px-2 py-0.5 rounded-full uppercase tracking-wider truncate max-w-[170px]">
+                      {card.categoria || "Storia"}
+                    </span>
+                    <div className="flex items-center gap-1 opacity-80 group-hover:opacity-100">
+                      <button
+                        onClick={() => setEditingCard(card)}
+                        className="p-1.5 hover:bg-amber-100 text-amber-700 rounded-lg transition-colors"
+                        title="Modifica Carta"
+                      >
+                        <Edit3 className="w-3.5 h-3.5" />
+                      </button>
+                      <button
+                        onClick={() => handleDeleteCard(card.id, card.classe)}
+                        className="p-1.5 hover:bg-red-100 text-red-600 rounded-lg transition-colors"
+                        title="Elimina Carta"
+                      >
+                        <Trash2 className="w-3.5 h-3.5" />
+                      </button>
+                    </div>
+                  </div>
+
+                  {/* Card Body: Parola Chiave */}
+                  <div className="p-4 text-center">
+                    <h3 className="text-xl font-black text-slate-900 mb-3 tracking-tight">
+                      {card.parola_chiave}
+                    </h3>
+
+                    {/* 5 Parole Taboo */}
+                    <div className="space-y-1.5">
+                      <div className="text-[9px] font-black uppercase text-red-500 tracking-widest mb-1 flex items-center justify-center gap-1">
+                        <span>🚫 5 Parole Taboo</span>
+                      </div>
+                      {card.parole_taboo?.map((taboo, tIdx) => (
+                        <div 
+                          key={tIdx}
+                          className="text-xs font-bold text-slate-700 bg-slate-100 py-1 px-2.5 rounded-lg border border-slate-200/60"
+                        >
+                          {taboo}
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="p-2.5 bg-slate-50 border-t border-slate-100 text-center">
+                    <span className="text-[10px] font-bold text-slate-400">ID: {card.id}</span>
+                  </div>
+                </div>
+              ))}
+            </div>
+
+            {filteredCards.length === 0 && (
+              <div className="text-center py-16 bg-white rounded-3xl border border-slate-200 p-8">
+                <Layers className="w-12 h-12 text-slate-300 mx-auto mb-3" />
+                <h3 className="text-lg font-bold text-slate-700">Nessuna carta trovata</h3>
+                <p className="text-slate-400 text-xs mt-1">Prova a modificare i termini di ricerca o la categoria selezionata.</p>
+              </div>
+            )}
+          </>
         )}
 
       </main>
