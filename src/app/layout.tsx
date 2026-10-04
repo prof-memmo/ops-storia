@@ -11,6 +11,10 @@ const juliusFont = Julius_Sans_One({
 export const metadata: Metadata = {
   title: "Ops! - Il Gioco Interattivo della Storia",
   description: "Sfida i tuoi compagni e gli Esploratori del Tempo con il gioco di storia interattivo.",
+  icons: {
+    icon: "/favicon.png?v=3",
+    apple: "/apple-touch-icon.png?v=3",
+  },
 };
 
 export default function RootLayout({
