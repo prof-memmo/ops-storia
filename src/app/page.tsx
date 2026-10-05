@@ -174,7 +174,7 @@ export default function Home() {
       {/* Footer Patamu */}
       <footer className="w-full text-slate-400 px-4 py-2 flex items-center justify-center shrink-0 z-20">
         <div className="flex max-w-[1200px] w-full items-center justify-center text-left">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
+           <img src="https://gestionesiti.profmemmo.it/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
            <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
@@ -197,7 +197,7 @@ export default function Home() {
               className="bg-white rounded-3xl w-full max-w-5xl max-h-[90vh] flex overflow-hidden shadow-2xl relative"
             >
               <div className="hidden md:flex w-1/3 bg-slate-50 items-end justify-center pt-8 border-r-2 border-slate-100">
-                 <img src="/assets/prof_memmo_full.jpg" onError={(e: any) => { e.currentTarget.src = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
+                 <img src="/assets/prof_memmo_full.jpg" onError={(e: any) => { e.currentTarget.src = "https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
               </div>
               
               <div className="w-full md:w-2/3 p-4 sm:p-8 flex flex-col relative min-h-[550px] md:min-h-[500px]">
