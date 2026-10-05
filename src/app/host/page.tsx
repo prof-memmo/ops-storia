@@ -11,7 +11,6 @@ import { auth, hubDb } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { collection, doc, setDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
 import { getPawnImg, getAssetPath } from "@/lib/assets";
-import { getSsoUser } from "@/lib/sso";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -56,29 +55,20 @@ export default function HostBoard() {
   const [lastHostStartPos, setLastHostStartPos] = useState({ oldPosA: 1, oldPosB: 1 });
 
   useEffect(() => {
-    const checkUser = async (currentUser: any) => {
-      const effUser = currentUser || getSsoUser();
-      setUser(effUser);
-      if (effUser) {
-        fetchSavedHostGames(effUser);
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      setUser(currentUser);
+      if (currentUser) {
+        fetchSavedHostGames(currentUser);
         if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
           const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
-            user: { uid: effUser.uid, email: effUser.email },
+            user: { uid: currentUser.uid, email: currentUser.email },
             role: "docente",
             isPublicView: false
           });
           setIsAllowed(allowed);
-        } else {
-          setIsAllowed(true);
         }
       }
       setAuthLoading(false);
-    };
-
-    checkUser(auth.currentUser);
-
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      await checkUser(currentUser);
     });
     return () => unsubscribe();
   }, []);
@@ -459,11 +449,11 @@ export default function HostBoard() {
             <Home className="w-4 h-4 text-primary-500" />
             <span className="hidden sm:inline">Home</span>
           </Link>
-          <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
+          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
         </div>
         
         <div className="flex items-center justify-center flex-1">
-           <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
+           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
         </div>
 
         <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight flex items-center justify-end gap-3">

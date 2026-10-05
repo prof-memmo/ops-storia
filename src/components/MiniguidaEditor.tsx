@@ -322,7 +322,7 @@ export default function MiniguidaEditor({ userEmail }: MiniguidaEditorProps) {
                 <div className="w-full sm:w-1/3 bg-slate-50 flex items-end justify-center pt-4 border-b sm:border-b-0 sm:border-r border-slate-100">
                   <img 
                     src="/assets/prof_memmo_full.jpg" 
-                    onError={(e: any) => { e.currentTarget.src = "https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} 
+                    onError={(e: any) => { e.currentTarget.src = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} 
                     alt="Prof Memmo" 
                     className="w-[120%] max-h-[220px] sm:max-h-[340px] object-contain mix-blend-multiply drop-shadow-md" 
                   />
