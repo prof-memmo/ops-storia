@@ -159,20 +159,20 @@ export default function Header() {
     } else if (typeof window !== "undefined" && (window as any).Modals) {
       (window as any).Modals.openLegalModal(type);
     } else {
-      window.open(`https://prof-memmo.github.io/games/`, "_blank");
+      window.open(`https://profmemmo.it/`, "_blank");
     }
   };
 
   const handleLogout = async () => {
     if (confirm("Vuoi davvero uscire dalla sessione di gioco?")) {
       await signOut(auth);
-      window.location.href = "https://prof-memmo.github.io/games/";
+      window.location.href = "https://profmemmo.it/";
     }
   };
 
   const userDisplayName = user?.displayName || (user?.email === "prof.memmo@gmail.com" ? "Prof. Memmo" : (user ? "Docente" : "Ospite"));
   const userRole = user?.email === "prof.memmo@gmail.com" ? "Amministratore" : (user ? "Docente" : "Ospite");
-  const avatarUrl = user?.photoURL || "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/avatars/6.png";
+  const avatarUrl = user?.photoURL || "https://gestionesiti.profmemmo.it/shared/assets/avatars/6.png";
 
   return (
     <header className="w-full bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200 sticky top-0 z-40 px-4 py-2.5 transition-all">
@@ -274,7 +274,7 @@ export default function Header() {
               {/* Pulsanti Azione Ecosistema */}
               <div className="space-y-1.5 text-xs font-bold">
                 <a
-                  href="https://prof-memmo.github.io/games/profilo.html" 
+                  href="https://profmemmo.it/profilo.html" 
                   target="_blank"
                   rel="noopener noreferrer"
                   className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100"

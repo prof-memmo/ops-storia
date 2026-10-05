@@ -114,11 +114,11 @@ export default function ClientBoard() {
             <Home className="w-4 h-4 text-primary-500" />
             <span className="hidden sm:inline">Home</span>
           </Link>
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-8 sm:h-12 object-contain shrink-0" />
+          <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-8 sm:h-12 object-contain shrink-0" />
         </div>
         
         <div className="flex items-center justify-center flex-1">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-9 sm:h-14 object-contain" />
+           <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-9 sm:h-14 object-contain" />
         </div>
 
         <div className="text-xs sm:text-sm font-black text-primary-500 text-right flex-1 uppercase tracking-tighter">

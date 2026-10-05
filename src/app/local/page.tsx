@@ -489,11 +489,11 @@ export default function LocalPlay() {
             <Home className="w-4 h-4 text-primary-500" />
             <span className="hidden sm:inline">Home</span>
           </Link>
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
+          <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
         </div>
         
         <div className="flex items-center justify-center flex-1">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
+           <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
         </div>
 
         <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight flex items-center justify-end gap-3">

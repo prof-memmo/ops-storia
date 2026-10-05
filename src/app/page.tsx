@@ -119,14 +119,14 @@ export default function Home() {
         <div className="flex space-x-3 sm:space-x-8 items-center text-slate-800 shrink-0 mx-auto">
           <div className="group relative flex flex-col items-center">
             <Link href="/admin" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/ops-storia/icons/7.png" alt="Dashboard Admin" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath("/icons/7.png")} alt="Dashboard Admin" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </Link>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Admin</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
             <Link href="/dashboard" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/ops-storia/icons/8.png" alt="Dashboard Docente" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath("/icons/8.png")} alt="Dashboard Docente" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </Link>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Docente</span>
           </div>
@@ -134,14 +134,14 @@ export default function Home() {
           <div className="w-px h-8 sm:h-12 bg-slate-300 mx-2"></div>
           <div className="group relative flex flex-col items-center">
             <button onClick={() => setShowTutorial(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/ops-storia/icons/1.png" alt="Miniguida" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath("/icons/1.png")} alt="Miniguida" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Miniguida</span>
           </div>
           
           <div className="group relative flex flex-col items-center">
             <button onClick={() => setShowRules(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/ops-storia/icons/2.png" alt="Regolamento" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath("/icons/2.png")} alt="Regolamento" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Regolamento</span>
           </div>
@@ -150,31 +150,35 @@ export default function Home() {
 
           <div className="group relative flex flex-col items-center">
             <button onClick={() => openLegal('contatti')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src="/ops-storia/icons/3.png" alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath("/icons/3.png")} alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Contatti</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
             <button onClick={() => openLegal('privacy')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src="/ops-storia/icons/4.png" alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath("/icons/4.png")} alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Privacy</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
             <button onClick={() => openLegal('termini')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src="/ops-storia/icons/5.png" alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath("/icons/5.png")} alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Termini</span>
           </div>
         </div>
       </nav>
 
-      {/* Footer Patamu */}
-      <footer className="w-full text-slate-400 px-4 py-2 flex items-center justify-center shrink-0 z-20">
+      {/* Footer Patamu & Legal Links */}
+      <footer className="w-full text-slate-400 px-4 py-2 flex flex-col items-center justify-center shrink-0 z-20">
+        <div className="flex justify-center gap-4 mb-1 text-xs">
+          <button onClick={() => setShowPrivacy(true)} className="hover:text-primary-600 transition-colors underline cursor-pointer">Privacy Policy</button>
+          <button onClick={() => setShowTermini(true)} className="hover:text-primary-600 transition-colors underline cursor-pointer">Termini e Condizioni</button>
+        </div>
         <div className="flex max-w-[1200px] w-full items-center justify-center text-left">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
+           <img src="https://gestionesiti.profmemmo.it/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
            <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
@@ -197,7 +201,7 @@ export default function Home() {
               className="bg-white rounded-3xl w-full max-w-5xl max-h-[90vh] flex overflow-hidden shadow-2xl relative"
             >
               <div className="hidden md:flex w-1/3 bg-slate-50 items-end justify-center pt-8 border-r-2 border-slate-100">
-                 <img src="/assets/prof_memmo_full.jpg" onError={(e: any) => { e.currentTarget.src = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
+                 <img src="/assets/prof_memmo_full.jpg" onError={(e: any) => { e.currentTarget.src = "https://gestionesiti.profmemmo.it/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
               </div>
               
               <div className="w-full md:w-2/3 p-4 sm:p-8 flex flex-col relative min-h-[550px] md:min-h-[500px]">
