@@ -5,6 +5,7 @@ import Link from "next/link";
 import { onAuthStateChanged, User, signOut } from "firebase/auth";
 import { auth } from "@/lib/firebase";
 import { getAssetPath } from "@/lib/assets";
+import { getSsoUser, clearSsoUser } from "@/lib/sso";
 import { 
   Music, 
   Volume2, 
@@ -86,8 +87,12 @@ export default function Header() {
   }, []);
 
   useEffect(() => {
+    const sso = getSsoUser();
+    if (sso) {
+      setUser(sso as any);
+    }
     const unsubscribe = onAuthStateChanged(auth, (currentUser) => {
-      setUser(currentUser);
+      setUser(currentUser || (getSsoUser() as any));
     });
     return () => unsubscribe();
   }, []);
@@ -165,6 +170,7 @@ export default function Header() {
 
   const handleLogout = async () => {
     if (confirm("Vuoi davvero uscire dalla sessione di gioco?")) {
+      clearSsoUser();
       await signOut(auth);
       window.location.href = "https://profmemmo.it/";
     }
