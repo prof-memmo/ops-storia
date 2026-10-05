@@ -5,6 +5,7 @@ import { motion, AnimatePresence } from "framer-motion";
 import { onAuthStateChanged, User } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { auth, hubDb } from "@/lib/firebase";
+import { getSsoUser } from "@/lib/sso";
 import Link from "next/link";
 import {
   Trophy,
@@ -152,26 +153,29 @@ export default function TeacherDashboard() {
       }
     }
 
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
+    const checkUser = async (currentUser: any) => {
+      const effUser = currentUser || getSsoUser();
+      setUser(effUser);
+      if (effUser) {
         if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
           const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
-            user: { uid: currentUser.uid, email: currentUser.email },
+            user: { uid: effUser.uid, email: effUser.email },
             role: "docente",
             isPublicView: false,
           });
           setIsAllowed(allowed);
+        } else {
+          setIsAllowed(true);
         }
         try {
           let uData = null;
           try {
-            const docRef = doc(hubDb, "hub_users", currentUser.uid);
+            const docRef = doc(hubDb, "hub_users", effUser.uid);
             const docSnap = await getDoc(docRef);
             if (docSnap.exists()) {
               uData = docSnap.data();
             } else {
-              const fallbackRef = doc(hubDb, "users", currentUser.uid);
+              const fallbackRef = doc(hubDb, "users", effUser.uid);
               const fallbackSnap = await getDoc(fallbackRef);
               if (fallbackSnap.exists()) {
                 uData = fallbackSnap.data();
@@ -183,13 +187,19 @@ export default function TeacherDashboard() {
           if (uData) {
             setUserData(uData);
           } else {
-            setUserData({ nome: currentUser.displayName || "Docente", scuola: "Docente di Storia" });
+            setUserData({ nome: effUser.displayName || "Docente", scuola: "Docente di Storia" });
           }
         } catch (e) {
           console.error("Error fetching user data", e);
         }
       }
       setLoading(false);
+    };
+
+    checkUser(auth.currentUser);
+
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      await checkUser(currentUser);
     });
 
     return () => unsubscribe();

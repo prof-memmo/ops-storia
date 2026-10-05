@@ -13,6 +13,7 @@ import { auth, hubDb } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { collection, doc, setDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
 import { getPawnImg, getAssetPath } from "@/lib/assets";
+import { getSsoUser } from "@/lib/sso";
 
 import cardsPrima from "@/../public/data/cards_prima.json";
 import cardsSeconda from "@/../public/data/cards_seconda.json";
@@ -141,20 +142,29 @@ export default function LocalPlay() {
   };
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
-      setUser(currentUser);
-      if (currentUser) {
-        fetchCloudSavedGames(currentUser);
+    const checkUser = async (currentUser: any) => {
+      const effUser = currentUser || getSsoUser();
+      setUser(effUser);
+      if (effUser) {
+        fetchCloudSavedGames(effUser);
         if (typeof window !== "undefined" && (window as any).HubSubscriptionGuard) {
           const allowed = await (window as any).HubSubscriptionGuard.verifyAccess({
-            user: { uid: currentUser.uid, email: currentUser.email },
+            user: { uid: effUser.uid, email: effUser.email },
             role: "docente",
             isPublicView: false
           });
           setIsAllowed(allowed);
+        } else {
+          setIsAllowed(true);
         }
       }
       setAuthLoading(false);
+    };
+
+    checkUser(auth.currentUser);
+
+    const unsubscribe = onAuthStateChanged(auth, async (currentUser) => {
+      await checkUser(currentUser);
     });
     return () => unsubscribe();
   }, []);
