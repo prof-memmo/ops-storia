@@ -44,13 +44,13 @@ jobs:
         run: |
           cd _main_src
           npm ci
-          npm run build
+          NEXT_PUBLIC_BASE_PATH="" npm run build
 
       - name: Build Preview (Anteprima)
         run: |
           cd _preview_src
           npm ci
-          NEXT_PUBLIC_BASE_PATH=/ops-storia/preview npm run build
+          NEXT_PUBLIC_BASE_PATH="/preview" npm run build
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5

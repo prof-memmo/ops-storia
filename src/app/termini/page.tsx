@@ -1,4 +1,5 @@
 import Link from "next/link";
+import { getAssetPath } from "@/lib/assets";
 
 export default function Termini() {
   return (
@@ -6,7 +7,7 @@ export default function Termini() {
       <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0">
         <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
           <Link href="/" className="shrink-0 hover:scale-110 transition-transform">
-            <img src="/ops-storia/icons/6.png" alt="Home" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+            <img src={getAssetPath("/icons/6.png")} alt="Home" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
           </Link>
           <img src="https://gestionesiti.profmemmo.it/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
         </div>
