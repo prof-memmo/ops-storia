@@ -171,8 +171,12 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Footer Patamu */}
-      <footer className="w-full text-slate-400 px-4 py-2 flex items-center justify-center shrink-0 z-20">
+      {/* Footer Patamu & Legal Links */}
+      <footer className="w-full text-slate-400 px-4 py-2 flex flex-col items-center justify-center shrink-0 z-20">
+        <div className="flex justify-center gap-4 mb-1 text-xs">
+          <button onClick={() => setShowPrivacy(true)} className="hover:text-primary-600 transition-colors underline cursor-pointer">Privacy Policy</button>
+          <button onClick={() => setShowTermini(true)} className="hover:text-primary-600 transition-colors underline cursor-pointer">Termini e Condizioni</button>
+        </div>
         <div className="flex max-w-[1200px] w-full items-center justify-center text-left">
            <img src="https://gestionesiti.profmemmo.it/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
            <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight">
