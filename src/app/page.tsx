@@ -119,14 +119,14 @@ export default function Home() {
         <div className="flex space-x-3 sm:space-x-8 items-center text-slate-800 shrink-0 mx-auto">
           <div className="group relative flex flex-col items-center">
             <Link href="/admin" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/ops-storia/icons/7.png" alt="Dashboard Admin" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath('/icons/7.png')} alt="Dashboard Admin" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </Link>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Admin</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
             <Link href="/dashboard" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/ops-storia/icons/8.png" alt="Dashboard Docente" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath('/icons/8.png')} alt="Dashboard Docente" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </Link>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Docente</span>
           </div>
@@ -134,14 +134,14 @@ export default function Home() {
           <div className="w-px h-8 sm:h-12 bg-slate-300 mx-2"></div>
           <div className="group relative flex flex-col items-center">
             <button onClick={() => setShowTutorial(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/ops-storia/icons/1.png" alt="Miniguida" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath('/icons/1.png')} alt="Miniguida" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Miniguida</span>
           </div>
           
           <div className="group relative flex flex-col items-center">
             <button onClick={() => setShowRules(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src="/ops-storia/icons/2.png" alt="Regolamento" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath('/icons/2.png')} alt="Regolamento" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Regolamento</span>
           </div>
@@ -150,21 +150,21 @@ export default function Home() {
 
           <div className="group relative flex flex-col items-center">
             <button onClick={() => openLegal('contatti')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src="/ops-storia/icons/3.png" alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath('/icons/3.png')} alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Contatti</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
             <button onClick={() => openLegal('privacy')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src="/ops-storia/icons/4.png" alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath('/icons/4.png')} alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Privacy</span>
           </div>
 
           <div className="group relative flex flex-col items-center">
             <button onClick={() => openLegal('termini')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src="/ops-storia/icons/5.png" alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
+              <img src={getAssetPath('/icons/5.png')} alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
             </button>
             <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Termini</span>
           </div>
