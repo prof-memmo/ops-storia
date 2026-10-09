@@ -50,7 +50,7 @@ jobs:
         run: |
           cd _preview_src
           npm ci
-          NEXT_PUBLIC_BASE_PATH=/ops-storia/preview npm run build
+          NEXT_PUBLIC_BASE_PATH=/preview npm run build
 
       - name: Setup GitHub Pages
         uses: actions/configure-pages@v5
@@ -60,6 +60,7 @@ jobs:
           mkdir -p _site/preview
           rsync -av _main_src/out/ _site/
           rsync -av _preview_src/out/ _site/preview/
+          echo "opsstoria.profmemmo.it" > _site/CNAME
           rm -rf _main_src _preview_src
 
       - name: Upload Artifact
