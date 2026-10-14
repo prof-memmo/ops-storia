@@ -8,12 +8,14 @@ const juliusFont = Julius_Sans_One({
   variable: '--font-julius'
 });
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+
 export const metadata: Metadata = {
   title: "Ops! - Il Gioco Interattivo della Storia",
   description: "Sfida i tuoi compagni e gli Esploratori del Tempo con il gioco di storia interattivo.",
   icons: {
-    icon: "/favicon.png?v=3",
-    apple: "/apple-touch-icon.png?v=3",
+    icon: `${basePath}/favicon.png?v=3`,
+    apple: `${basePath}/apple-touch-icon.png?v=3`,
   },
 };
 
