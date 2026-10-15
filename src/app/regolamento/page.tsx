@@ -51,7 +51,7 @@ export default function Regolamento() {
           
           <div className="flex items-center mb-8 pb-6 border-b border-slate-100">
             <BookOpen className="w-12 h-12 text-primary-500 mr-4 shrink-0" />
-            <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Come si gioca a Ops!</h1>
+            <h1 className="text-4xl md:text-5xl font-black text-slate-900 tracking-tight">Regolamento</h1>
           </div>
 
           <div className="space-y-12">

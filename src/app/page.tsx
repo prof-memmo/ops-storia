@@ -287,7 +287,7 @@ export default function Home() {
               <div className="p-6 sm:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                 <div className="flex items-center space-x-3">
                   <BookOpen className="w-8 h-8 text-primary-500" />
-                  <h2 className="text-2xl sm:text-3xl font-black text-slate-800 uppercase tracking-tight">Regolamento di Ops!</h2>
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-800 uppercase tracking-tight">Regolamento</h2>
                 </div>
                 <button 
                   onClick={() => setShowRules(false)}
