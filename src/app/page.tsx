@@ -298,75 +298,66 @@ export default function Home() {
               </div>
 
               <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-slate-600 text-base sm:text-lg leading-relaxed">
-                {/* 1. Scopo */}
-                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
-                  <div className="bg-primary-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">1</div>
-                  <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.scopo.title}</h3>
-                    <p>{rulesParsed.scopo.body}</p>
-                  </div>
-                </div>
+                {rulesParsed.articles && rulesParsed.articles.length > 0 ? (
+                  rulesParsed.articles.map((art) => {
+                    const badgeColors = ["bg-primary-500", "bg-blue-500", "bg-red-500", "bg-purple-500", "bg-amber-500", "bg-teal-500", "bg-indigo-500"];
+                    const badgeColor = badgeColors[(art.num - 1) % badgeColors.length] || "bg-primary-500";
 
-                {/* 2. Turno */}
-                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
-                  <div className="bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">2</div>
-                  <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.turno.title}</h3>
-                    {rulesParsed.turno.intro && <p>{rulesParsed.turno.intro}</p>}
-                    {rulesParsed.turno.points.length > 0 && (
-                      <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
-                        {rulesParsed.turno.points.map((pt, pIdx) => (
-                          <li key={pIdx}>
-                            {pt.label && <strong>{pt.label}: </strong>}
-                            {pt.text}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
+                    return (
+                      <div key={art.id || art.num} className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
+                        <div className={`${badgeColor} text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5`}>
+                          {art.num}
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-black text-slate-800 text-lg mb-1">{art.title}</h3>
+                          {art.body && <p className="whitespace-pre-line mb-2">{art.body}</p>}
+                          {!art.body && art.intro && <p className="mb-2">{art.intro}</p>}
 
-                {/* 3. Tasto OPS */}
-                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
-                  <div className="bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">3</div>
-                  <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.tastoOps.title}</h3>
-                    <p>{rulesParsed.tastoOps.body}</p>
-                  </div>
-                </div>
+                          {art.points && art.points.length > 0 && (
+                            <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
+                              {art.points.map((pt, pIdx) => (
+                                <li key={pIdx}>
+                                  {pt.label && <strong>{pt.label}: </strong>}
+                                  {pt.text}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
 
-                {/* 4. Tabellone */}
-                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
-                  <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">4</div>
-                  <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.tabellone.title}</h3>
-                    {rulesParsed.tabellone.intro && <p className="mb-2">{rulesParsed.tabellone.intro}</p>}
-                    {rulesParsed.tabellone.tiles.length > 0 && (
-                      <ul className="list-disc pl-5 space-y-1 font-medium text-slate-700 text-sm">
-                        {rulesParsed.tabellone.tiles.map((tile, tIdx) => (
-                          <li key={tIdx}>
-                            <strong>{tile.title}: </strong>{tile.desc}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
+                          {art.tiles && art.tiles.length > 0 && (
+                            <ul className="list-disc pl-5 space-y-1 font-medium text-slate-700 text-sm">
+                              {art.tiles.map((tile, tIdx) => (
+                                <li key={tIdx}>
+                                  <strong>{tile.title}: </strong>{tile.desc}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
 
-                {/* 5. Modalità */}
-                <div className="bg-amber-500/10 p-5 rounded-2xl border border-amber-500/30 flex items-start space-x-4">
-                  <div className="bg-amber-500 text-slate-950 w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">5</div>
-                  <div>
-                    <h3 className="font-black text-slate-900 text-lg mb-1">{rulesParsed.modalita.title}</h3>
-                    <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
-                      {rulesParsed.modalita.items.map((item, mIdx) => (
-                        <li key={mIdx}>
-                          <strong>{item.title}: </strong>{item.desc}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                          {art.items && art.items.length > 0 && (
+                            <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
+                              {art.items.map((item, mIdx) => (
+                                <li key={mIdx}>
+                                  <strong>{item.title}: </strong>{item.desc}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
+                      <div className="bg-primary-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">1</div>
+                      <div>
+                        <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.scopo.title}</h3>
+                        <p>{rulesParsed.scopo.body}</p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex justify-end">

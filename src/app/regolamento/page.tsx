@@ -1,12 +1,33 @@
 "use client";
 
 import Link from "next/link";
-import { BookOpen, CheckCircle, Timer, Flag } from "lucide-react";
-import { useRules } from "@/lib/rules-service";
+import { BookOpen, CheckCircle, Timer, Flag, Heart, ShieldCheck, HelpCircle } from "lucide-react";
+import { useRules, RuleArticle } from "@/lib/rules-service";
+
+function getArticleIcon(art: RuleArticle) {
+  const id = (art.id || "").toLowerCase();
+  const title = (art.title || "").toLowerCase();
+  if (art.type === "turno" || id.includes("turno") || title.includes("turno")) {
+    return <Timer className="w-6 h-6 text-blue-500 mr-2 shrink-0" />;
+  }
+  if (art.type === "tabellone" || id.includes("tabellone") || title.includes("tabellone")) {
+    return <CheckCircle className="w-6 h-6 text-purple-500 mr-2 shrink-0" />;
+  }
+  if (art.type === "modalita" || id.includes("modalita") || title.includes("modalit")) {
+    return <Flag className="w-6 h-6 text-emerald-500 mr-2 shrink-0" />;
+  }
+  if (id.includes("benessere") || title.includes("benessere")) {
+    return <Heart className="w-6 h-6 text-rose-500 mr-2 shrink-0" />;
+  }
+  if (id.includes("etica") || title.includes("etic") || title.includes("deontologic")) {
+    return <ShieldCheck className="w-6 h-6 text-indigo-500 mr-2 shrink-0" />;
+  }
+  return <HelpCircle className="w-6 h-6 text-primary-500 mr-2 shrink-0" />;
+}
 
 export default function Regolamento() {
   const { parsed } = useRules();
-  const { scopo, turno, tastoOps, tabellone, modalita } = parsed;
+  const { articles } = parsed;
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
@@ -34,109 +55,122 @@ export default function Regolamento() {
           </div>
 
           <div className="space-y-12">
-            
-            {/* 1. Scopo */}
-            <section>
-              <div className="bg-slate-50 p-6 rounded-2xl border-2 border-slate-100 flex items-start space-x-4">
-                <div className="bg-primary-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-black text-xl shrink-0">1</div>
-                <p className="text-lg text-slate-600 leading-relaxed">
-                  {scopo.body}
-                </p>
-              </div>
-            </section>
+            {articles.map((art) => {
+              // 1. Tabellone with tiles
+              if (art.tiles && art.tiles.length > 0) {
+                return (
+                  <section key={art.id || art.num}>
+                    <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
+                      {getArticleIcon(art)} {art.num}. {art.title}
+                    </h2>
+                    {art.intro && (
+                      <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                        {art.intro}
+                      </p>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {art.tiles.map((tile, tIdx) => {
+                        const isFullWidth = tIdx === art.tiles.length - 1 && art.tiles.length % 2 !== 0;
+                        const colorStyles: Record<string, { bg: string; border: string; title: string; desc: string }> = {
+                          green: { bg: "bg-green-50", border: "border-green-200", title: "text-green-700", desc: "text-green-600" },
+                          blue: { bg: "bg-blue-50", border: "border-blue-200", title: "text-blue-700", desc: "text-blue-600" },
+                          purple: { bg: "bg-purple-50", border: "border-purple-200", title: "text-purple-700", desc: "text-purple-600" },
+                          yellow: { bg: "bg-yellow-50", border: "border-yellow-200", title: "text-yellow-700", desc: "text-yellow-600" },
+                          amber: { bg: "bg-amber-50", border: "border-amber-300", title: "text-amber-800", desc: "text-amber-700" }
+                        };
+                        const style = colorStyles[tile.color] || colorStyles.amber;
 
-            {/* 2. Turno */}
-            <section>
-              <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
-                <Timer className="w-6 h-6 text-blue-500 mr-2 shrink-0" /> {turno.title}
-              </h2>
-              {turno.intro && (
-                <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                  {turno.intro}
-                </p>
-              )}
-              {turno.points.length > 0 && (
-                <ul className="list-disc pl-6 space-y-2 text-lg text-slate-600 font-medium">
-                  {turno.points.map((pt, pIdx) => (
-                    <li key={pIdx}>
-                      {pt.label && <strong className="text-slate-800">{pt.label}: </strong>}
-                      {pt.text}
-                    </li>
-                  ))}
-                </ul>
-              )}
-            </section>
-
-            {/* 3. Tasto OPS */}
-            <section>
-              <div className="bg-slate-50 p-6 rounded-2xl border-2 border-slate-100 flex items-start space-x-4">
-                <div className="bg-primary-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-black text-xl shrink-0">3</div>
-                <p className="text-lg text-slate-600 leading-relaxed">
-                  {tastoOps.body}
-                </p>
-              </div>
-            </section>
-
-            {/* 4. Tabellone */}
-            <section>
-              <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
-                <CheckCircle className="w-6 h-6 text-purple-500 mr-2 shrink-0" /> {tabellone.title}
-              </h2>
-              {tabellone.intro && (
-                <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                  {tabellone.intro}
-                </p>
-              )}
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {tabellone.tiles.map((tile, tIdx) => {
-                  const isFullWidth = tIdx === tabellone.tiles.length - 1 && tabellone.tiles.length % 2 !== 0;
-                  const colorStyles: Record<string, { bg: string; border: string; title: string; desc: string }> = {
-                    green: { bg: "bg-green-50", border: "border-green-200", title: "text-green-700", desc: "text-green-600" },
-                    blue: { bg: "bg-blue-50", border: "border-blue-200", title: "text-blue-700", desc: "text-blue-600" },
-                    purple: { bg: "bg-purple-50", border: "border-purple-200", title: "text-purple-700", desc: "text-purple-600" },
-                    yellow: { bg: "bg-yellow-50", border: "border-yellow-200", title: "text-yellow-700", desc: "text-yellow-600" },
-                    amber: { bg: "bg-amber-50", border: "border-amber-300", title: "text-amber-800", desc: "text-amber-700" }
-                  };
-                  const style = colorStyles[tile.color] || colorStyles.amber;
-
-                  return (
-                    <div 
-                      key={tIdx} 
-                      className={`${style.bg} p-4 rounded-xl border ${style.border} ${isFullWidth ? "md:col-span-2 text-center" : ""}`}
-                    >
-                      <h4 className={`font-bold ${style.title} text-xl mb-1`}>{tile.title}</h4>
-                      <p className={style.desc}>{tile.desc}</p>
+                        return (
+                          <div 
+                            key={tIdx} 
+                            className={`${style.bg} p-4 rounded-xl border ${style.border} ${isFullWidth ? "md:col-span-2 text-center" : ""}`}
+                          >
+                            <h4 className={`font-bold ${style.title} text-xl mb-1`}>{tile.title}</h4>
+                            <p className={style.desc}>{tile.desc}</p>
+                          </div>
+                        );
+                      })}
                     </div>
-                  );
-                })}
-              </div>
-            </section>
+                  </section>
+                );
+              }
 
-            {/* 5. Modalità */}
-            <section>
-              <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
-                <Flag className="w-6 h-6 text-emerald-500 mr-2 shrink-0" /> {modalita.title}
-              </h2>
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-                {modalita.items.map((item, mIdx) => (
-                  <div 
-                    key={mIdx} 
-                    className={mIdx === 0 ? "bg-slate-50 p-5 rounded-2xl border-2 border-slate-200" : "bg-primary-50/50 p-5 rounded-2xl border-2 border-primary-200"}
-                  >
-                    <h3 className={`text-lg font-black mb-2 ${mIdx === 0 ? "text-slate-900" : "text-primary-900"}`}>
-                      {item.title}
-                    </h3>
-                    <p className={`text-sm leading-relaxed ${mIdx === 0 ? "text-slate-600" : "text-slate-700"}`}>
-                      {item.desc}
-                    </p>
+              // 2. Modalità with cards
+              if (art.items && art.items.length > 0) {
+                return (
+                  <section key={art.id || art.num}>
+                    <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
+                      {getArticleIcon(art)} {art.num}. {art.title}
+                    </h2>
+                    {art.intro && (
+                      <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                        {art.intro}
+                      </p>
+                    )}
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                      {art.items.map((item, mIdx) => (
+                        <div 
+                          key={mIdx} 
+                          className={mIdx === 0 ? "bg-slate-50 p-5 rounded-2xl border-2 border-slate-200" : "bg-primary-50/50 p-5 rounded-2xl border-2 border-primary-200"}
+                        >
+                          <h3 className={`text-lg font-black mb-2 ${mIdx === 0 ? "text-slate-900" : "text-primary-900"}`}>
+                            {item.title}
+                          </h3>
+                          <p className={`text-sm leading-relaxed ${mIdx === 0 ? "text-slate-600" : "text-slate-700"}`}>
+                            {item.desc}
+                          </p>
+                        </div>
+                      ))}
+                    </div>
+                  </section>
+                );
+              }
+
+              // 3. Bullet points (Turno or generic)
+              if (art.points && art.points.length > 0) {
+                return (
+                  <section key={art.id || art.num}>
+                    <h2 className="text-2xl font-black text-slate-800 mb-4 flex items-center">
+                      {getArticleIcon(art)} {art.num}. {art.title}
+                    </h2>
+                    {art.intro && (
+                      <p className="text-lg text-slate-600 leading-relaxed mb-4">
+                        {art.intro}
+                      </p>
+                    )}
+                    <ul className="list-disc pl-6 space-y-2 text-lg text-slate-600 font-medium">
+                      {art.points.map((pt, pIdx) => (
+                        <li key={pIdx}>
+                          {pt.label && <strong className="text-slate-800">{pt.label}: </strong>}
+                          {pt.text}
+                        </li>
+                      ))}
+                    </ul>
+                  </section>
+                );
+              }
+
+              // 4. Standard text card
+              return (
+                <section key={art.id || art.num}>
+                  <div className="bg-slate-50 p-6 rounded-2xl border-2 border-slate-100 flex items-start space-x-4">
+                    <div className="bg-primary-500 text-white w-10 h-10 rounded-full flex items-center justify-center font-black text-xl shrink-0">
+                      {art.num}
+                    </div>
+                    <div className="flex-1">
+                      <h3 className="text-xl font-black text-slate-800 mb-2">{art.title}</h3>
+                      <div className="text-lg text-slate-600 leading-relaxed whitespace-pre-line">
+                        {art.body || art.intro}
+                      </div>
+                    </div>
                   </div>
-                ))}
-              </div>
-            </section>
-
+                </section>
+              );
+            })}
           </div>
         </div>
       </main>
     </div>
   );
 }
+
