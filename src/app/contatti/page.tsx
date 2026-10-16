@@ -34,10 +34,14 @@ export default function Contatti() {
       </main>
       
       {/* Footer Patamu */}
-      <footer className="w-full bg-[#171717] text-[#999999] px-4 py-2 sm:py-3 flex items-center justify-center shrink-0 z-20">
-        <div className="flex max-w-[1200px] w-full items-center justify-center text-left">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0" />
-           <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight">
+      <footer className="w-full bg-[#171717] text-[#999999] px-4 py-3 flex flex-col items-center justify-center shrink-0 z-20 box-border">
+        <div className="flex justify-center gap-6 mb-2 text-xs uppercase tracking-wider">
+          <Link href="/privacy" className="hover:text-amber-400 transition-colors text-slate-300">Privacy Policy</Link>
+          <Link href="/termini" className="hover:text-amber-400 transition-colors text-slate-300">Termini e Condizioni</Link>
+        </div>
+        <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4">
+           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 object-contain shrink-0" />
+           <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight flex-1">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
         </div>
