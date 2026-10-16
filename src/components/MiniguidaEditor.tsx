@@ -23,7 +23,9 @@ import {
   SkipForward,
   Timer,
   MonitorPlay,
-  Sparkles
+  Sparkles,
+  Users,
+  BookOpen
 } from "lucide-react";
 
 interface MiniguidaEditorProps {
@@ -37,7 +39,9 @@ const ICON_MAP: Record<string, any> = {
   "timer": Timer,
   "monitor-play": MonitorPlay,
   "sparkles": Sparkles,
-  "help-circle": HelpCircle
+  "help-circle": HelpCircle,
+  "users": Users,
+  "book-open": BookOpen
 };
 
 export default function MiniguidaEditor({ userEmail }: MiniguidaEditorProps) {
@@ -277,10 +281,13 @@ export default function MiniguidaEditor({ userEmail }: MiniguidaEditorProps) {
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400"
                     >
                       <option value="info">Info</option>
-                      <option value="alert-octagon">Attenzione (Alert)</option>
-                      <option value="skip-forward">Scarto (Skip)</option>
-                      <option value="timer">Timer</option>
+                      <option value="help-circle">Aiuto / Obiettivo (Help)</option>
+                      <option value="users">Squadre / Utenti (Users)</option>
                       <option value="monitor-play">Schermo / LIM</option>
+                      <option value="book-open">Regole / Libro (Book)</option>
+                      <option value="skip-forward">Scarto / Salta (Skip)</option>
+                      <option value="alert-octagon">Attenzione (Alert)</option>
+                      <option value="timer">Timer</option>
                       <option value="sparkles">Speciale (Sparkles)</option>
                     </select>
                   </div>
@@ -340,7 +347,9 @@ export default function MiniguidaEditor({ userEmail }: MiniguidaEditorProps) {
                         className="w-12 h-12 mb-3 transition-transform hover:scale-110" 
                         style={{ color: currentStep?.iconColor || "#5c67f2" }} 
                       />
-                      <h5 className="font-bold text-slate-800 text-sm mb-1">{currentStep?.title}</h5>
+                      {currentStep?.title ? (
+                        <h5 className="font-bold text-slate-800 text-sm mb-1">{currentStep.title}</h5>
+                      ) : null}
                       <div 
                         className="text-xs text-slate-600 leading-relaxed font-medium"
                         dangerouslySetInnerHTML={{ __html: currentStep?.desc || "" }}

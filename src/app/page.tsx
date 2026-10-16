@@ -15,7 +15,9 @@ const MINIGUIDA_ICON_MAP: Record<string, any> = {
   "skip-forward": SkipForward,
   "timer": Timer,
   "monitor-play": MonitorPlay,
-  "help-circle": HelpCircle
+  "help-circle": HelpCircle,
+  "users": Users,
+  "book-open": BookOpen
 };
 
 export default function Home() {
@@ -210,7 +212,7 @@ export default function Home() {
                   <X className="w-6 h-6" />
                 </button>
                 
-                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">{miniguidaData.title || "Come si gioca?"}</h2>
+                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">{miniguidaData.title || "Miniguida"}</h2>
                 
                 <div className="flex-1 relative overflow-hidden">
                   <AnimatePresence mode="wait">
@@ -228,7 +230,9 @@ export default function Home() {
                         >
                           <div className="flex flex-col items-center text-center w-full max-w-md px-4">
                             <StepIcon className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" style={{ color: currentStep.iconColor || undefined }} />
-                            <h3 className="text-xl font-bold text-slate-800 mb-2">{currentStep.title}</h3>
+                            {currentStep.title ? (
+                              <h3 className="text-xl font-bold text-slate-800 mb-2">{currentStep.title}</h3>
+                            ) : null}
                             <div 
                               className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed"
                               dangerouslySetInnerHTML={{ __html: currentStep.desc }}

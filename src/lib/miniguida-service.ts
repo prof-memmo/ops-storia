@@ -19,39 +19,39 @@ export interface MiniguidaData {
 }
 
 export const DEFAULT_OPS_MINIGUIDA: MiniguidaData = {
-  title: "Come si gioca?",
+  title: "Miniguida",
   buttonLabel: "AVANTI",
   finalButtonLabel: "HO CAPITO!",
   steps: [
     {
-      icon: "info",
+      icon: "help-circle",
       iconColor: "#5c67f2",
-      title: "Parola Chiave e Taboo",
-      desc: "Fai indovinare la <strong>parola chiave</strong> senza pronunciare le <span class='text-red-500 font-bold'>5 Parole Vietate</span>. Ottieni <strong class='text-emerald-500'>+1 punto</strong> per ogni parola indovinata!"
+      title: "",
+      desc: "Lo scopo del gioco è far indovinare alla propria squadra la parola storica misteriosa prima che scada il tempo, evitando assolutamente di pronunciare le parole vietate."
     },
     {
-      icon: "alert-octagon",
-      iconColor: "#ef4444",
-      title: "Il Tasto OPS!",
-      desc: "Se pronunci una <span class='text-red-500 font-bold'>Parola Vietata</span>, la squadra avversaria preme <strong>OPS!</strong> rubandoti il punto!"
-    },
-    {
-      icon: "skip-forward",
-      iconColor: "#f59e0b",
-      title: "Scarti Strategici",
-      desc: "Puoi scartare massimo <strong>2 carte</strong> per turno, ma regali <strong class='text-red-500'>+1 punto</strong> agli avversari!"
-    },
-    {
-      icon: "timer",
-      iconColor: "#3b82f6",
-      title: "Caselle & Poteri Speciali",
-      desc: "Avanzando sul tabellone a 24 caselle sbloccherai <strong class='text-purple-600'>effetti speciali</strong> (Tempo Doppio 120s, Pesca Illimitata o Imprevisti)."
+      icon: "users",
+      iconColor: "#10b981",
+      title: "",
+      desc: "Si gioca a turni tra due squadre: un giocatore descrive la parola chiave ai compagni senza usare i termini vietati; la squadra avversaria controlla e preme OPS in caso di errore, e ogni carta indovinata fa avanzare la propria pedina sul tabellone."
     },
     {
       icon: "monitor-play",
-      iconColor: "#10b981",
-      title: "Due Modalità di Gioco",
-      desc: "<strong>Due modalità:</strong> Gioca con <strong class='text-slate-900'>1 Dispositivo</strong> (Passa e Gioca) oppure in <strong class='text-primary-600'>Multi-Device</strong> (Tabellone alla LIM e carte segrete sui tablet/device con PIN)."
+      iconColor: "#0284c7",
+      title: "",
+      desc: "Clicca su <strong>1 Dispositivo (Passa e Gioca)</strong> per sfidare l'altra squadra su un unico schermo, passandovi il dispositivo a ogni turno."
+    },
+    {
+      icon: "book-open",
+      iconColor: "#db2777",
+      title: "",
+      desc: "Clicca su <strong>Crea Stanza (LIM + Device)</strong> per proiettare il tabellone alla LIM con il timer, i punteggi e il pulsante OPS."
+    },
+    {
+      icon: "skip-forward",
+      iconColor: "#d97706",
+      title: "",
+      desc: "Clicca su <strong>Unisciti con PIN</strong> per entrare rapidamente in partita usando il tuo dispositivo come controller di squadra.<br><br><em>Consulta il regolamento per saperne di più.</em>"
     }
   ]
 };
