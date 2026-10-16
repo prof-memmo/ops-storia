@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { BookOpen, CheckCircle, Timer, Flag, Heart, ShieldCheck, HelpCircle } from "lucide-react";
 import { useRules, RuleArticle } from "@/lib/rules-service";
+import { formatWithLinks } from "@/lib/format-links";
 
 function getArticleIcon(art: RuleArticle) {
   const id = (art.id || "").toLowerCase();
@@ -65,7 +66,7 @@ export default function Regolamento() {
                     </h2>
                     {art.intro && (
                       <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                        {art.intro}
+                        {formatWithLinks(art.intro)}
                       </p>
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -86,7 +87,7 @@ export default function Regolamento() {
                             className={`${style.bg} p-4 rounded-xl border ${style.border} ${isFullWidth ? "md:col-span-2 text-center" : ""}`}
                           >
                             <h4 className={`font-bold ${style.title} text-xl mb-1`}>{tile.title}</h4>
-                            <p className={style.desc}>{tile.desc}</p>
+                            <p className={style.desc}>{formatWithLinks(tile.desc)}</p>
                           </div>
                         );
                       })}
@@ -104,7 +105,7 @@ export default function Regolamento() {
                     </h2>
                     {art.intro && (
                       <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                        {art.intro}
+                        {formatWithLinks(art.intro)}
                       </p>
                     )}
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
@@ -116,9 +117,9 @@ export default function Regolamento() {
                           <h3 className={`text-lg font-black mb-2 ${mIdx === 0 ? "text-slate-900" : "text-primary-900"}`}>
                             {item.title}
                           </h3>
-                          <p className={`text-sm leading-relaxed ${mIdx === 0 ? "text-slate-600" : "text-slate-700"}`}>
-                            {item.desc}
-                          </p>
+                          <div className={`text-sm leading-relaxed ${mIdx === 0 ? "text-slate-600" : "text-slate-700"}`}>
+                            {formatWithLinks(item.desc)}
+                          </div>
                         </div>
                       ))}
                     </div>
@@ -135,14 +136,14 @@ export default function Regolamento() {
                     </h2>
                     {art.intro && (
                       <p className="text-lg text-slate-600 leading-relaxed mb-4">
-                        {art.intro}
+                        {formatWithLinks(art.intro)}
                       </p>
                     )}
                     <ul className="list-disc pl-6 space-y-2 text-lg text-slate-600 font-medium">
                       {art.points.map((pt, pIdx) => (
                         <li key={pIdx}>
                           {pt.label && <strong className="text-slate-800">{pt.label}: </strong>}
-                          {pt.text}
+                          {formatWithLinks(pt.text)}
                         </li>
                       ))}
                     </ul>
@@ -160,7 +161,7 @@ export default function Regolamento() {
                     <div className="flex-1">
                       <h3 className="text-xl font-black text-slate-800 mb-2">{art.title}</h3>
                       <div className="text-lg text-slate-600 leading-relaxed whitespace-pre-line">
-                        {art.body || art.intro}
+                        {formatWithLinks(art.body || art.intro)}
                       </div>
                     </div>
                   </div>

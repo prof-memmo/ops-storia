@@ -8,6 +8,7 @@ import Header from "@/components/Header";
 import { getAssetPath } from "@/lib/assets";
 import { useRules } from "@/lib/rules-service";
 import { useMiniguida } from "@/lib/miniguida-service";
+import { formatWithLinks } from "@/lib/format-links";
 
 const MINIGUIDA_ICON_MAP: Record<string, any> = {
   "info": Info,
@@ -314,15 +315,15 @@ export default function Home() {
                         </div>
                         <div className="flex-1">
                           <h3 className="font-black text-slate-800 text-lg mb-1">{art.title}</h3>
-                          {art.body && <p className="whitespace-pre-line mb-2">{art.body}</p>}
-                          {!art.body && art.intro && <p className="mb-2">{art.intro}</p>}
+                          {art.body && <div className="whitespace-pre-line mb-2">{formatWithLinks(art.body)}</div>}
+                          {!art.body && art.intro && <div className="mb-2">{formatWithLinks(art.intro)}</div>}
 
                           {art.points && art.points.length > 0 && (
                             <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
                               {art.points.map((pt, pIdx) => (
                                 <li key={pIdx}>
                                   {pt.label && <strong>{pt.label}: </strong>}
-                                  {pt.text}
+                                  {formatWithLinks(pt.text)}
                                 </li>
                               ))}
                             </ul>
@@ -332,7 +333,7 @@ export default function Home() {
                             <ul className="list-disc pl-5 space-y-1 font-medium text-slate-700 text-sm">
                               {art.tiles.map((tile, tIdx) => (
                                 <li key={tIdx}>
-                                  <strong>{tile.title}: </strong>{tile.desc}
+                                  <strong>{tile.title}: </strong>{formatWithLinks(tile.desc)}
                                 </li>
                               ))}
                             </ul>
@@ -342,7 +343,7 @@ export default function Home() {
                             <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
                               {art.items.map((item, mIdx) => (
                                 <li key={mIdx}>
-                                  <strong>{item.title}: </strong>{item.desc}
+                                  <strong>{item.title}: </strong>{formatWithLinks(item.desc)}
                                 </li>
                               ))}
                             </ul>
