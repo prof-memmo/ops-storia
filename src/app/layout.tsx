@@ -14,8 +14,8 @@ export const metadata: Metadata = {
   title: "Ops! - Il Gioco Interattivo della Storia",
   description: "Sfida i tuoi compagni e gli Esploratori del Tempo con il gioco di storia interattivo.",
   icons: {
-    icon: `${basePath}/favicon.png?v=3`,
-    apple: `${basePath}/apple-touch-icon.png?v=3`,
+    icon: `${basePath}/favicon.png?v=4`,
+    apple: `${basePath}/apple-touch-icon.png?v=4`,
   },
 };
 
