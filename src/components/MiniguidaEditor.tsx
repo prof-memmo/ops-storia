@@ -25,7 +25,8 @@ import {
   MonitorPlay,
   Sparkles,
   Users,
-  BookOpen
+  BookOpen,
+  Key
 } from "lucide-react";
 
 interface MiniguidaEditorProps {
@@ -41,7 +42,8 @@ const ICON_MAP: Record<string, any> = {
   "sparkles": Sparkles,
   "help-circle": HelpCircle,
   "users": Users,
-  "book-open": BookOpen
+  "book-open": BookOpen,
+  "key": Key
 };
 
 export default function MiniguidaEditor({ userEmail }: MiniguidaEditorProps) {
@@ -281,6 +283,7 @@ export default function MiniguidaEditor({ userEmail }: MiniguidaEditorProps) {
                       className="w-full px-3 py-2 bg-white border border-slate-200 rounded-lg text-xs font-semibold text-slate-800 focus:outline-none focus:ring-2 focus:ring-indigo-400"
                     >
                       <option value="info">Info</option>
+                      <option value="key">Chiave / Accesso (Key)</option>
                       <option value="help-circle">Aiuto / Obiettivo (Help)</option>
                       <option value="users">Squadre / Utenti (Users)</option>
                       <option value="monitor-play">Schermo / LIM</option>
@@ -328,10 +331,10 @@ export default function MiniguidaEditor({ userEmail }: MiniguidaEditorProps) {
                 {/* Avatar Prof. Memmo Full */}
                 <div className="w-full sm:w-1/3 bg-slate-50 flex items-end justify-center pt-4 border-b sm:border-b-0 sm:border-r border-slate-100">
                   <img 
-                    src="/assets/prof_memmo_full.jpg" 
-                    onError={(e: any) => { e.currentTarget.src = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} 
+                    src="/assets/prof_memmo_full.png" 
+                    onError={(e: any) => { e.currentTarget.src = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.png"; }} 
                     alt="Prof Memmo" 
-                    className="w-[120%] max-h-[220px] sm:max-h-[340px] object-contain mix-blend-multiply drop-shadow-md" 
+                    className="w-[120%] max-h-[220px] sm:max-h-[340px] object-contain drop-shadow-md" 
                   />
                 </div>
 

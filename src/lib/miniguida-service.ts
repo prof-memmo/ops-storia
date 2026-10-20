@@ -30,6 +30,12 @@ export const DEFAULT_OPS_MINIGUIDA: MiniguidaData = {
       desc: "Lo scopo del gioco è far indovinare alla propria squadra la parola storica misteriosa prima che scada il tempo, evitando assolutamente di pronunciare le parole vietate."
     },
     {
+      icon: "key",
+      iconColor: "#d97706",
+      title: "Accesso al Gioco",
+      desc: "<strong>Accesso rapido:</strong> effettua il login con il tuo account Docente (o Viandante) per sbloccare tutte le funzionalità.<br><br><strong>Nessuna classe da creare:</strong> per questo gioco non servono codici né account per gli studenti; si gioca subito a squadre direttamente alla LIM o su dispositivo condiviso!"
+    },
+    {
       icon: "users",
       iconColor: "#10b981",
       title: "",
@@ -57,6 +63,19 @@ export const DEFAULT_OPS_MINIGUIDA: MiniguidaData = {
 };
 
 const STORAGE_KEY = "ops_miniguida_official_data";
+
+export function ensureOpsAccessStep(data: MiniguidaData): MiniguidaData {
+  if (!data || !Array.isArray(data.steps)) return data;
+  const hasAccess = data.steps.some(s => 
+    (s.title && s.title.toLowerCase().includes('accesso')) ||
+    (s.desc && s.desc.toLowerCase().includes('accesso'))
+  );
+  if (!hasAccess && data.steps.length > 0) {
+    const accessStep = JSON.parse(JSON.stringify(DEFAULT_OPS_MINIGUIDA.steps[1]));
+    data.steps.splice(1, 0, accessStep);
+  }
+  return data;
+}
 
 export async function saveMiniguidaToCloud(data: MiniguidaData, authorEmail: string): Promise<void> {
   const isSuperAdmin = authorEmail.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
@@ -91,7 +110,7 @@ export function useMiniguida() {
         if (cached) {
           const parsed = JSON.parse(cached);
           if (parsed && Array.isArray(parsed.steps) && parsed.steps.length > 0) {
-            return parsed;
+            return ensureOpsAccessStep(parsed);
           }
         }
       } catch (e) {}
@@ -118,9 +137,10 @@ export function useMiniguida() {
             finalButtonLabel: snapData.finalButtonLabel || "HO CAPITO!",
             steps: snapData.steps
           };
-          setData(cloudData);
+          const normalized = ensureOpsAccessStep(cloudData);
+          setData(normalized);
           try {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(cloudData));
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(normalized));
           } catch (e) {}
         }
       }
