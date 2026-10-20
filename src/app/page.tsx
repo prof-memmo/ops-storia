@@ -177,14 +177,16 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Footer Patamu (Standard Ecosistema: Privacy & Termini sopra, Testo margine a margine sotto) */}
+      {/* Footer Patamu (Standard Ecosistema: 4 link sopra, Testo margine a margine sotto) */}
       <footer className="w-full text-slate-400 px-4 py-3 flex flex-col items-center justify-center shrink-0 z-20 box-border">
-        <div className="flex justify-center gap-6 mb-2 text-xs uppercase tracking-wider">
+        <div className="footer-legal-links flex justify-center gap-6 mb-2 text-xs uppercase tracking-wider flex-wrap">
           <button onClick={() => openLegal('privacy')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Privacy Policy</button>
           <button onClick={() => openLegal('termini')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Termini e Condizioni</button>
+          <button onClick={() => openLegal('contatti')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Contatti</button>
+          <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Condividi Esperienza</a>
         </div>
         <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 object-contain shrink-0 opacity-80" />
+           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-[52px] w-auto object-contain shrink-0 opacity-80" style={{ height: "52px" }} />
            <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight flex-1">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
