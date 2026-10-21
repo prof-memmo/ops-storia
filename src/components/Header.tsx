@@ -14,9 +14,7 @@ import {
   SkipForward,
   UserCheck, 
   Send, 
-  ShieldCheck, 
-  FileText, 
-  Mail, 
+  Bell, 
   Power, 
   ChevronDown 
 } from "lucide-react";
@@ -152,7 +150,7 @@ export default function Header() {
     }
   };
 
-  const openLegalModal = (type: 'privacy' | 'termini' | 'contatti' | 'invita') => {
+  const openLegalModal = (type: 'privacy' | 'termini' | 'contatti' | 'invita' | 'notifiche') => {
     setDropdownOpen(false);
     if (typeof window !== "undefined" && (window as any).openSharedModal) {
       (window as any).openSharedModal(type);
@@ -227,7 +225,7 @@ export default function Header() {
 
           {/* Menu a Tendina Dropdown - Stile Chiaro */}
           {dropdownOpen && (
-            <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white/98 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-2xl p-4 text-slate-800 z-50 animate-in fade-in slide-in-from-top-2 duration-150">
+            <div className="absolute right-0 mt-2 w-72 sm:w-80 bg-white/98 backdrop-blur-xl border border-slate-200 rounded-2xl shadow-2xl p-4 text-slate-800 z-50 animate-in fade-in slide-in-from-top-2 duration-150 max-h-[calc(100vh-85px)] overflow-y-auto">
               
               {/* Header Utente */}
               <div className="border-b border-slate-100 pb-3 mb-3 text-center">
@@ -293,29 +291,15 @@ export default function Header() {
                   <Send className="w-4 h-4 text-amber-500" /> Invita un Collega
                 </button>
 
-                <div className="grid grid-cols-2 gap-1.5 pt-1">
-                  <button
-                    type="button"
-                    onClick={() => openLegalModal('privacy')}
-                    className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 transition-colors border border-slate-100 text-[11px]"
-                  >
-                    <ShieldCheck className="w-3.5 h-3.5 text-slate-400" /> Privacy
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => openLegalModal('termini')}
-                    className="flex items-center justify-center gap-1.5 p-2 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-600 transition-colors border border-slate-100 text-[11px]"
-                  >
-                    <FileText className="w-3.5 h-3.5 text-slate-400" /> Termini
-                  </button>
-                </div>
-
                 <button
                   type="button"
-                  onClick={() => openLegalModal('contatti')}
-                  className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100 text-left"
+                  onClick={() => openLegalModal('notifiche')}
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100 text-left"
                 >
-                  <Mail className="w-4 h-4 text-amber-500" /> Contatti
+                  <span className="flex items-center gap-2">
+                    <Bell className="w-4 h-4 text-amber-500" /> Notifiche
+                  </span>
+                  <span className="bg-red-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded-full hidden" id="dropdown-notif-badge">0</span>
                 </button>
 
                 <div className="pt-2 border-t border-slate-100 flex items-center justify-between gap-2">

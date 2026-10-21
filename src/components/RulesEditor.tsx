@@ -5,6 +5,7 @@ import {
   DEFAULT_OPS_RULES_TEXT, 
   SUPER_ADMIN_EMAIL, 
   saveRulesToCloud, 
+  resolveAdminEmail,
   useRules 
 } from "@/lib/rules-service";
 import { 
@@ -31,7 +32,8 @@ export default function RulesEditor({ userEmail }: RulesEditorProps) {
     setEditorText(rawText);
   }, [rawText]);
 
-  const isSuperAdmin = (userEmail || "").toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
+  const effectiveEmail = resolveAdminEmail(userEmail);
+  const isSuperAdmin = effectiveEmail.toLowerCase() === SUPER_ADMIN_EMAIL.toLowerCase();
 
   const handleSave = async () => {
     if (!isSuperAdmin) {
@@ -42,7 +44,7 @@ export default function RulesEditor({ userEmail }: RulesEditorProps) {
     setSaving(true);
     setErrorMsg("");
     try {
-      await saveRulesToCloud(editorText, userEmail || "");
+      await saveRulesToCloud(editorText, effectiveEmail);
       setSuccess(true);
       setTimeout(() => {
         setSuccess(false);
@@ -63,7 +65,7 @@ export default function RulesEditor({ userEmail }: RulesEditorProps) {
     if (isSuperAdmin) {
       setSaving(true);
       try {
-        await saveRulesToCloud(defaultText, userEmail || "");
+        await saveRulesToCloud(defaultText, effectiveEmail);
         alert("✅ Regolamento ripristinato e salvato su Firestore!");
       } catch (e: any) {
         alert("Errore durante il ripristino cloud: " + e.message);
@@ -85,7 +87,7 @@ export default function RulesEditor({ userEmail }: RulesEditorProps) {
             </h2>
           </div>
           <p className="text-slate-500 text-xs sm:text-sm mt-1">
-            Modifica le sezioni del regolamento ([SCOPO], [TURNO], [TASTO_OPS], [TABELLONE], [MODALITA]). Si sincronizza in tempo reale su Firestore.
+            Modifica gli articoli del regolamento con tag ([SCOPO], [TURNO], [TASTO_OPS], [TABELLONE], [MODALITA], [BENESSERE], [ETICA]) o numerazione standard. Si sincronizza in tempo reale su Firestore.
           </p>
         </div>
 
@@ -93,7 +95,7 @@ export default function RulesEditor({ userEmail }: RulesEditorProps) {
           {isSuperAdmin ? (
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-emerald-50 text-emerald-700 border border-emerald-200">
               <CheckCircle2 className="w-4 h-4 text-emerald-600" />
-              Super-Admin Autenticato ({userEmail})
+              Super-Admin Autenticato ({effectiveEmail})
             </span>
           ) : (
             <span className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-full text-xs font-bold bg-amber-50 text-amber-700 border border-amber-200">

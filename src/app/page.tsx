@@ -2,12 +2,13 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText } from "lucide-react";
+import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText, Key } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import { getAssetPath } from "@/lib/assets";
 import { useRules } from "@/lib/rules-service";
 import { useMiniguida } from "@/lib/miniguida-service";
+import { formatWithLinks } from "@/lib/format-links";
 
 const MINIGUIDA_ICON_MAP: Record<string, any> = {
   "info": Info,
@@ -15,7 +16,10 @@ const MINIGUIDA_ICON_MAP: Record<string, any> = {
   "skip-forward": SkipForward,
   "timer": Timer,
   "monitor-play": MonitorPlay,
-  "help-circle": HelpCircle
+  "help-circle": HelpCircle,
+  "users": Users,
+  "book-open": BookOpen,
+  "key": Key
 };
 
 export default function Home() {
@@ -173,11 +177,17 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Footer Patamu */}
-      <footer className="w-full text-slate-400 px-4 py-2 flex items-center justify-center shrink-0 z-20">
-        <div className="flex max-w-[1200px] w-full items-center justify-center text-left">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-8 sm:h-10 mr-4 sm:mr-6 object-contain shrink-0 opacity-80" />
-           <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight">
+      {/* Footer Patamu (Standard Ecosistema: 4 link sopra, Testo margine a margine sotto) */}
+      <footer className="w-full text-slate-400 px-4 py-3 flex flex-col items-center justify-center shrink-0 z-20 box-border">
+        <div className="footer-legal-links flex justify-center gap-6 mb-2 text-xs uppercase tracking-wider flex-wrap">
+          <button onClick={() => openLegal('privacy')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Privacy Policy</button>
+          <button onClick={() => openLegal('termini')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Termini e Condizioni</button>
+          <button onClick={() => openLegal('contatti')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Contatti</button>
+          <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Condividi Esperienza</a>
+        </div>
+        <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4">
+           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-[52px] w-auto object-contain shrink-0 opacity-80" style={{ height: "52px" }} />
+           <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight flex-1">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
         </div>
@@ -199,7 +209,7 @@ export default function Home() {
               className="bg-white rounded-3xl w-full max-w-5xl max-h-[90vh] flex overflow-hidden shadow-2xl relative"
             >
               <div className="hidden md:flex w-1/3 bg-slate-50 items-end justify-center pt-8 border-r-2 border-slate-100">
-                 <img src="/assets/prof_memmo_full.jpg" onError={(e: any) => { e.currentTarget.src = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.jpg"; }} alt="Prof Memmo" className="w-[120%] object-contain mix-blend-multiply drop-shadow-xl" />
+                 <img src="/assets/prof_memmo_full.png" onError={(e: any) => { e.currentTarget.src = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.png"; }} alt="Prof Memmo" className="w-[120%] object-contain drop-shadow-xl" />
               </div>
               
               <div className="w-full md:w-2/3 p-4 sm:p-8 flex flex-col relative min-h-[550px] md:min-h-[500px]">
@@ -210,7 +220,7 @@ export default function Home() {
                   <X className="w-6 h-6" />
                 </button>
                 
-                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">{miniguidaData.title || "Come si gioca?"}</h2>
+                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">{miniguidaData.title || "Miniguida"}</h2>
                 
                 <div className="flex-1 relative overflow-hidden">
                   <AnimatePresence mode="wait">
@@ -228,7 +238,9 @@ export default function Home() {
                         >
                           <div className="flex flex-col items-center text-center w-full max-w-md px-4">
                             <StepIcon className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" style={{ color: currentStep.iconColor || undefined }} />
-                            <h3 className="text-xl font-bold text-slate-800 mb-2">{currentStep.title}</h3>
+                            {currentStep.title ? (
+                              <h3 className="text-xl font-bold text-slate-800 mb-2">{currentStep.title}</h3>
+                            ) : null}
                             <div 
                               className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed"
                               dangerouslySetInnerHTML={{ __html: currentStep.desc }}
@@ -287,7 +299,7 @@ export default function Home() {
               <div className="p-6 sm:p-8 border-b border-slate-100 flex items-center justify-between bg-slate-50">
                 <div className="flex items-center space-x-3">
                   <BookOpen className="w-8 h-8 text-primary-500" />
-                  <h2 className="text-2xl sm:text-3xl font-black text-slate-800 uppercase tracking-tight">Regolamento di Ops!</h2>
+                  <h2 className="text-2xl sm:text-3xl font-black text-slate-800 uppercase tracking-tight">Regolamento</h2>
                 </div>
                 <button 
                   onClick={() => setShowRules(false)}
@@ -298,75 +310,66 @@ export default function Home() {
               </div>
 
               <div className="p-6 sm:p-8 overflow-y-auto space-y-6 text-slate-600 text-base sm:text-lg leading-relaxed">
-                {/* 1. Scopo */}
-                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
-                  <div className="bg-primary-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">1</div>
-                  <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.scopo.title}</h3>
-                    <p>{rulesParsed.scopo.body}</p>
-                  </div>
-                </div>
+                {rulesParsed.articles && rulesParsed.articles.length > 0 ? (
+                  rulesParsed.articles.map((art) => {
+                    const badgeColors = ["bg-primary-500", "bg-blue-500", "bg-red-500", "bg-purple-500", "bg-amber-500", "bg-teal-500", "bg-indigo-500"];
+                    const badgeColor = badgeColors[(art.num - 1) % badgeColors.length] || "bg-primary-500";
 
-                {/* 2. Turno */}
-                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
-                  <div className="bg-blue-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">2</div>
-                  <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.turno.title}</h3>
-                    {rulesParsed.turno.intro && <p>{rulesParsed.turno.intro}</p>}
-                    {rulesParsed.turno.points.length > 0 && (
-                      <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
-                        {rulesParsed.turno.points.map((pt, pIdx) => (
-                          <li key={pIdx}>
-                            {pt.label && <strong>{pt.label}: </strong>}
-                            {pt.text}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
+                    return (
+                      <div key={art.id || art.num} className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
+                        <div className={`${badgeColor} text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5`}>
+                          {art.num}
+                        </div>
+                        <div className="flex-1">
+                          <h3 className="font-black text-slate-800 text-lg mb-1">{art.title}</h3>
+                          {art.body && <div className="whitespace-pre-line mb-2">{formatWithLinks(art.body)}</div>}
+                          {!art.body && art.intro && <div className="mb-2">{formatWithLinks(art.intro)}</div>}
 
-                {/* 3. Tasto OPS */}
-                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
-                  <div className="bg-red-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">3</div>
-                  <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.tastoOps.title}</h3>
-                    <p>{rulesParsed.tastoOps.body}</p>
-                  </div>
-                </div>
+                          {art.points && art.points.length > 0 && (
+                            <ul className="list-disc pl-5 mt-2 space-y-1 font-medium text-slate-700">
+                              {art.points.map((pt, pIdx) => (
+                                <li key={pIdx}>
+                                  {pt.label && <strong>{pt.label}: </strong>}
+                                  {formatWithLinks(pt.text)}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
 
-                {/* 4. Tabellone */}
-                <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
-                  <div className="bg-purple-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">4</div>
-                  <div>
-                    <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.tabellone.title}</h3>
-                    {rulesParsed.tabellone.intro && <p className="mb-2">{rulesParsed.tabellone.intro}</p>}
-                    {rulesParsed.tabellone.tiles.length > 0 && (
-                      <ul className="list-disc pl-5 space-y-1 font-medium text-slate-700 text-sm">
-                        {rulesParsed.tabellone.tiles.map((tile, tIdx) => (
-                          <li key={tIdx}>
-                            <strong>{tile.title}: </strong>{tile.desc}
-                          </li>
-                        ))}
-                      </ul>
-                    )}
-                  </div>
-                </div>
+                          {art.tiles && art.tiles.length > 0 && (
+                            <ul className="list-disc pl-5 space-y-1 font-medium text-slate-700 text-sm">
+                              {art.tiles.map((tile, tIdx) => (
+                                <li key={tIdx}>
+                                  <strong>{tile.title}: </strong>{formatWithLinks(tile.desc)}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
 
-                {/* 5. Modalità */}
-                <div className="bg-amber-500/10 p-5 rounded-2xl border border-amber-500/30 flex items-start space-x-4">
-                  <div className="bg-amber-500 text-slate-950 w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">5</div>
-                  <div>
-                    <h3 className="font-black text-slate-900 text-lg mb-1">{rulesParsed.modalita.title}</h3>
-                    <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
-                      {rulesParsed.modalita.items.map((item, mIdx) => (
-                        <li key={mIdx}>
-                          <strong>{item.title}: </strong>{item.desc}
-                        </li>
-                      ))}
-                    </ul>
-                  </div>
-                </div>
+                          {art.items && art.items.length > 0 && (
+                            <ul className="list-disc pl-5 mt-2 space-y-1.5 font-medium text-slate-700 text-sm sm:text-base">
+                              {art.items.map((item, mIdx) => (
+                                <li key={mIdx}>
+                                  <strong>{item.title}: </strong>{formatWithLinks(item.desc)}
+                                </li>
+                              ))}
+                            </ul>
+                          )}
+                        </div>
+                      </div>
+                    );
+                  })
+                ) : (
+                  <>
+                    <div className="bg-slate-50 p-5 rounded-2xl border border-slate-100 flex items-start space-x-4">
+                      <div className="bg-primary-500 text-white w-8 h-8 rounded-full flex items-center justify-center font-black text-base shrink-0 mt-0.5">1</div>
+                      <div>
+                        <h3 className="font-black text-slate-800 text-lg mb-1">{rulesParsed.scopo.title}</h3>
+                        <p>{rulesParsed.scopo.body}</p>
+                      </div>
+                    </div>
+                  </>
+                )}
               </div>
 
               <div className="p-4 sm:p-6 border-t border-slate-100 bg-slate-50 flex justify-end">
