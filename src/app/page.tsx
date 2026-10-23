@@ -49,7 +49,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-x-hidden">
+    <div className="min-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-x-hidden pb-16 lg:pb-0">
       
       {/* Header Standard Ecosistema con Menu Profilo */}
       <Header />
@@ -123,7 +123,7 @@ export default function Home() {
       {/* Navigation Dock (Standard Ecosistema con Ordine Canonico e Tooltip Dorato Flottante) */}
       <nav 
         aria-label="Navigazione Rapida Ecosistema"
-        className="ecosystem-dock mb-4 mx-auto px-4 sm:px-6 py-1.5 sm:py-2 flex items-center justify-center gap-1 sm:gap-2 z-30 shrink-0 max-w-[95vw]"
+        className="ecosystem-dock"
       >
         {/* 1. Home */}
         <Link 
@@ -133,7 +133,7 @@ export default function Home() {
           title="Home"
         >
           <HomeIcon className="dock-icon" />
-          <span className="text-[9px] sm:hidden font-bold mt-0.5">Home</span>
+          <span>Home</span>
         </Link>
 
         {/* 2. Miniguida */}
@@ -145,7 +145,7 @@ export default function Home() {
           title="Miniguida"
         >
           <HelpCircle className="dock-icon" />
-          <span className="text-[9px] sm:hidden font-bold mt-0.5">Miniguida</span>
+          <span>Miniguida</span>
         </button>
 
         {/* 3. Regolamento */}
@@ -157,10 +157,10 @@ export default function Home() {
           title="Regolamento"
         >
           <BookOpen className="dock-icon" />
-          <span className="text-[9px] sm:hidden font-bold mt-0.5">Regolamento</span>
+          <span>Regolamento</span>
         </button>
 
-        <div className="w-px h-6 sm:h-7 bg-amber-500/30 mx-1"></div>
+        <div className="w-px h-7 bg-slate-200 hidden lg:block mx-1"></div>
 
         {/* 4. Docente */}
         <Link 
@@ -170,7 +170,7 @@ export default function Home() {
           title="Docente"
         >
           <GraduationCap className="dock-icon" />
-          <span className="text-[9px] sm:hidden font-bold mt-0.5">Docente</span>
+          <span>Docente</span>
         </Link>
 
         {/* 5. Admin */}
@@ -181,7 +181,7 @@ export default function Home() {
           title="Admin"
         >
           <ShieldCheck className="dock-icon" />
-          <span className="text-[9px] sm:hidden font-bold mt-0.5">Admin</span>
+          <span>Admin</span>
         </Link>
       </nav>
 
