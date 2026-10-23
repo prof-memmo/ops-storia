@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText, Key } from "lucide-react";
+import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText, Key, GraduationCap } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import { getAssetPath } from "@/lib/assets";
@@ -120,61 +120,62 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Navigation Dock */}
-      <nav className="mb-4 mx-auto bg-slate-100/90 backdrop-blur-md px-4 sm:px-8 py-2 sm:py-1 flex justify-start sm:justify-center items-center shadow-lg rounded-[2rem] sm:rounded-full border border-slate-300 z-20 shrink-0 max-w-[95vw] overflow-x-auto">
-        <div className="flex space-x-3 sm:space-x-8 items-center text-slate-800 shrink-0 mx-auto">
-          <div className="group relative flex flex-col items-center">
-            <Link href="/admin" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src={getAssetPath('/icons/7.png')} alt="Dashboard Admin" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </Link>
-            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Admin</span>
+      {/* Navigation Dock (Standard Ecosistema) */}
+      <nav 
+        aria-label="Navigazione rapida"
+        className="mb-4 mx-auto bg-white/90 backdrop-blur-md px-3 sm:px-6 py-2 flex items-center justify-center gap-2 sm:gap-4 shadow-lg rounded-full border border-slate-200/90 z-20 shrink-0 max-w-[95vw]"
+      >
+        {/* 1. Admin */}
+        <Link 
+          href="/admin" 
+          className="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-1.5 rounded-2xl text-slate-600 hover:text-amber-600 hover:bg-amber-50/80 active:scale-95 transition-all group min-w-[54px] sm:min-w-[64px]"
+          title="Pannello Amministrazione"
+        >
+          <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
+            <ShieldCheck className="w-4 h-4 text-slate-700 group-hover:text-amber-600 transition-colors" />
           </div>
+          <span className="text-[10px] sm:text-[11px] font-bold tracking-tight">Admin</span>
+        </Link>
 
-          <div className="group relative flex flex-col items-center">
-            <Link href="/dashboard" className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src={getAssetPath('/icons/8.png')} alt="Dashboard Docente" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </Link>
-            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Docente</span>
+        {/* 2. Docente */}
+        <Link 
+          href="/dashboard" 
+          className="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-1.5 rounded-2xl text-slate-600 hover:text-amber-600 hover:bg-amber-50/80 active:scale-95 transition-all group min-w-[54px] sm:min-w-[64px]"
+          title="Dashboard Docente"
+        >
+          <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
+            <GraduationCap className="w-4 h-4 text-slate-700 group-hover:text-amber-600 transition-colors" />
           </div>
+          <span className="text-[10px] sm:text-[11px] font-bold tracking-tight">Docente</span>
+        </Link>
 
-          <div className="w-px h-8 sm:h-12 bg-slate-300 mx-2"></div>
-          <div className="group relative flex flex-col items-center">
-            <button onClick={() => setShowTutorial(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src={getAssetPath('/icons/1.png')} alt="Miniguida" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </button>
-            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Miniguida</span>
-          </div>
-          
-          <div className="group relative flex flex-col items-center">
-            <button onClick={() => setShowRules(true)} className="hover:scale-110 hover:-translate-y-2 transition-all">
-              <img src={getAssetPath('/icons/2.png')} alt="Regolamento" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </button>
-            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Regolamento</span>
-          </div>
+        <div className="w-px h-7 bg-slate-200 mx-1"></div>
 
-          <div className="w-px h-8 sm:h-12 bg-slate-300 mx-2"></div>
-
-          <div className="group relative flex flex-col items-center">
-            <button onClick={() => openLegal('contatti')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src={getAssetPath('/icons/3.png')} alt="Contatti" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </button>
-            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Contatti</span>
+        {/* 3. Miniguida */}
+        <button 
+          type="button"
+          onClick={() => setShowTutorial(true)} 
+          className="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-1.5 rounded-2xl text-slate-600 hover:text-amber-600 hover:bg-amber-50/80 active:scale-95 transition-all group min-w-[54px] sm:min-w-[64px] cursor-pointer"
+          title="Apri Miniguida"
+        >
+          <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
+            <HelpCircle className="w-4 h-4 text-slate-700 group-hover:text-amber-600 transition-colors" />
           </div>
+          <span className="text-[10px] sm:text-[11px] font-bold tracking-tight">Miniguida</span>
+        </button>
 
-          <div className="group relative flex flex-col items-center">
-            <button onClick={() => openLegal('privacy')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src={getAssetPath('/icons/4.png')} alt="Privacy" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </button>
-            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Privacy</span>
+        {/* 4. Regolamento */}
+        <button 
+          type="button"
+          onClick={() => setShowRules(true)} 
+          className="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-1.5 rounded-2xl text-slate-600 hover:text-amber-600 hover:bg-amber-50/80 active:scale-95 transition-all group min-w-[54px] sm:min-w-[64px] cursor-pointer"
+          title="Visualizza Regolamento"
+        >
+          <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
+            <BookOpen className="w-4 h-4 text-slate-700 group-hover:text-amber-600 transition-colors" />
           </div>
-
-          <div className="group relative flex flex-col items-center">
-            <button onClick={() => openLegal('termini')} className="hover:scale-110 hover:-translate-y-2 transition-all cursor-pointer">
-              <img src={getAssetPath('/icons/5.png')} alt="Termini" className="w-14 h-14 sm:w-24 sm:h-24 object-contain drop-shadow-sm scale-110 sm:scale-125" />
-            </button>
-            <span className="absolute bottom-full mb-2 opacity-0 group-hover:opacity-100 transition-opacity bg-slate-900 text-white text-xs font-bold py-1 px-3 rounded-full shadow-lg whitespace-nowrap pointer-events-none">Termini</span>
-          </div>
-        </div>
+          <span className="text-[10px] sm:text-[11px] font-bold tracking-tight">Regolamento</span>
+        </button>
       </nav>
 
       {/* Footer Patamu (Standard Ecosistema: 4 link sopra, Testo margine a margine sotto) */}

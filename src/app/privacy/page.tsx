@@ -1,12 +1,17 @@
 import Link from "next/link";
+import { Home } from "lucide-react";
 
 export default function Privacy() {
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
       <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0">
         <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
-          <Link href="/" className="shrink-0 hover:scale-110 transition-transform">
-            <img src="/icons/6.png" alt="Home" className="w-10 h-10 sm:w-12 sm:h-12 object-contain" />
+          <Link 
+            href="/" 
+            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-600 flex items-center justify-center transition-all border border-slate-200 shadow-sm shrink-0"
+            title="Torna alla Home"
+          >
+            <Home className="w-5 h-5 sm:w-6 sm:h-6" />
           </Link>
           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
         </div>
