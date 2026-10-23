@@ -186,24 +186,24 @@ export default function ClientBoard() {
           )}
 
           {phase === "PLAYING" && currentCard && room && (
-            <motion.div key="playing" className={`w-full max-w-4xl h-full max-h-[92vh] bg-white rounded-2xl sm:rounded-3xl shadow-xl flex flex-col border-3 sm:border-4 overflow-hidden ${currentCard.colorTheme?.borderClass || 'border-orange-500'}`}>
+            <motion.div key="playing" className={`w-full max-w-4xl h-full max-h-[calc(100dvh-75px)] sm:max-h-[92vh] bg-white rounded-2xl sm:rounded-3xl shadow-xl flex flex-col border-3 sm:border-4 overflow-hidden ${currentCard.colorTheme?.borderClass || 'border-orange-500'}`}>
               
-              <div className={`${currentCard.colorTheme?.colorClass || 'bg-orange-500'} text-white text-center py-1.5 sm:py-2 font-bold text-xs sm:text-sm uppercase tracking-widest shrink-0 flex justify-between px-3 sm:px-4`}>
+              <div className={`${currentCard.colorTheme?.colorClass || 'bg-orange-500'} text-white text-center py-1 sm:py-2 font-bold text-xs sm:text-sm uppercase tracking-widest shrink-0 flex justify-between px-3 sm:px-4`}>
                 <span>{isActiveTeam ? "Il tuo turno" : "Controlla Avversari"}</span>
                 <span className="font-black">{room.state.timeLeft}s</span>
               </div>
               
               <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
-                  <div className="flex-1 flex flex-col items-center justify-between p-2 sm:p-4 min-h-0 overflow-hidden">
-                    <h1 className={`text-2xl sm:text-4xl md:text-5xl font-black my-1 sm:my-2 text-center leading-tight shrink-0 ${currentCard.colorTheme?.textClass || 'text-slate-900'}`}>
+                  <div className="flex-1 flex flex-col items-center justify-between p-2 sm:p-4 min-h-0 overflow-y-auto">
+                    <h1 className={`text-2xl sm:text-4xl md:text-5xl font-black my-0.5 sm:my-2 text-center leading-tight shrink-0 ${currentCard.colorTheme?.textClass || 'text-slate-900'}`}>
                       {cardKeyword}
                     </h1>
                     
-                    <div className="bg-slate-100/80 w-full p-2 sm:p-3 rounded-xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center">
-                      <p className="text-center font-black text-slate-400 text-[10px] sm:text-xs uppercase tracking-widest mb-1 shrink-0">Parole Vietate</p>
+                    <div className="bg-slate-100/80 w-full p-1.5 sm:p-3 rounded-xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center">
+                      <p className="text-center font-black text-slate-400 text-[9px] sm:text-xs uppercase tracking-widest mb-0.5 sm:mb-1 shrink-0">Parole Vietate</p>
                       <div className="flex-1 flex flex-col justify-evenly gap-1 sm:gap-1.5 min-h-0">
                         {cardTaboos.map((word: string) => (
-                          <div key={word} className="bg-white text-slate-800 font-extrabold py-1 sm:py-2 px-2 sm:px-3 rounded-lg text-center text-sm sm:text-lg border border-slate-200/80 shadow-xs flex items-center justify-center">
+                          <div key={word} className="bg-white text-slate-800 font-extrabold py-0.5 sm:py-2 px-2 sm:px-3 rounded-lg text-center text-xs sm:text-lg border border-slate-200/80 shadow-xs flex items-center justify-center">
                             {word}
                           </div>
                         ))}
@@ -211,20 +211,20 @@ export default function ClientBoard() {
                     </div>
                   </div>
 
-                  <div className="p-2 sm:p-3 bg-slate-50 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 shrink-0 md:w-60 flex flex-col justify-center">
+                  <div className="p-1.5 sm:p-3 bg-slate-50 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 shrink-0 md:w-60 flex flex-col justify-center">
                     {isActiveTeam ? (
-                      <div className="grid grid-cols-2 md:grid-cols-1 gap-2 h-full">
-                        <button onClick={() => handleAction("SCARTA")} className={`bg-white border-2 border-slate-200 text-slate-700 font-black text-xs sm:text-lg rounded-xl py-2.5 sm:py-5 flex flex-col items-center justify-center transition-all shadow-xs md:flex-1 ${room.state.cardsPassed >= 2 && !room.state.unlimitedPass ? 'opacity-50 pointer-events-none' : 'hover:bg-slate-100 active:scale-95'}`}>
-                          <X className="w-5 h-5 sm:w-6 sm:h-6 mb-0.5 text-slate-500"/> <span>Scarta</span> <span className="text-[10px] sm:text-xs opacity-60">({room.state.cardsPassed}/{room.state.unlimitedPass ? '∞' : '2'})</span>
+                      <div className="grid grid-cols-2 md:grid-cols-1 gap-1.5 sm:gap-2 h-full">
+                        <button onClick={() => handleAction("SCARTA")} className={`bg-white border-2 border-slate-200 text-slate-700 font-black text-xs sm:text-lg rounded-xl py-1.5 sm:py-5 px-1 sm:px-2 flex flex-col items-center justify-center transition-all shadow-xs md:flex-1 min-h-[44px] ${room.state.cardsPassed >= 2 && !room.state.unlimitedPass ? 'opacity-50 pointer-events-none' : 'hover:bg-slate-100 active:scale-95'}`}>
+                          <X className="w-4 h-4 sm:w-6 sm:h-6 mb-0.5 text-slate-500"/> <span>Scarta</span> <span className="text-[9px] sm:text-xs opacity-60">({room.state.cardsPassed}/{room.state.unlimitedPass ? '∞' : '2'})</span>
                         </button>
-                        <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 border-emerald-600 text-white font-black text-xs sm:text-lg rounded-xl py-2.5 sm:py-5 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-xs md:flex-1">
-                          <Check className="w-5 h-5 sm:w-6 sm:h-6 mb-0.5"/> <span>Esatta!</span>
+                        <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 border-emerald-600 text-white font-black text-xs sm:text-lg rounded-xl py-1.5 sm:py-5 px-1 sm:px-2 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-xs md:flex-1 min-h-[44px]">
+                          <Check className="w-4 h-4 sm:w-6 sm:h-6 mb-0.5"/> <span>Esatta!</span>
                         </button>
                       </div>
                     ) : (
                       <div className="flex flex-col h-full justify-center">
-                        <button onClick={() => handleAction("OPS")} className="w-full bg-red-500 text-white py-3 sm:py-6 rounded-xl flex flex-col justify-center items-center font-black text-base sm:text-2xl shadow-lg hover:bg-red-600 active:scale-95 transition-all border-2 border-red-600 flex-1">
-                          <AlertOctagon className="w-6 h-6 sm:w-8 sm:h-8 mb-1" /> Sbagliata!
+                        <button onClick={() => handleAction("OPS")} className="w-full bg-red-500 text-white py-2.5 sm:py-6 rounded-xl flex flex-col justify-center items-center font-black text-sm sm:text-2xl shadow-lg hover:bg-red-600 active:scale-95 transition-all border-2 border-red-600 flex-1 min-h-[44px]">
+                          <AlertOctagon className="w-5 h-5 sm:w-8 sm:h-8 mb-0.5 sm:mb-1" /> Sbagliata!
                         </button>
                       </div>
                     )}

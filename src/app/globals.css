@@ -1,3 +1,4 @@
+@import url('https://fonts.googleapis.com/css2?family=Julius+Sans+One&display=swap');
 @import "tailwindcss";
 
 @theme {
@@ -56,15 +57,33 @@
 }
 
 /* =========================================================
-   TIPOGRAFIA UFFICIALE ECOSISTEMA (Julius Sans One)
+   TIPOGRAFIA UFFICIALE ECOSISTEMA (Julius Sans One globale)
    ========================================================= */
+html,
+body,
+button,
+input,
+select,
+textarea,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+div,
+label,
+li,
 footer,
 footer p,
 .footer-legal-links,
 .footer-legal-links button,
 .footer-legal-links a {
   font-family: var(--font-julius), 'Julius Sans One', sans-serif !important;
-  letter-spacing: 0.05em !important;
+  letter-spacing: 0.03em;
 }
 
 /* =========================================================

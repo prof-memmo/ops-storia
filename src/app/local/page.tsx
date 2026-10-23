@@ -506,7 +506,7 @@ export default function LocalPlay() {
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center p-4">
+      <main className="flex-1 flex items-center justify-center p-1.5 sm:p-4">
         {authLoading ? (
           <div className="text-slate-400 font-bold animate-pulse">Caricamento...</div>
         ) : !user ? (
@@ -685,66 +685,66 @@ export default function LocalPlay() {
           )}
 
           {phase === "PLAYING" && card && (
-            <motion.div key="playing" className="w-full max-w-4xl flex flex-col items-center h-full max-h-[85vh]">
+            <motion.div key="playing" className="w-full max-w-4xl flex flex-col items-center flex-1 justify-center min-h-0 max-h-[calc(100dvh-75px)] sm:max-h-[86vh]">
               
-              <div className="flex justify-between w-full mb-2 px-1 sm:px-4 shrink-0">
-                <div className={`text-center p-1 sm:p-2 px-2 sm:px-4 rounded-xl flex items-center justify-center space-x-2 ${currentTurn === 1 ? 'bg-primary-100 border-2 border-primary-500' : 'bg-white opacity-80'}`}>
-                  <img src={getPawnImg(teamA.pawn)} className="w-8 h-8 sm:w-12 sm:h-12 object-contain hidden sm:block" />
+              <div className="flex justify-between w-full mb-1 sm:mb-2 px-1 sm:px-4 shrink-0">
+                <div className={`text-center p-1 sm:p-2 px-2 sm:px-4 rounded-xl flex items-center justify-center space-x-1.5 sm:space-x-2 ${currentTurn === 1 ? 'bg-primary-100 border-2 border-primary-500' : 'bg-white opacity-80'}`}>
+                  <img src={getPawnImg(teamA.pawn)} className="w-7 h-7 sm:w-12 sm:h-12 object-contain hidden sm:block" />
                   <div>
                     <span className={`text-[9px] sm:text-xs font-bold uppercase tracking-widest ${currentTurn === 1 ? 'text-primary-700' : 'text-slate-900'}`}>Squadra A</span>
-                    <div className={`text-2xl sm:text-4xl font-black ${currentTurn === 1 ? 'text-primary-900' : 'text-slate-900'}`}>{teamA.score}</div>
+                    <div className={`text-xl sm:text-4xl font-black ${currentTurn === 1 ? 'text-primary-900' : 'text-slate-900'}`}>{teamA.score}</div>
                   </div>
                 </div>
                 
-                <div className="text-center p-1 sm:p-2 px-2 sm:px-4 rounded-xl bg-white opacity-90 shadow-sm border border-slate-200">
+                <div className="text-center p-1 sm:p-2 px-3 sm:px-4 rounded-xl bg-white opacity-90 shadow-sm border border-slate-200">
                   <span className="text-[9px] sm:text-xs font-bold text-slate-900 uppercase tracking-widest">Tempo</span>
-                  <div className={`text-2xl sm:text-4xl font-black ${timeLeft <= 10 ? 'text-red-600' : 'text-slate-900'}`}>{timeLeft}</div>
+                  <div className={`text-xl sm:text-4xl font-black ${timeLeft <= 10 ? 'text-red-600' : 'text-slate-900'}`}>{timeLeft}</div>
                 </div>
 
-                <div className={`text-center p-1 sm:p-2 px-2 sm:px-4 rounded-xl flex items-center justify-center space-x-2 ${currentTurn === 2 ? 'bg-primary-100 border-2 border-primary-500' : 'bg-white opacity-80'}`}>
+                <div className={`text-center p-1 sm:p-2 px-2 sm:px-4 rounded-xl flex items-center justify-center space-x-1.5 sm:space-x-2 ${currentTurn === 2 ? 'bg-primary-100 border-2 border-primary-500' : 'bg-white opacity-80'}`}>
                   <div>
                     <span className={`text-[9px] sm:text-xs font-bold uppercase tracking-widest ${currentTurn === 2 ? 'text-primary-700' : 'text-slate-900'}`}>Squadra B</span>
-                    <div className={`text-2xl sm:text-4xl font-black ${currentTurn === 2 ? 'text-primary-900' : 'text-slate-900'}`}>{teamB.score}</div>
+                    <div className={`text-xl sm:text-4xl font-black ${currentTurn === 2 ? 'text-primary-900' : 'text-slate-900'}`}>{teamB.score}</div>
                   </div>
-                  <img src={getPawnImg(teamB.pawn)} className="w-8 h-8 sm:w-12 sm:h-12 object-contain hidden sm:block" />
+                  <img src={getPawnImg(teamB.pawn)} className="w-7 h-7 sm:w-12 sm:h-12 object-contain hidden sm:block" />
                 </div>
               </div>
 
               {(activeDoubleTime || activeUnlimitedPass) && (
-                <div className="w-full max-w-3xl mb-2 bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-500/20 border border-amber-400 p-2 rounded-xl text-center text-amber-900 font-black text-xs sm:text-sm flex items-center justify-center gap-3">
-                  {activeDoubleTime && <span className="bg-amber-400 text-slate-900 px-2.5 py-0.5 rounded-full">✖️2 Tempo 120s</span>}
-                  {activeUnlimitedPass && <span className="bg-emerald-400 text-slate-900 px-2.5 py-0.5 rounded-full">🎣 Scarti Infiniti</span>}
+                <div className="w-full max-w-3xl mb-1 sm:mb-2 bg-gradient-to-r from-amber-500/20 via-yellow-500/20 to-amber-500/20 border border-amber-400 p-1 sm:p-2 rounded-xl text-center text-amber-900 font-black text-[10px] sm:text-sm flex items-center justify-center gap-2 sm:gap-3 shrink-0">
+                  {activeDoubleTime && <span className="bg-amber-400 text-slate-900 px-2 py-0.5 rounded-full">✖️2 Tempo 120s</span>}
+                  {activeUnlimitedPass && <span className="bg-emerald-400 text-slate-900 px-2 py-0.5 rounded-full">🎣 Scarti Infiniti</span>}
                 </div>
               )}
 
               <div className={`w-full max-w-3xl bg-white rounded-2xl sm:rounded-3xl shadow-2xl border-3 sm:border-4 overflow-hidden ${card.colorTheme?.borderClass || 'border-orange-500'} flex flex-col flex-1 min-h-0`}>
-                <div className={`px-4 py-2 ${card.colorTheme?.colorClass || 'bg-orange-500'} text-white font-black text-base sm:text-xl flex justify-between shrink-0`}>
+                <div className={`px-3 py-1 sm:px-4 sm:py-2 ${card.colorTheme?.colorClass || 'bg-orange-500'} text-white font-black text-xs sm:text-xl flex justify-between shrink-0`}>
                   <span>Squadra {currentTurn === 1 ? 'A' : 'B'}</span>
                   <span>{timeLeft}s</span>
                 </div>
                 
                 <div className="flex flex-col md:flex-row flex-1 min-h-0">
-                  <div className="flex-1 flex flex-col items-center justify-between p-2.5 sm:p-5 min-h-0">
-                    <h1 className={`text-3xl sm:text-4xl md:text-5xl font-black my-1 sm:my-2 text-center leading-tight shrink-0 ${card.colorTheme?.textClass || 'text-slate-900'}`}>{card.parola_chiave}</h1>
-                    <div className="w-full max-w-md bg-slate-100/80 p-2 sm:p-3 rounded-2xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center">
-                      <p className="text-center font-black text-slate-400 text-[10px] sm:text-xs uppercase tracking-widest mb-1 shrink-0">Parole Vietate</p>
+                  <div className="flex-1 flex flex-col items-center justify-between p-2 sm:p-5 min-h-0 overflow-y-auto">
+                    <h1 className={`text-2xl sm:text-4xl md:text-5xl font-black my-0.5 sm:my-2 text-center leading-tight shrink-0 ${card.colorTheme?.textClass || 'text-slate-900'}`}>{card.parola_chiave}</h1>
+                    <div className="w-full max-w-md bg-slate-100/80 p-1.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center">
+                      <p className="text-center font-black text-slate-400 text-[9px] sm:text-xs uppercase tracking-widest mb-0.5 sm:mb-1 shrink-0">Parole Vietate</p>
                       <div className="flex-1 flex flex-col justify-center gap-1 sm:gap-1.5 min-h-0">
                         {card.parole_taboo.map((t: string) => (
-                          <div key={t} className="bg-white font-extrabold text-sm sm:text-lg md:text-xl py-1 sm:py-2 px-3 sm:px-4 rounded-xl text-center border border-slate-200/80 shadow-xs text-slate-800 flex items-center justify-center leading-snug">{t}</div>
+                          <div key={t} className="bg-white font-extrabold text-xs sm:text-lg md:text-xl py-0.5 sm:py-2 px-2.5 sm:px-4 rounded-lg sm:rounded-xl text-center border border-slate-200/80 shadow-xs text-slate-800 flex items-center justify-center leading-snug">{t}</div>
                         ))}
                       </div>
                     </div>
                   </div>
 
-                  <div className="p-2 sm:p-4 bg-slate-50 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 grid grid-cols-3 md:grid-cols-1 gap-2 sm:gap-3 shrink-0 md:w-60 flex-col justify-center">
-                    <button onClick={() => handleAction("SCARTA")} className="bg-white border-2 border-slate-200 text-slate-700 font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-2.5 sm:py-4 flex flex-col items-center justify-center hover:bg-slate-100 active:scale-95 transition-all md:flex-1 shadow-xs">
-                      <X className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>Scarta</span> <span className="text-[10px] sm:text-xs opacity-60">({turnStats.passed}/{activeUnlimitedPass ? '∞' : '2'})</span>
+                  <div className="p-1.5 sm:p-4 bg-slate-50 border-t-2 md:border-t-0 md:border-l-2 border-slate-200 grid grid-cols-3 md:grid-cols-1 gap-1.5 sm:gap-3 shrink-0 md:w-60 flex-col justify-center">
+                    <button onClick={() => handleAction("SCARTA")} className="bg-white border-2 border-slate-200 text-slate-700 font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-1.5 sm:py-4 px-1 sm:px-2 flex flex-col items-center justify-center hover:bg-slate-100 active:scale-95 transition-all md:flex-1 shadow-xs min-h-[44px]">
+                      <X className="w-4 h-4 sm:w-7 sm:h-7 mb-0.5"/> <span>Scarta</span> <span className="text-[9px] sm:text-xs opacity-60">({turnStats.passed}/{activeUnlimitedPass ? '∞' : '2'})</span>
                     </button>
-                    <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 border-emerald-600 text-white font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-2.5 sm:py-4 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-xs md:flex-1">
-                      <Check className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>Esatta!</span>
+                    <button onClick={() => handleAction("ESATTA")} className="bg-emerald-500 border-2 border-emerald-600 text-white font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-1.5 sm:py-4 px-1 sm:px-2 flex flex-col items-center justify-center hover:bg-emerald-600 active:scale-95 transition-all shadow-xs md:flex-1 min-h-[44px]">
+                      <Check className="w-4 h-4 sm:w-7 sm:h-7 mb-0.5"/> <span>Esatta!</span>
                     </button>
-                    <button onClick={() => handleAction("OPS")} className="bg-red-500 border-2 border-red-600 text-white font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-2.5 sm:py-4 flex flex-col items-center justify-center hover:bg-red-600 active:scale-95 transition-all shadow-xs md:flex-1">
-                      <AlertOctagon className="w-5 h-5 sm:w-7 sm:h-7 mb-0.5"/> <span>Sbagliata!</span>
+                    <button onClick={() => handleAction("OPS")} className="bg-red-500 border-2 border-red-600 text-white font-black text-xs sm:text-xl rounded-xl sm:rounded-2xl py-1.5 sm:py-4 px-1 sm:px-2 flex flex-col items-center justify-center hover:bg-red-600 active:scale-95 transition-all shadow-xs md:flex-1 min-h-[44px]">
+                      <AlertOctagon className="w-4 h-4 sm:w-7 sm:h-7 mb-0.5"/> <span>Sbagliata!</span>
                     </button>
                   </div>
                 </div>
