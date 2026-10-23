@@ -49,7 +49,7 @@ export default function Home() {
   }, []);
 
   return (
-    <div className="min-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-x-hidden pb-16 lg:pb-0">
+    <div className="min-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-x-hidden">
       
       {/* Header Standard Ecosistema con Menu Profilo */}
       <Header />
@@ -120,6 +120,22 @@ export default function Home() {
         </div>
       </main>
 
+      {/* Footer Patamu (Standard Ecosistema: 4 link sopra, Testo margine a margine sotto) */}
+      <footer className="w-full text-slate-400 px-4 pt-4 pb-20 lg:pb-28 flex flex-col items-center justify-center shrink-0 z-20 box-border">
+        <div className="footer-legal-links flex justify-center gap-6 mb-2 text-xs uppercase tracking-wider flex-wrap">
+          <button onClick={() => openLegal('privacy')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Privacy Policy</button>
+          <button onClick={() => openLegal('termini')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Termini e Condizioni</button>
+          <button onClick={() => openLegal('contatti')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Contatti</button>
+          <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Condividi Esperienza</a>
+        </div>
+        <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4">
+           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-[52px] w-auto object-contain shrink-0 opacity-80" style={{ height: "52px" }} />
+           <p className="text-[10px] sm:text-[11px] leading-relaxed tracking-normal flex-1 text-slate-400">
+             &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
+           </p>
+        </div>
+      </footer>
+
       {/* Navigation Dock (Standard Ecosistema con Ordine Canonico e Tooltip Dorato Flottante) */}
       <nav 
         aria-label="Navigazione Rapida Ecosistema"
@@ -184,22 +200,6 @@ export default function Home() {
           <span>Admin</span>
         </Link>
       </nav>
-
-      {/* Footer Patamu (Standard Ecosistema: 4 link sopra, Testo margine a margine sotto) */}
-      <footer className="w-full text-slate-400 px-4 py-3 flex flex-col items-center justify-center shrink-0 z-20 box-border">
-        <div className="footer-legal-links flex justify-center gap-6 mb-2 text-xs uppercase tracking-wider flex-wrap">
-          <button onClick={() => openLegal('privacy')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Privacy Policy</button>
-          <button onClick={() => openLegal('termini')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Termini e Condizioni</button>
-          <button onClick={() => openLegal('contatti')} className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Contatti</button>
-          <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" rel="noopener noreferrer" className="hover:text-amber-400 transition-colors cursor-pointer text-slate-300">Condividi Esperienza</a>
-        </div>
-        <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-[52px] w-auto object-contain shrink-0 opacity-80" style={{ height: "52px" }} />
-           <p className="text-[10px] sm:text-[11px] leading-relaxed tracking-normal flex-1 text-slate-400">
-             &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
-           </p>
-        </div>
-      </footer>
 
       {/* TUTORIAL MODAL (COMIC STYLE) */}
       <AnimatePresence>
