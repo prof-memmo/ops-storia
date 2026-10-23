@@ -33,7 +33,7 @@ export default function RootLayout({
               window.HUB_GAME_ID = "ops-storia";
               (function() {
                 var isPreview = window.location.pathname.includes('/preview') || window.location.hostname === 'localhost';
-                var sharedBase = isPreview ? 'https://prof-memmo.github.io/preview/shared/' : 'https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/';
+                var sharedBase = isPreview ? 'https://prof-memmo.github.io/prof-memmo-gestione-siti/preview/shared/' : 'https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/';
                 function loadScript(src) {
                   var s = document.createElement('script');
                   s.src = src;
