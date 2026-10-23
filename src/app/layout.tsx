@@ -1,11 +1,18 @@
 import type { Metadata } from "next";
-import { Julius_Sans_One } from "next/font/google";
+import { Julius_Sans_One, Inter } from "next/font/google";
 import "./globals.css";
 
 const juliusFont = Julius_Sans_One({ 
   weight: '400',
   subsets: ['latin'],
   variable: '--font-julius'
+});
+
+const interFont = Inter({
+  subsets: ['latin'],
+  variable: '--font-inter',
+  weight: ['400', '500', '600', '700'],
+  display: 'swap',
 });
 
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
@@ -74,7 +81,7 @@ export default function RootLayout({
           }}
         />
       </head>
-      <body className={`${juliusFont.variable} antialiased bg-white text-slate-900 tracking-wider font-sans`}>
+      <body className={`${juliusFont.variable} ${interFont.variable} antialiased bg-white text-slate-900 tracking-wider font-sans`}>
         {children}
       </body>
     </html>

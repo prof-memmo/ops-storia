@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText, Key, GraduationCap } from "lucide-react";
+import { BookOpen, Users, LogIn, HelpCircle, X, Info, AlertOctagon, Timer, SkipForward, MonitorPlay, ShieldCheck, FileText, Key, GraduationCap, Home as HomeIcon } from "lucide-react";
 import { motion, AnimatePresence } from "framer-motion";
 import Header from "@/components/Header";
 import { getAssetPath } from "@/lib/assets";
@@ -120,62 +120,69 @@ export default function Home() {
         </div>
       </main>
 
-      {/* Navigation Dock (Standard Ecosistema) */}
+      {/* Navigation Dock (Standard Ecosistema con Ordine Canonico e Tooltip Dorato Flottante) */}
       <nav 
-        aria-label="Navigazione rapida"
-        className="mb-4 mx-auto bg-white/90 backdrop-blur-md px-3 sm:px-6 py-2 flex items-center justify-center gap-2 sm:gap-4 shadow-lg rounded-full border border-slate-200/90 z-20 shrink-0 max-w-[95vw]"
+        aria-label="Navigazione Rapida Ecosistema"
+        className="ecosystem-dock mb-4 mx-auto px-4 sm:px-6 py-1.5 sm:py-2 flex items-center justify-center gap-1 sm:gap-2 z-30 shrink-0 max-w-[95vw]"
       >
-        {/* 1. Admin */}
+        {/* 1. Home */}
         <Link 
-          href="/admin" 
-          className="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-1.5 rounded-2xl text-slate-600 hover:text-amber-600 hover:bg-amber-50/80 active:scale-95 transition-all group min-w-[54px] sm:min-w-[64px]"
-          title="Pannello Amministrazione"
+          href="/" 
+          className="dock-tab-item"
+          data-tooltip="Home"
+          title="Home"
         >
-          <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
-            <ShieldCheck className="w-4 h-4 text-slate-700 group-hover:text-amber-600 transition-colors" />
-          </div>
-          <span className="text-[10px] sm:text-[11px] font-bold tracking-tight">Admin</span>
+          <HomeIcon className="dock-icon" />
+          <span className="text-[9px] sm:hidden font-bold mt-0.5">Home</span>
         </Link>
 
-        {/* 2. Docente */}
-        <Link 
-          href="/dashboard" 
-          className="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-1.5 rounded-2xl text-slate-600 hover:text-amber-600 hover:bg-amber-50/80 active:scale-95 transition-all group min-w-[54px] sm:min-w-[64px]"
-          title="Dashboard Docente"
-        >
-          <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
-            <GraduationCap className="w-4 h-4 text-slate-700 group-hover:text-amber-600 transition-colors" />
-          </div>
-          <span className="text-[10px] sm:text-[11px] font-bold tracking-tight">Docente</span>
-        </Link>
-
-        <div className="w-px h-7 bg-slate-200 mx-1"></div>
-
-        {/* 3. Miniguida */}
+        {/* 2. Miniguida */}
         <button 
           type="button"
           onClick={() => setShowTutorial(true)} 
-          className="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-1.5 rounded-2xl text-slate-600 hover:text-amber-600 hover:bg-amber-50/80 active:scale-95 transition-all group min-w-[54px] sm:min-w-[64px] cursor-pointer"
-          title="Apri Miniguida"
+          className="dock-tab-item"
+          data-tooltip="Miniguida"
+          title="Miniguida"
         >
-          <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
-            <HelpCircle className="w-4 h-4 text-slate-700 group-hover:text-amber-600 transition-colors" />
-          </div>
-          <span className="text-[10px] sm:text-[11px] font-bold tracking-tight">Miniguida</span>
+          <HelpCircle className="dock-icon" />
+          <span className="text-[9px] sm:hidden font-bold mt-0.5">Miniguida</span>
         </button>
 
-        {/* 4. Regolamento */}
+        {/* 3. Regolamento */}
         <button 
           type="button"
           onClick={() => setShowRules(true)} 
-          className="flex flex-col items-center justify-center gap-1 px-3 sm:px-4 py-1.5 rounded-2xl text-slate-600 hover:text-amber-600 hover:bg-amber-50/80 active:scale-95 transition-all group min-w-[54px] sm:min-w-[64px] cursor-pointer"
-          title="Visualizza Regolamento"
+          className="dock-tab-item"
+          data-tooltip="Regolamento"
+          title="Regolamento"
         >
-          <div className="w-8 h-8 rounded-full bg-slate-100 group-hover:bg-amber-100 flex items-center justify-center transition-colors">
-            <BookOpen className="w-4 h-4 text-slate-700 group-hover:text-amber-600 transition-colors" />
-          </div>
-          <span className="text-[10px] sm:text-[11px] font-bold tracking-tight">Regolamento</span>
+          <BookOpen className="dock-icon" />
+          <span className="text-[9px] sm:hidden font-bold mt-0.5">Regolamento</span>
         </button>
+
+        <div className="w-px h-6 sm:h-7 bg-amber-500/30 mx-1"></div>
+
+        {/* 4. Docente */}
+        <Link 
+          href="/dashboard" 
+          className="dock-tab-item"
+          data-tooltip="Docente"
+          title="Docente"
+        >
+          <GraduationCap className="dock-icon" />
+          <span className="text-[9px] sm:hidden font-bold mt-0.5">Docente</span>
+        </Link>
+
+        {/* 5. Admin */}
+        <Link 
+          href="/admin" 
+          className="dock-tab-item"
+          data-tooltip="Admin"
+          title="Admin"
+        >
+          <ShieldCheck className="dock-icon" />
+          <span className="text-[9px] sm:hidden font-bold mt-0.5">Admin</span>
+        </Link>
       </nav>
 
       {/* Footer Patamu (Standard Ecosistema: 4 link sopra, Testo margine a margine sotto) */}
@@ -188,7 +195,7 @@ export default function Home() {
         </div>
         <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4">
            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-[52px] w-auto object-contain shrink-0 opacity-80" style={{ height: "52px" }} />
-           <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight flex-1">
+           <p className="text-[10px] sm:text-[11px] leading-relaxed tracking-normal flex-1 text-slate-400">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
         </div>

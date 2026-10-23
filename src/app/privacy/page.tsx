@@ -96,7 +96,7 @@ export default function Privacy() {
         </div>
         <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4">
            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-[52px] w-auto object-contain shrink-0" style={{ height: "52px" }} />
-           <p className="text-[9px] sm:text-[11px] leading-tight font-sans tracking-tight flex-1">
+           <p className="text-[10px] sm:text-[11px] leading-relaxed tracking-normal flex-1">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
            </p>
         </div>
