@@ -71,7 +71,6 @@ export default function ClientBoard() {
         cardsPassed: room.state.cardsPassed + 1,
         cardIndex: room.state.cardIndex + 1 
       });
-      await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: (room[opponentKey].score || 0) + 1 });
     }
     else if (action === "OPS") {
       await updateRoomState(room.code, { 
@@ -79,7 +78,6 @@ export default function ClientBoard() {
         cardIndex: room.state.cardIndex + 1,
         showUndo: true
       });
-      await updateTeamStats(room.code, room.state.currentTurn === 1 ? 2 : 1, { score: (room[opponentKey].score || 0) + 1 });
       
       // Auto hide undo after 3s
       setTimeout(() => {

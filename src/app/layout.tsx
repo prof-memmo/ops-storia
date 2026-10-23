@@ -57,7 +57,7 @@ export default function RootLayout({
                         a.target = '_blank';
                         a.rel = 'noopener noreferrer';
                         a.textContent = 'Condividi Esperienza';
-                        a.className = 'hover:text-amber-400 transition-colors text-slate-300';
+                        a.className = 'hover:text-amber-600 transition-colors text-slate-700 font-bold underline sm:no-underline hover:underline';
                         fl.appendChild(a);
                       }
                       var cont = fl.querySelector('button[onclick*="contatti"], a[href*="contatti"]');
@@ -65,7 +65,7 @@ export default function RootLayout({
                         var c = document.createElement('a');
                         c.href = 'https://prof-memmo.github.io/ops-storia/contatti';
                         c.textContent = 'Contatti';
-                        c.className = 'hover:text-amber-400 transition-colors text-slate-300';
+                        c.className = 'hover:text-amber-600 transition-colors text-slate-700 font-bold underline sm:no-underline hover:underline';
                         fl.insertBefore(c, cond || null);
                       }
                     }

@@ -197,10 +197,8 @@ export default function HostBoard() {
     const currentPosOpponent = room[opponentTeamKey].position || 1;
 
     const activeGain = Math.max(0, room.state.cardsGuessed);
-    const opponentGain = Math.max(0, room.state.opsPenalties + room.state.cardsPassed);
-
     let newPosActive = Math.min(24, Math.max(1, currentPosActive + activeGain));
-    let newPosOpponent = Math.min(24, Math.max(1, currentPosOpponent + opponentGain));
+    let newPosOpponent = currentPosOpponent;
     let notices: string[] = [];
     
     let activeBonus = {
@@ -228,27 +226,12 @@ export default function HostBoard() {
       notices.push(`🏆 TRAGUARDO: ${room[activeTeamKey].name} ha raggiunto il traguardo finale!`);
     }
 
-    if (opponentGain > 0) {
-      if (newPosOpponent === 6) {
-        opponentBonus.unlimitedPass = true;
-        notices.push(`🎣 Casella 6: ${room[opponentTeamKey].name} ottiene scarti illimitati!`);
-      } else if (newPosOpponent === 18) {
-        newPosOpponent = Math.min(24, newPosOpponent + 1);
-        notices.push(`♟️ Casella 18: ${room[opponentTeamKey].name} balza alla casella ${newPosOpponent}!`);
-      } else if (newPosOpponent === 21) {
-        opponentBonus.doubleTime = true;
-        notices.push(`✖️2 Casella 21: ${room[opponentTeamKey].name} ottiene tempo doppio!`);
-      } else if (newPosOpponent === 24) {
-        notices.push(`🏆 TRAGUARDO: ${room[opponentTeamKey].name} ha raggiunto il traguardo finale!`);
-      }
-    }
-
     await updateTeamStats(room.code, room.state.currentTurn, {
       position: newPosActive,
       pendingBonus: activeBonus
     });
 
-    if (opponentGain > 0 || newPosOpponent !== currentPosOpponent) {
+    if (newPosOpponent !== currentPosOpponent) {
       await updateTeamStats(room.code, opponentTurn, {
         position: newPosOpponent,
         pendingBonus: opponentBonus

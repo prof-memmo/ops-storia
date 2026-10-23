@@ -237,23 +237,18 @@ export default function LocalPlay() {
     else if (action === "SCARTA") {
       if (turnStats.passed >= 2 && !activeUnlimitedPass) return alert("Massimo 2 scarti!");
       setTurnStats(s => ({...s, passed: s.passed + 1}));
-      if (currentTurn === 1) setTeamB(s => ({...s, score: s.score + 1}));
-      else setTeamA(s => ({...s, score: s.score + 1}));
       setCurrentCardIndex(i => i + 1);
     }
     else if (action === "OPS") {
       setTurnStats(s => ({...s, ops: s.ops + 1}));
-      if (currentTurn === 1) setTeamB(s => ({...s, score: s.score + 1}));
-      else setTeamA(s => ({...s, score: s.score + 1}));
       setShowUndoOps(true);
       setTimeout(() => setShowUndoOps(false), 3000);
+      setCurrentCardIndex(i => i + 1);
     }
   };
 
   const undoOps = () => {
     setTurnStats(s => ({...s, ops: Math.max(0, s.ops - 1)}));
-    if (currentTurn === 1) setTeamB(s => ({...s, score: Math.max(0, s.score - 1)}));
-    else setTeamA(s => ({...s, score: Math.max(0, s.score - 1)}));
     setShowUndoOps(false);
   };
 
@@ -267,10 +262,9 @@ export default function LocalPlay() {
     const oldPosOpponent = opponentTeam.pos || 1;
 
     const activeGain = Math.max(0, turnStats.guessed);
-    const opponentGain = Math.max(0, turnStats.ops + turnStats.passed);
 
     let newPosActive = Math.min(24, Math.max(1, oldPosActive + activeGain));
-    let newPosOpponent = Math.min(24, Math.max(1, oldPosOpponent + opponentGain));
+    let newPosOpponent = oldPosOpponent;
     let notices: string[] = [];
 
     let activeBonus = {
@@ -297,22 +291,6 @@ export default function LocalPlay() {
     } else if (newPosActive >= 24) {
       newPosActive = 24;
       notices.push(`🏆 TRAGUARDO: ${activeTeam.name} ha raggiunto la vittoria!`);
-    }
-
-    if (opponentGain > 0) {
-      if (newPosOpponent === 6) {
-        opponentBonus.unlimitedPass = true;
-        notices.push(`🎣 Casella 6: ${opponentTeam.name} ottiene scarti illimitati!`);
-      } else if (newPosOpponent === 18) {
-        newPosOpponent = Math.min(24, newPosOpponent + 1);
-        notices.push(`♟️ Casella 18: ${opponentTeam.name} balza alla casella ${newPosOpponent}!`);
-      } else if (newPosOpponent === 21) {
-        opponentBonus.doubleTime = true;
-        notices.push(`✖️2 Casella 21: ${opponentTeam.name} ottiene tempo doppio!`);
-      } else if (newPosOpponent >= 24) {
-        newPosOpponent = 24;
-        notices.push(`🏆 TRAGUARDO: ${opponentTeam.name} ha raggiunto la vittoria!`);
-      }
     }
 
     setLastTurnStartPos({
@@ -757,8 +735,8 @@ export default function LocalPlay() {
               <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6">Fine Turno</h2>
               <div className="text-lg sm:text-xl font-bold space-y-3 mb-6 bg-slate-50 p-5 rounded-2xl border border-slate-200">
                 <p className="flex justify-between items-center"><span>Parole Indovinate:</span> <span className="text-emerald-600 font-black">+{turnStats.guessed}</span></p>
-                <p className="flex justify-between items-center"><span>Scarti Avversari:</span> <span className="text-amber-600 font-black">+{turnStats.passed}</span></p>
-                <p className="flex justify-between items-center"><span>Errori OPS Avversari:</span> <span className="text-red-600 font-black">+{turnStats.ops}</span></p>
+                <p className="flex justify-between items-center"><span>Carte Scartate:</span> <span className="text-slate-600 font-bold">{turnStats.passed}</span></p>
+                <p className="flex justify-between items-center"><span>Errori OPS:</span> <span className="text-slate-600 font-bold">{turnStats.ops}</span></p>
                 <div className="border-t pt-3 flex justify-between items-center text-slate-900 font-black">
                   <span>Avanzamento Squadra:</span>
                   <span className="text-primary-600">+{turnStats.guessed} caselle</span>
