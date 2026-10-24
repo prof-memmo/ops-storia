@@ -11,13 +11,12 @@ import {
   VolumeX, 
   Play, 
   Pause, 
-  SkipForward, 
+  SkipForward,
   UserCheck, 
   Send, 
   Bell, 
   Power, 
-  ChevronDown,
-  LogIn
+  ChevronDown 
 } from "lucide-react";
 
 interface TrackItem {
@@ -40,19 +39,16 @@ const PLAYLIST: TrackItem[] = [
   { id: 10, name: "Summer Time", artist: "Nebulite", file: "track_10.mp3" },
 ];
 
-const FALLBACK_AVATAR = "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-avatar.png";
-
 const resolveAvatarUrl = (raw?: string | null): string => {
-  if (!raw || raw.trim() === "") {
+  if (!raw || typeof raw !== "string" || raw.trim() === "") {
     return "https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/avatars/6.png";
   }
-  if (/^\d+$/.test(raw)) {
-    return `https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/avatars/${raw}.png`;
-  }
-  if (raw.startsWith("http://") || raw.startsWith("https://") || raw.startsWith("/")) {
+  if (raw.startsWith("http://") || raw.startsWith("https://")) {
     return raw;
   }
-  return `https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/avatars/${raw}`;
+  const clean = raw.replace(/^(\/?assets\/avatars\/|\/?shared\/assets\/avatars\/)/, "");
+  const file = clean.endsWith(".png") ? clean : `${clean}.png`;
+  return `https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/avatars/${file}`;
 };
 
 export default function Header() {
@@ -61,24 +57,7 @@ export default function Header() {
   const [isPlaying, setIsPlaying] = useState(false);
   const [isMuted, setIsMuted] = useState(false);
   const [currentTrackIndex, setCurrentTrackIndex] = useState(0);
-  const [localProfile, setLocalProfile] = useState<{ name: string; role: string; avatar: string } | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
-
-  // Sincronizzazione profilo da localStorage (SSO Ecosistema)
-  useEffect(() => {
-    try {
-      const nm = localStorage.getItem('hub_user_name') || localStorage.getItem('fanta_user_name') || localStorage.getItem('loratore_user_name');
-      const av = localStorage.getItem('hub_user_avatar') || localStorage.getItem('fanta_user_avatar') || localStorage.getItem('loratore_user_avatar');
-      const rl = localStorage.getItem('hub_user_role');
-      if (nm || av || rl) {
-        setLocalProfile({
-          name: nm || "",
-          role: (rl === 'docente' || rl === 'admin') ? 'AMMINISTRATORE' : (rl === 'studente' ? 'STUDENTE' : 'DOCENTE'),
-          avatar: av || ""
-        });
-      }
-    } catch (_) {}
-  }, []);
 
   // Inizializza traccia casuale
   useEffect(() => {
@@ -196,31 +175,14 @@ export default function Header() {
 
   const handleLogout = async () => {
     if (confirm("Vuoi davvero uscire dalla sessione di gioco?")) {
-      try {
-        localStorage.removeItem('hub_user_name');
-        localStorage.removeItem('hub_user_avatar');
-        localStorage.removeItem('hub_user_role');
-      } catch (_) {}
       await signOut(auth);
       window.location.href = "https://prof-memmo.github.io/games/";
     }
   };
 
-  const isAuth = !!user || !!(localProfile?.name);
-  const userDisplayName = user?.displayName || localProfile?.name || (user?.email === "prof.memmo@gmail.com" ? "Prof. Memmo" : (isAuth ? "Docente" : "ACCEDI"));
-  const userRole = user?.email === "prof.memmo@gmail.com" ? "AMMINISTRATORE" : (localProfile?.role || (user ? "DOCENTE" : "OSPITE"));
-  const rawAvatar = user?.photoURL || localProfile?.avatar;
-  const avatarUrl = resolveAvatarUrl(rawAvatar);
-
-  const [avatarSrc, setAvatarSrc] = useState(avatarUrl);
-  useEffect(() => {
-    setAvatarSrc(avatarUrl);
-  }, [avatarUrl]);
-
-  const isPreview = typeof window !== "undefined" && (window.location.pathname.includes('/preview') || window.location.hostname === 'localhost');
-  const loginUrl = isPreview 
-    ? 'https://prof-memmo.github.io/prof-memmo-gestione-siti/preview/portal.html?redirect=ops-storia' 
-    : 'https://prof-memmo.github.io/prof-memmo-gestione-siti/portal.html?redirect=ops-storia';
+  const userDisplayName = user?.displayName || (user?.email === "prof.memmo@gmail.com" ? "Prof. Memmo" : (user ? "Docente" : "Ospite"));
+  const userRole = user?.email === "prof.memmo@gmail.com" ? "Amministratore" : (user ? "Docente" : "Ospite");
+  const avatarUrl = resolveAvatarUrl(user?.photoURL);
 
   return (
     <header className="w-full bg-white/95 backdrop-blur-md shadow-sm border-b border-slate-200 sticky top-0 z-40 px-4 py-2.5 transition-all">
@@ -255,11 +217,10 @@ export default function Header() {
             onClick={() => setDropdownOpen(!dropdownOpen)}
             className="flex items-center gap-2 sm:gap-3 bg-white hover:bg-slate-50 text-slate-800 pl-2 pr-3 sm:pr-4 py-1.5 rounded-full shadow-sm hover:shadow transition-all border border-slate-200 cursor-pointer"
           >
-            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 border-amber-400 bg-slate-100 shrink-0 shadow-sm flex items-center justify-center">
+            <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-full overflow-hidden border-2 border-amber-400 bg-slate-100 shrink-0 shadow-sm">
               <img 
-                src={avatarSrc} 
+                src={avatarUrl} 
                 alt="Avatar" 
-                onError={() => setAvatarSrc(FALLBACK_AVATAR)}
                 className="w-full h-full object-cover" 
               />
             </div>
@@ -280,12 +241,8 @@ export default function Header() {
               
               {/* Header Utente */}
               <div className="border-b border-slate-100 pb-3 mb-3 text-center">
-                <div className="font-black text-sm text-slate-900 tracking-wide uppercase">
-                  {isAuth ? userDisplayName : "ACCESSO DOCENTE"}
-                </div>
-                <div className="text-[10px] text-amber-600 font-bold uppercase tracking-widest">
-                  {isAuth ? userRole : "ECOSISTEMA PROF. MEMMO"}
-                </div>
+                <div className="font-black text-sm text-slate-900 tracking-wide">{userDisplayName}</div>
+                <div className="text-[10px] text-amber-600 font-bold uppercase tracking-widest">{userRole}</div>
               </div>
 
               {/* Sottofondo Player Widget con Playlist Casuale */}
@@ -294,9 +251,7 @@ export default function Header() {
                   <span className="flex items-center gap-1.5 text-amber-600">
                     <Music className="w-3.5 h-3.5" /> SOTTOFONDO
                   </span>
-                  <a href="https://freetouse.com/music" target="_blank" rel="noopener noreferrer" className="text-[9px] text-slate-400 hover:text-amber-600 font-semibold transition-colors">
-                    FREETOUSE.COM
-                  </a>
+                  <span className="text-[9px] text-slate-400 font-semibold">OPS! AUDIO</span>
                 </div>
                 <div className="flex items-center justify-between bg-white rounded-lg p-2 border border-slate-200/60 shadow-sm">
                   <div className="flex flex-col pr-2 overflow-hidden">
@@ -328,31 +283,22 @@ export default function Header() {
 
               {/* Pulsanti Azione Ecosistema */}
               <div className="space-y-1.5 text-xs font-bold">
-                {!isAuth ? (
-                  <a
-                    href={loginUrl}
-                    className="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-gradient-to-r from-amber-500 to-amber-600 hover:from-amber-600 hover:to-amber-700 text-white font-black text-xs shadow-md transition-all active:scale-95"
-                  >
-                    <LogIn className="w-4 h-4" /> Accedi tramite Hub
-                  </a>
-                ) : (
-                  <a
-                    href="https://prof-memmo.github.io/games/profilo.html" 
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100"
-                  >
-                    <span className="flex items-center gap-2">
-                      <UserCheck className="w-4 h-4 text-amber-500" /> Modifica Profilo
-                    </span>
-                    <span className="text-[10px] text-slate-400 font-semibold">Hub ↗</span>
-                  </a>
-                )}
+                <a
+                  href="https://prof-memmo.github.io/games/profilo.html" 
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100"
+                >
+                  <span className="flex items-center gap-2">
+                    <UserCheck className="w-4 h-4 text-amber-500" /> Modifica Profilo
+                  </span>
+                  <span className="text-[10px] text-slate-400 font-semibold">Hub ↗</span>
+                </a>
 
                 <button
                   type="button"
                   onClick={() => openLegalModal('invita')}
-                  className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100 text-left cursor-pointer"
+                  className="w-full flex items-center gap-2 p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100 text-left"
                 >
                   <Send className="w-4 h-4 text-amber-500" /> Invita un Collega
                 </button>
@@ -360,7 +306,7 @@ export default function Header() {
                 <button
                   type="button"
                   onClick={() => openLegalModal('notifiche')}
-                  className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100 text-left cursor-pointer"
+                  className="w-full flex items-center justify-between p-2.5 rounded-xl bg-slate-50 hover:bg-slate-100 text-slate-700 transition-colors border border-slate-100 text-left"
                 >
                   <span className="flex items-center gap-2">
                     <Bell className="w-4 h-4 text-amber-500" /> Notifiche
@@ -372,20 +318,18 @@ export default function Header() {
                   <button
                     type="button"
                     onClick={toggleMute}
-                    className={`p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors text-[11px] flex items-center justify-center gap-1.5 cursor-pointer ${isAuth ? 'flex-1' : 'w-full'}`}
+                    className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-700 transition-colors text-[11px]"
                   >
                     {isMuted ? <VolumeX className="w-3.5 h-3.5 text-red-500" /> : <Volume2 className="w-3.5 h-3.5 text-slate-600" />}
-                    <span>{isMuted ? "Attiva Musica" : "Disattiva Musica"}</span>
+                    <span>{isMuted ? "Attiva" : "Muto"}</span>
                   </button>
-                  {isAuth && (
-                    <button
-                      type="button"
-                      onClick={handleLogout}
-                      className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/60 transition-colors text-[11px] cursor-pointer"
-                    >
-                      <Power className="w-3.5 h-3.5 text-red-500" /> Esci
-                    </button>
-                  )}
+                  <button
+                    type="button"
+                    onClick={handleLogout}
+                    className="flex-1 flex items-center justify-center gap-1.5 p-2 rounded-xl bg-red-50 hover:bg-red-100 text-red-600 border border-red-200/60 transition-colors text-[11px]"
+                  >
+                    <Power className="w-3.5 h-3.5 text-red-500" /> Esci
+                  </button>
                 </div>
 
               </div>
