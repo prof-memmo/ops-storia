@@ -38,31 +38,35 @@ export default function ClientBoard() {
   // Supporto test mock_playing per collaudo visivo in ambiente preview/locale
   useEffect(() => {
     if (typeof window !== "undefined" && new URLSearchParams(window.location.search).has('mock_playing')) {
-      setRoom({
+      const mockRoom: RoomState = {
         code: "DEMO1",
         status: "PLAYING",
-        selectedDeck: "prima",
-        selectedColors: ["verde"],
-        createdAt: Date.now(),
+        settings: {
+          deckId: "prima",
+          topics: ["verde"]
+        },
         deck: [{
           word: "FEUDALESIMO",
           taboos: ["Vassallo", "Castello", "Beneficio", "Omaggio", "Cavaliere"],
           colorTheme: { colorClass: "bg-orange-500", borderClass: "border-orange-500", textClass: "text-orange-500" }
         }],
-        teams: {
-          teamA: { id: 1, name: "Squadra A", score: 4, pawn: 1, connected: true },
-          teamB: { id: 2, name: "Squadra B", score: 2, pawn: 2, connected: true }
-        },
+        teamA: { id: 1, name: "Squadra A", score: 4, pawn: 1, position: 5, connected: true } as any,
+        teamB: { id: 2, name: "Squadra B", score: 2, pawn: 2, position: 3, connected: true } as any,
+        hostConnected: true,
         state: {
           currentTurn: 1,
           timeLeft: 45,
           cardIndex: 0,
           cardsGuessed: 4,
           cardsPassed: 0,
-          opsErrors: 0,
+          opsPenalties: 0,
+          unlimitedPass: false,
+          doubleTime: false,
+          showUndo: false,
           isPaused: false
         }
-      });
+      };
+      setRoom(mockRoom);
       setPhase("PLAYING");
     }
   }, []);
