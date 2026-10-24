@@ -35,6 +35,38 @@ export default function ClientBoard() {
     }
   }, [room, phase]);
 
+  // Supporto test mock_playing per collaudo visivo in ambiente preview/locale
+  useEffect(() => {
+    if (typeof window !== "undefined" && new URLSearchParams(window.location.search).has('mock_playing')) {
+      setRoom({
+        code: "DEMO1",
+        status: "PLAYING",
+        selectedDeck: "prima",
+        selectedColors: ["verde"],
+        createdAt: Date.now(),
+        deck: [{
+          word: "FEUDALESIMO",
+          taboos: ["Vassallo", "Castello", "Beneficio", "Omaggio", "Cavaliere"],
+          colorTheme: { colorClass: "bg-orange-500", borderClass: "border-orange-500", textClass: "text-orange-500" }
+        }],
+        teams: {
+          teamA: { id: 1, name: "Squadra A", score: 4, pawn: 1, connected: true },
+          teamB: { id: 2, name: "Squadra B", score: 2, pawn: 2, connected: true }
+        },
+        state: {
+          currentTurn: 1,
+          timeLeft: 45,
+          cardIndex: 0,
+          cardsGuessed: 4,
+          cardsPassed: 0,
+          opsErrors: 0,
+          isPaused: false
+        }
+      });
+      setPhase("PLAYING");
+    }
+  }, []);
+
   const handleJoin = async () => {
     if (!roomCode || !teamName) return setError("Compila tutti i campi");
     setIsLoading(true);
@@ -184,7 +216,7 @@ export default function ClientBoard() {
           )}
 
           {phase === "PLAYING" && currentCard && room && (
-            <motion.div key="playing" className={`w-full max-w-4xl h-full max-h-[calc(100dvh-75px)] sm:max-h-[92vh] bg-white rounded-2xl sm:rounded-3xl shadow-xl flex flex-col border-3 sm:border-4 overflow-hidden ${currentCard.colorTheme?.borderClass || 'border-orange-500'}`}>
+            <motion.div key="playing" className={`w-full max-w-4xl h-full max-h-full bg-white rounded-2xl sm:rounded-3xl shadow-xl flex flex-col border-3 sm:border-4 overflow-hidden ${currentCard.colorTheme?.borderClass || 'border-orange-500'}`}>
               
               <div className={`${currentCard.colorTheme?.colorClass || 'bg-orange-500'} text-white text-center py-1 sm:py-2 font-bold text-xs sm:text-sm uppercase tracking-widest shrink-0 flex justify-between px-3 sm:px-4`}>
                 <span>{isActiveTeam ? "Il tuo turno" : "Controlla Avversari"}</span>
@@ -192,16 +224,16 @@ export default function ClientBoard() {
               </div>
               
               <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
-                  <div className="flex-1 flex flex-col items-center justify-between p-2 sm:p-4 min-h-0 overflow-y-auto">
-                    <h1 className={`text-2xl sm:text-4xl md:text-5xl font-black my-0.5 sm:my-2 text-center leading-tight shrink-0 ${currentCard.colorTheme?.textClass || 'text-slate-900'}`}>
+                  <div className="flex-1 flex flex-col items-center justify-between p-1.5 sm:p-4 min-h-0 overflow-hidden">
+                    <h1 className={`text-xl sm:text-4xl md:text-5xl font-black my-0.5 sm:my-2 text-center leading-tight shrink-0 ${currentCard.colorTheme?.textClass || 'text-slate-900'}`}>
                       {cardKeyword}
                     </h1>
                     
-                    <div className="bg-slate-100/80 w-full p-1.5 sm:p-3 rounded-xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center">
+                    <div className="bg-slate-100/80 w-full p-1 sm:p-3 rounded-xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center overflow-hidden">
                       <p className="text-center font-black text-slate-400 text-[9px] sm:text-xs uppercase tracking-widest mb-0.5 sm:mb-1 shrink-0">Parole Vietate</p>
-                      <div className="flex-1 flex flex-col justify-evenly gap-1 sm:gap-1.5 min-h-0">
+                      <div className="flex-1 flex flex-col justify-evenly gap-0.5 sm:gap-1.5 min-h-0 overflow-hidden">
                         {cardTaboos.map((word: string) => (
-                          <div key={word} className="bg-white text-slate-800 font-extrabold py-0.5 sm:py-2 px-2 sm:px-3 rounded-lg text-center text-xs sm:text-lg border border-slate-200/80 shadow-xs flex items-center justify-center">
+                          <div key={word} className="bg-white text-slate-800 font-extrabold py-0.5 sm:py-2 px-2 sm:px-3 rounded-md sm:rounded-lg text-center text-xs sm:text-lg border border-slate-200/80 shadow-xs flex items-center justify-center flex-1 min-h-0 my-0.5 leading-tight">
                             {word}
                           </div>
                         ))}

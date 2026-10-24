@@ -460,8 +460,8 @@ export default function LocalPlay() {
   const card = deck[currentCardIndex % (deck.length || 1)];
 
   return (
-    <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0">
+    <div className="h-[100dvh] max-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-hidden">
+      <header className="bg-white px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0 border-b border-slate-100">
         <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
           <Link href="/" className="shrink-0 flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-bold text-xs sm:text-sm transition-all" title="Torna alla Home">
             <Home className="w-4 h-4 text-primary-500" />
@@ -484,7 +484,7 @@ export default function LocalPlay() {
         </div>
       </header>
 
-      <main className="flex-1 flex items-center justify-center p-1.5 sm:p-4">
+      <main className="flex-1 flex items-center justify-center p-1.5 sm:p-4 min-h-0 overflow-hidden">
         {authLoading ? (
           <div className="text-slate-400 font-bold animate-pulse">Caricamento...</div>
         ) : !user ? (
@@ -663,26 +663,26 @@ export default function LocalPlay() {
           )}
 
           {phase === "PLAYING" && card && (
-            <motion.div key="playing" className="w-full max-w-4xl flex flex-col items-center flex-1 justify-center min-h-0 max-h-[calc(100dvh-75px)] sm:max-h-[86vh]">
+            <motion.div key="playing" className="w-full max-w-4xl flex flex-col items-center flex-1 justify-center min-h-0 h-full max-h-full overflow-hidden">
               
               <div className="flex justify-between w-full mb-1 sm:mb-2 px-1 sm:px-4 shrink-0">
                 <div className={`text-center p-1 sm:p-2 px-2 sm:px-4 rounded-xl flex items-center justify-center space-x-1.5 sm:space-x-2 ${currentTurn === 1 ? 'bg-primary-100 border-2 border-primary-500' : 'bg-white opacity-80'}`}>
                   <img src={getPawnImg(teamA.pawn)} className="w-7 h-7 sm:w-12 sm:h-12 object-contain hidden sm:block" />
                   <div>
                     <span className={`text-[9px] sm:text-xs font-bold uppercase tracking-widest ${currentTurn === 1 ? 'text-primary-700' : 'text-slate-900'}`}>Squadra A</span>
-                    <div className={`text-xl sm:text-4xl font-black ${currentTurn === 1 ? 'text-primary-900' : 'text-slate-900'}`}>{teamA.score}</div>
+                    <div className={`text-base sm:text-4xl font-black ${currentTurn === 1 ? 'text-primary-900' : 'text-slate-900'}`}>{teamA.score}</div>
                   </div>
                 </div>
                 
                 <div className="text-center p-1 sm:p-2 px-3 sm:px-4 rounded-xl bg-white opacity-90 shadow-sm border border-slate-200">
                   <span className="text-[9px] sm:text-xs font-bold text-slate-900 uppercase tracking-widest">Tempo</span>
-                  <div className={`text-xl sm:text-4xl font-black ${timeLeft <= 10 ? 'text-red-600' : 'text-slate-900'}`}>{timeLeft}</div>
+                  <div className={`text-base sm:text-4xl font-black ${timeLeft <= 10 ? 'text-red-600' : 'text-slate-900'}`}>{timeLeft}</div>
                 </div>
 
                 <div className={`text-center p-1 sm:p-2 px-2 sm:px-4 rounded-xl flex items-center justify-center space-x-1.5 sm:space-x-2 ${currentTurn === 2 ? 'bg-primary-100 border-2 border-primary-500' : 'bg-white opacity-80'}`}>
                   <div>
                     <span className={`text-[9px] sm:text-xs font-bold uppercase tracking-widest ${currentTurn === 2 ? 'text-primary-700' : 'text-slate-900'}`}>Squadra B</span>
-                    <div className={`text-xl sm:text-4xl font-black ${currentTurn === 2 ? 'text-primary-900' : 'text-slate-900'}`}>{teamB.score}</div>
+                    <div className={`text-base sm:text-4xl font-black ${currentTurn === 2 ? 'text-primary-900' : 'text-slate-900'}`}>{teamB.score}</div>
                   </div>
                   <img src={getPawnImg(teamB.pawn)} className="w-7 h-7 sm:w-12 sm:h-12 object-contain hidden sm:block" />
                 </div>
@@ -701,14 +701,14 @@ export default function LocalPlay() {
                   <span>{timeLeft}s</span>
                 </div>
                 
-                <div className="flex flex-col md:flex-row flex-1 min-h-0">
-                  <div className="flex-1 flex flex-col items-center justify-between p-2 sm:p-5 min-h-0 overflow-y-auto">
-                    <h1 className={`text-2xl sm:text-4xl md:text-5xl font-black my-0.5 sm:my-2 text-center leading-tight shrink-0 ${card.colorTheme?.textClass || 'text-slate-900'}`}>{card.parola_chiave}</h1>
-                    <div className="w-full max-w-md bg-slate-100/80 p-1.5 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center">
+                <div className="flex flex-col md:flex-row flex-1 min-h-0 overflow-hidden">
+                  <div className="flex-1 flex flex-col items-center justify-between p-1.5 sm:p-5 min-h-0 overflow-hidden">
+                    <h1 className={`text-xl sm:text-4xl md:text-5xl font-black my-0.5 sm:my-2 text-center leading-tight shrink-0 ${card.colorTheme?.textClass || 'text-slate-900'}`}>{card.parola_chiave}</h1>
+                    <div className="w-full max-w-md bg-slate-100/80 p-1 sm:p-3 rounded-xl sm:rounded-2xl border border-slate-200 flex-1 min-h-0 flex flex-col justify-center overflow-hidden">
                       <p className="text-center font-black text-slate-400 text-[9px] sm:text-xs uppercase tracking-widest mb-0.5 sm:mb-1 shrink-0">Parole Vietate</p>
-                      <div className="flex-1 flex flex-col justify-center gap-1 sm:gap-1.5 min-h-0">
+                      <div className="flex-1 flex flex-col justify-evenly gap-0.5 sm:gap-1.5 min-h-0 overflow-hidden">
                         {card.parole_taboo.map((t: string) => (
-                          <div key={t} className="bg-white font-extrabold text-xs sm:text-lg md:text-xl py-0.5 sm:py-2 px-2.5 sm:px-4 rounded-lg sm:rounded-xl text-center border border-slate-200/80 shadow-xs text-slate-800 flex items-center justify-center leading-snug">{t}</div>
+                          <div key={t} className="bg-white font-extrabold text-xs sm:text-lg md:text-xl py-0.5 sm:py-2 px-2 sm:px-4 rounded-md sm:rounded-xl text-center border border-slate-200/80 shadow-xs text-slate-800 flex items-center justify-center leading-tight flex-1 min-h-0 my-0.5">{t}</div>
                         ))}
                       </div>
                     </div>
