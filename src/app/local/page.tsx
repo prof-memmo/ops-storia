@@ -9,6 +9,7 @@ import {
 import Link from "next/link";
 import DynamicBoard from "../components/DynamicBoard";
 import HostLogin from "@/components/HostLogin";
+import Header from "@/components/Header";
 import { auth, hubDb } from "@/lib/firebase";
 import { onAuthStateChanged, signOut, User } from "firebase/auth";
 import { collection, doc, setDoc, getDocs, query, where, deleteDoc } from "firebase/firestore";
@@ -450,39 +451,11 @@ export default function LocalPlay() {
     }
   };
 
-  const handleLogout = async () => {
-    if (confirm("Vuoi disconnettere il tuo account e tornare alla Home?")) {
-      await signOut(auth);
-      window.location.href = getAssetPath("/");
-    }
-  };
-
   const card = deck[currentCardIndex % (deck.length || 1)];
 
   return (
     <div className="h-[100dvh] max-h-[100dvh] bg-slate-50 flex flex-col font-sans overflow-hidden">
-      <header className="bg-white px-3 sm:px-4 py-2 sm:py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 shrink-0 border-b border-slate-100">
-        <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
-          <Link href="/" className="shrink-0 flex items-center gap-2 bg-slate-100 hover:bg-slate-200 text-slate-700 px-3 py-1.5 rounded-full font-bold text-xs sm:text-sm transition-all" title="Torna alla Home">
-            <Home className="w-4 h-4 text-primary-500" />
-            <span className="hidden sm:inline">Home</span>
-          </Link>
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
-        </div>
-        
-        <div className="flex items-center justify-center flex-1">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
-        </div>
-
-        <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight flex items-center justify-end gap-3">
-          {user && (
-            <button onClick={handleLogout} className="flex items-center gap-1.5 text-slate-400 hover:text-red-500 bg-red-50 hover:bg-red-100 px-3 py-1.5 rounded-full text-xs font-bold transition-colors" title="Disconnetti Account">
-              <LogOut className="w-4 h-4" />
-              <span className="hidden sm:inline">Disconnetti</span>
-            </button>
-          )}
-        </div>
-      </header>
+      <Header confirmOnLeave={phase === "PLAYING" || phase === "BOARD"} />
 
       <main className="flex-1 flex items-center justify-center p-1.5 sm:p-4 min-h-0 overflow-hidden">
         {authLoading ? (

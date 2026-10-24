@@ -4,6 +4,7 @@ import Link from "next/link";
 import { BookOpen, CheckCircle, Timer, Flag, Heart, ShieldCheck, HelpCircle, Home } from "lucide-react";
 import { useRules, RuleArticle } from "@/lib/rules-service";
 import { formatWithLinks } from "@/lib/format-links";
+import Header from "@/components/Header";
 
 function getArticleIcon(art: RuleArticle) {
   const id = (art.id || "").toLowerCase();
@@ -32,24 +33,7 @@ export default function Regolamento() {
 
   return (
     <div className="min-h-screen bg-slate-50 flex flex-col font-sans">
-      <header className="bg-white px-4 py-3 flex items-center justify-between shadow-sm sticky top-0 z-10 relative shrink-0">
-        <div className="flex items-center space-x-2 sm:space-x-4 flex-1">
-          <Link 
-            href="/" 
-            className="w-10 h-10 sm:w-11 sm:h-11 rounded-full bg-slate-100 hover:bg-amber-100 text-slate-700 hover:text-amber-600 flex items-center justify-center transition-all border border-slate-200 shadow-sm shrink-0"
-            title="Torna alla Home"
-          >
-            <Home className="w-5 h-5 sm:w-6 sm:h-6" />
-          </Link>
-          <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/games/ops-storia-badge.png" alt="Ops!" className="h-10 sm:h-14 object-contain shrink-0 hidden sm:block" />
-        </div>
-        
-        <div className="flex items-center justify-center flex-1">
-           <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/avatar.png" alt="Prof Memmo" className="h-12 sm:h-16 object-contain" />
-        </div>
-
-        <div className="font-black text-sm sm:text-xl text-primary-500 text-right flex-1 tracking-tight">REGOLAMENTO</div>
-      </header>
+      <Header />
 
       <main className="flex-1 max-w-4xl mx-auto p-6 sm:p-12 w-full">
         <div className="bg-white rounded-3xl shadow-xl p-8 sm:p-12 border border-slate-100">
