@@ -123,8 +123,8 @@ export default function Home() {
       {/* Footer Patamu (Standard Ecosistema: 4 link sopra, Testo margine a margine sotto) */}
       <footer className="w-full text-slate-600 px-4 pt-4 pb-20 lg:pb-28 flex flex-col items-center justify-center shrink-0 z-20 box-border">
         <div className="footer-legal-links flex justify-center gap-6 mb-2 text-xs uppercase tracking-wider flex-wrap">
-          <button onClick={() => openLegal('privacy')} className="hover:text-amber-600 transition-colors cursor-pointer text-slate-700 font-bold underline sm:no-underline hover:underline">Privacy Policy</button>
-          <button onClick={() => openLegal('termini')} className="hover:text-amber-600 transition-colors cursor-pointer text-slate-700 font-bold underline sm:no-underline hover:underline">Termini e Condizioni</button>
+          <button id="pmPrivacy" data-legal="privacy" onClick={() => openLegal('privacy')} className="privacy-modal hover:text-amber-600 transition-colors cursor-pointer text-slate-700 font-bold underline sm:no-underline hover:underline">Privacy Policy</button>
+          <button id="pmTerms" data-legal="termini" onClick={() => openLegal('termini')} className="terms-modal hover:text-amber-600 transition-colors cursor-pointer text-slate-700 font-bold underline sm:no-underline hover:underline">Termini e Condizioni</button>
           <button onClick={() => openLegal('contatti')} className="hover:text-amber-600 transition-colors cursor-pointer text-slate-700 font-bold underline sm:no-underline hover:underline">Contatti</button>
           <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" rel="noopener noreferrer" className="hover:text-amber-600 transition-colors cursor-pointer text-slate-700 font-bold underline sm:no-underline hover:underline">Condividi Esperienza</a>
         </div>
