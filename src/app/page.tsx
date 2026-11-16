@@ -128,7 +128,7 @@ export default function Home() {
           <button onClick={() => openLegal('contatti')} className="hover:text-amber-600 transition-colors cursor-pointer text-slate-700 font-bold underline sm:no-underline hover:underline">Contatti</button>
           <a href="https://prof-memmo.github.io/games/condividi-esperienza.html" target="_blank" rel="noopener noreferrer" className="hover:text-amber-600 transition-colors cursor-pointer text-slate-700 font-bold underline sm:no-underline hover:underline">Condividi Esperienza</a>
         </div>
-        <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4">
+        <div className="flex w-full items-center justify-start text-left gap-3 sm:gap-4 flex-wrap">
            <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/legal/patamu-badge.png" alt="Patamù" className="h-[52px] w-auto object-contain shrink-0 opacity-90" style={{ height: "52px" }} />
            <p className="text-[10px] sm:text-[11px] leading-relaxed tracking-normal flex-1 text-slate-600 font-medium">
              &copy; 2026 Guglielmo Piersanti. Tutti i contenuti presenti su questo sito sono di proprietà dell'autore e sono protetti tramite deposito e marcatura temporale presso Patamu. I contenuti sono inoltre distribuiti con licenza Creative Commons Attribution-NonCommercial-NoDerivatives 4.0 International (CC BY-NC-ND 4.0).
@@ -220,7 +220,7 @@ export default function Home() {
                  <img src="https://prof-memmo.github.io/prof-memmo-gestione-siti/shared/assets/branding/prof-memmo/prof-memmo-full.png" alt="Prof Memmo" className="w-[120%] object-contain drop-shadow-xl" />
               </div>
               
-              <div className="w-full md:w-2/3 p-4 sm:p-8 flex flex-col relative min-h-[550px] md:min-h-[500px]">
+              <div className="w-full md:w-2/3 p-4 sm:p-8 flex flex-col relative min-h-[380px] md:min-h-[500px]">
                 <button 
                   onClick={() => setShowTutorial(false)}
                   className="absolute top-4 right-4 p-2 bg-slate-100 hover:bg-slate-200 text-slate-600 rounded-full z-10"
@@ -228,7 +228,7 @@ export default function Home() {
                   <X className="w-6 h-6" />
                 </button>
                 
-                <h2 className="text-3xl sm:text-4xl font-black text-primary-500 mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">{miniguidaData.title || "Miniguida"}</h2>
+                <h2 className="text-xl sm:text-3xl font-black text-primary-500 mb-4 sm:mb-6 text-center uppercase tracking-tight border-b-4 border-primary-100 inline-block pb-2 mx-auto shrink-0">{miniguidaData.title || "Miniguida"}</h2>
                 
                 <div className="flex-1 relative overflow-hidden">
                   <AnimatePresence mode="wait">
@@ -245,12 +245,12 @@ export default function Home() {
                           className="absolute inset-0 flex items-center justify-center"
                         >
                           <div className="flex flex-col items-center text-center w-full max-w-md px-4">
-                            <StepIcon className="w-20 h-20 sm:w-24 sm:h-24 text-primary-500 mb-4" style={{ color: currentStep.iconColor || undefined }} />
+                            <StepIcon className="w-12 h-12 sm:w-20 sm:h-20 text-primary-500 mb-3 sm:mb-4" style={{ color: currentStep.iconColor || undefined }} />
                             {currentStep.title ? (
-                              <h3 className="text-xl font-bold text-slate-800 mb-2">{currentStep.title}</h3>
+                              <h3 className="text-lg sm:text-xl font-bold text-slate-800 mb-1 sm:mb-2">{currentStep.title}</h3>
                             ) : null}
                             <div 
-                              className="text-base sm:text-lg text-slate-600 font-medium leading-relaxed"
+                              className="text-sm sm:text-base text-slate-600 font-medium leading-relaxed"
                               dangerouslySetInnerHTML={{ __html: currentStep.desc }}
                             />
                           </div>
@@ -260,24 +260,24 @@ export default function Home() {
                   </AnimatePresence>
                 </div>
 
-                <div className="mt-6 flex justify-between items-center shrink-0">
+                <div className="mt-4 sm:mt-6 flex flex-wrap justify-center sm:justify-between items-center gap-3 shrink-0">
                   <div className="flex space-x-2">
                     {miniguidaData.steps.map((_, step) => (
-                      <div key={step} className={`w-3 h-3 rounded-full transition-colors ${tutorialStep === step ? 'bg-primary-500' : 'bg-slate-200'}`} />
+                      <div key={step} className={`w-2.5 h-2.5 sm:w-3 sm:h-3 rounded-full transition-colors ${tutorialStep === step ? 'bg-primary-500' : 'bg-slate-200'}`} />
                     ))}
                   </div>
                   
                   {tutorialStep < miniguidaData.steps.length - 1 ? (
                     <button 
                       onClick={() => setTutorialStep(s => s + 1)}
-                      className="bg-primary-500 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-primary-600 transition-colors shadow-md"
+                      className="bg-primary-500 text-white px-6 sm:px-8 py-2 sm:py-2.5 rounded-xl font-black text-sm sm:text-base hover:bg-primary-600 transition-colors shadow-md w-full sm:w-auto max-w-[200px]"
                     >
                       {miniguidaData.buttonLabel || "AVANTI"}
                     </button>
                   ) : (
                     <button 
                       onClick={() => { setShowTutorial(false); setTutorialStep(0); }}
-                      className="bg-slate-900 text-white px-8 py-2.5 rounded-xl font-black text-base hover:bg-slate-800 transition-colors shadow-md"
+                      className="bg-slate-900 text-white px-6 sm:px-8 py-2 sm:py-2.5 rounded-xl font-black text-sm sm:text-base hover:bg-slate-800 transition-colors shadow-md w-full sm:w-auto max-w-[200px]"
                     >
                       {miniguidaData.finalButtonLabel || "HO CAPITO!"}
                     </button>
